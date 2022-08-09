@@ -13,6 +13,7 @@ AllCops:
   Exclude:
     - bin/**/*
     - db/**/*
+    - vendor/bundle/**/*
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
