@@ -1,0 +1,23 @@
+require:
+  - rubocop
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.1.2
+  NewCops: enable
+  # RuboCop has a bunch of cops enabled by default. This setting tells RuboCop
+  # to ignore them, so only the ones explicitly set in this file are enabled.
+  DisabledByDefault: true
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - vendor/bundle/**/*
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# be a bit kinder with our metrics
+Metrics/BlockLength:
+  Max: 100
