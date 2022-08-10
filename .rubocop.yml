@@ -18,46 +18,6 @@ AllCops:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/Documentation:
-  Enabled: false
-
 # be a bit kinder with our metrics
 Metrics/BlockLength:
   Max: 100
-  Exclude:
-    - spec/**/*
-    - config/routes.rb
-
-Metrics/MethodLength:
-  Max: 20
-
-Layout/LineLength:
-  Exclude:
-    - spec/**/*
-
-# we tend to use update_all in migrations
-Rails/SkipsModelValidations:
-  Exclude:
-    - db/migrate/*.rb
-
-# Rspec
-RSpec/MultipleExpectations:
-  Enabled: false
-
-RSpec/ExampleLength:
-  Enabled: false
-
-RSpec/NestedGroups:
-  Max: 5
-
-RSpec/InstanceVariable:
-  Enabled: false
-
-RSpec/MultipleMemoizedHelpers:
-  Enabled: false
-
-RSpec/AnyInstance:
-  Enabled: false
-
-RSpec/MessageSpies:
-  Enabled: false
