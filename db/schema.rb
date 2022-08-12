@@ -10,8 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_12_134724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "full", null: false
+    t.string "town"
+    t.string "postcode"
+    t.string "longitude"
+    t.string "latitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "local_authorities", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "planning_applications", force: :cascade do |t|
+    t.string "reference", null: false
+    t.string "area", null: false
+    t.string "proposal", null: false
+    t.datetime "received_at", null: false
+    t.string "officer_name"
+    t.string "decision", null: false
+    t.datetime "decision_issued_at", null: false
+    t.bigint "property_id", null: false
+    t.bigint "local_authority_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["local_authority_id"], name: "index_planning_applications_on_local_authority_id"
+    t.index ["property_id"], name: "index_planning_applications_on_property_id"
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.string "uprn"
+    t.bigint "address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_properties_on_address_id"
+  end
 
 end
