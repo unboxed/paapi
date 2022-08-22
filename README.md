@@ -1,24 +1,75 @@
-# README
+# Planning Applications API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails API which will store planning application data.
 
-Things you may want to cover:
+| Dependency | Version |
+|:-----------|:--------|
+| Ruby       | 3.1.2   |
+| Rails      | 7.0.3   |
+| Postgresql | 14.2    |
 
-* Ruby version
+## Preflight
 
-* System dependencies
+### Clone the project
 
-* Configuration
+```sh
+$ git@github.com:unboxed/planning-applications-api.git
+```
 
-* Database creation
+### First Time Setup
 
-* Database initialization
+#### Install the project's dependencies using bundler:
 
-* How to run the test suite
+```sh
+$ bundle install
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+#### Create the databases
 
-* Deployment instructions
+```sh
+$ bundle exec rails db:setup
+```
 
-* ...
+#### Tests
+
+You can run the full test suite using following command:
+
+```sh
+$ bundle exec rspec
+```
+
+#### Debugging using `binding.pry`
+
+1. Initially we have installed pry-byebug to development and test group on our Gemfile
+
+```ruby
+group :development, :test do
+  # ..
+  gem 'pry-byebug'
+  # ..
+end
+```
+
+2. Add binding.pry to the desired place you want to have a look on your rails code:
+
+```ruby
+def index
+  binding.pry
+end
+```
+
+#### Start the server:
+
+```sh
+$ rails server
+```
+
+#### Start a rails console:
+
+```sh
+$ rails console
+```
+
+## Github Actions
+
+We use Github Actions as part of our continuous integration process to build, run and test the application.
