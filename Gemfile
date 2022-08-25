@@ -13,6 +13,8 @@ group :development, :test do
   gem "brakeman", require: false
   gem "bundler-audit", require: false
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "factory_bot_rails"
+  gem "faker"
   gem "pry-byebug"
   gem "rspec-rails", "~> 5.1"
   gem "rubocop-performance", require: false
