@@ -1,0 +1,30 @@
+---
+services:
+  db:
+    image: postgres:latest
+    volumes:
+     - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+  web:
+    build: .
+    entrypoint: ./docker-entrypoint.sh
+    command: bash -c "bundle exec rails s -b 0.0.0.0 -p 3000"
+    stdin_open: true
+    tty: true
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - bundle:/bundle
+
+volumes:
+  bundle:
+  db:
