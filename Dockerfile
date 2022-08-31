@@ -1,5 +1,6 @@
 # Base image
-FROM ruby:3.1.2
+ARG RUBY_VERSION
+FROM ruby:$RUBY_VERSION
 
 # Sets an environment variable with the bundle directory
 ENV BUNDLE_PATH=/bundle
@@ -26,7 +27,8 @@ RUN apt-get clean autoclean && \
     /var/lib/log
 
 # Install Bundler
-RUN gem install bundler -v 2.3.19 --no-doc
+ARG BUNDLER_VERSION
+RUN gem install bundler -v $BUNDLER_VERSION --no-doc
 
 # Create a directory for our application
 # and set it as the working directory
