@@ -200,3 +200,19 @@ We use Github Actions as part of our continuous integration process to build, ru
 
 [1]: https://www.docker.com/products/docker-desktop
 [2]: http://localhost:3000/
+
+## Importing PlanningApplications
+
+- Use AWS SSO to get credentials
+  - https://unboxed.awsapps.com/start#/
+  -> Planning Application API -> Command line or programmatic access
+  1. Copy option 1: Set AWS environment variables (Option 2 probably works as well)
+    export AWS_ACCESS_KEY_ID="123456"
+    export AWS_SECRET_ACCESS_KEY="abcde"
+    export AWS_SESSION_TOKEN="SECRET"
+  2. Paste environment into terminal
+  3. Verify the environment has been updated
+    - `$ env`
+
+- Run Import task
+  - `$ rake import:planning_applications`

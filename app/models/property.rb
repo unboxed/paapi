@@ -3,4 +3,5 @@ class Property < ApplicationRecord
   belongs_to :address
 
   validates :address, presence: true
+  validates_associated :address
 end
