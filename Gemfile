@@ -22,3 +22,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "rubocop", require: false
 end
+
+group :test do
+  gem "webmock"
+end
