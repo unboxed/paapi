@@ -174,6 +174,26 @@ $ rails server
 $ rails console
 ```
 
+## Building production docker
+
+### Create production docker
+
+```sh
+docker build -t paapi -f Dockerfile.production .
+```
+
+### Run production docker
+
+```sh
+docker run --rm -it -p 3000:3000 -e DATABASE_URL=postgres://postgres@host.docker.internal:5432/paapi_development -e RAILS_SERVE_STATIC_FILES=true -e RAILS_ENV=production -e RAILS_LOG_TO_STDOUT=true paapi:latest bundle exec rails s
+```
+
+### Run production docker bash
+
+```sh
+docker run --rm -it -e DATABASE_URL=postgres://postgres@host.docker.internal:5432/paapi_development -e RAILS_SERVE_STATIC_FILES=true -e RAILS_ENV=production -e RAILS_LOG_TO_STDOUT=true paapi:latest /bin/bash
+```
+
 ## Github Actions
 
 We use Github Actions as part of our continuous integration process to build, run and test the application.
