@@ -11,6 +11,7 @@ class PlanningApplicationsImporter
 
    def log_exception(exception)
      Rails.logger.info(exception.message)
+     puts exception.message
    end
 
    def import_planning_applications
