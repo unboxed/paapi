@@ -7,9 +7,10 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: Deploy
+  deploy-staging:
+    name: Deploy to staging
     runs-on: ubuntu-latest
+    environment: staging
 
     steps:
     - name: Checkout
@@ -48,7 +49,7 @@ jobs:
           rm -rf docker-cache
         fi
 
-    - name: Build, tag, and push image to Amazon ECR
+    - name: Build, tag, and push staging image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
