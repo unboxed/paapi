@@ -54,11 +54,34 @@ RSpec.describe "PlanningApplicationsImporter - address" do
     end
   end
 
-  context "when address is invalid" do
+  context "when full address is blank" do
+    let(:planning_applications_without_full_address_csv) do
+      <<-CSV.strip_heredoc
+        area, uprn, reference, address, proposal, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town
+        West,766303499,22/06867/PNP6A,Rockwell House Rockwell Lane Buckinghamshire RG9 6NF,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,             ,RG9 6NF,Henley
+      CSV
+    end
+
+    let(:planning_application_response) do
+      { status: 200, body: planning_applications_without_full_address_csv, headers: { "Content-Type" => "text/csv"} }
+    end
+
+    before do
+      stub_request(:get, planning_application_url).to_return(planning_application_response)
+    end
+
+    it "imports full address from planning application address" do
+      expect { PlanningApplicationsImporter.new.call }.to change {
+        Address.where(full: "Rockwell House Rockwell Lane Buckinghamshire RG9 6NF").exists?
+      }.from(false).to(true)
+    end
+  end
+
+  context "when planning application address and full address are blank" do
     let(:planning_applications_invalid_address_csv) do
       <<-CSV.strip_heredoc
         area, uprn, reference, address, proposal, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town
-        West,766303499,22/06867/PNP6A,Rockwell House Rockwell Lane Buckinghamshire RG9 6NF,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,,RG9 6NF,Henley
+        West,766303499,22/06867/PNP6A,,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,,RG9 6NF,Henley
       CSV
     end
 
