@@ -68,8 +68,8 @@ class PlanningApplicationsImporter
                   full: row[:full].blank? ? row[:address] : row[:full],
                   town: row[:town],
                   postcode: row[:postcode],
-                  longitude: row[:map_east],
-                  latitude: row[:map_north])
+                  map_east: row[:map_east],
+                  map_north: row[:map_north])
 
        if property.invalid?
          message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"

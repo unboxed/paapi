@@ -41,15 +41,15 @@ RSpec.describe "PlanningApplicationsImporter - address" do
       }.from(false).to(true)
     end
 
-    it "imports longitude" do
+    it "imports map_east" do
       expect { PlanningApplicationsImporter.new.call }.to change {
-        Address.where(longitude: "467520").exists?
+        Address.where(map_east: "467520").exists?
       }.from(false).to(true)
     end
 
-    it "imports latitude" do
+    it "imports map_north" do
       expect { PlanningApplicationsImporter.new.call }.to change {
-        Address.where(latitude: "241616").exists?
+        Address.where(map_north: "241616").exists?
       }.from(false).to(true)
     end
   end
