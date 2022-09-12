@@ -69,6 +69,22 @@ GEM
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
+    aws-eventstream (1.2.0)
+    aws-partitions (1.623.0)
+    aws-sdk-core (3.136.0)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.525.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.58.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.114.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.4)
+    aws-sigv4 (1.5.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     brakeman (5.2.3)
@@ -87,6 +103,10 @@ GEM
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.11.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -103,6 +123,7 @@ GEM
     io-console (0.5.11)
     irb (1.4.1)
       reline (>= 0.3.0)
+    jmespath (1.6.1)
     json (2.6.2)
     loofah (2.18.0)
       crass (~> 1.0.2)
@@ -243,10 +264,12 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap
   brakeman
   bundler-audit
   debug
+  dotenv-rails
   factory_bot_rails
   faker
   pg (~> 1.1)
