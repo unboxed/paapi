@@ -65,7 +65,7 @@ class PlanningApplicationsImporter
      unless property
        property = Property.new(uprn: row[:uprn])
        property.build_address(
-                  full: row[:full],
+                  full: row[:full].blank? ? row[:address] : row[:full],
                   town: row[:town],
                   postcode: row[:postcode],
                   longitude: row[:map_east],
