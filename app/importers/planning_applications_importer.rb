@@ -21,7 +21,7 @@ class PlanningApplicationsImporter
    end
 
    def import_planning_applications
-     import_rows("PlanningHistoryLambeth.csv")
+     import_rows("PlanningHistory#{local_authority.name.capitalize}.csv")
    end
 
    def import_rows(filename)
@@ -55,7 +55,7 @@ class PlanningApplicationsImporter
    end
 
    def local_authority
-     @local_authority ||= LocalAuthority.find_by(name: local_authority_name)
+     @local_authority ||= LocalAuthority.find_by!(name: local_authority_name)
    end
 
    def s3

@@ -31,6 +31,27 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
     end
   end
 
+  context "when local authority unknown" do
+    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryDerbyshire.csv" }
+
+    let(:planning_application_response) do
+      { status: 200, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }
+    end
+
+    before do
+      stub_request(:get, planning_application_url).to_return(planning_application_response)
+    end
+
+    it "returns that local authority couldn't be found" do
+      allow(Rails.logger).to receive(:info)
+
+      expect(ActiveJob::Base.logger).to receive(:info)
+        .with(%[Couldn't find LocalAuthority with [WHERE "local_authorities"."name" = $1]].strip)
+
+      PlanningApplicationsImporter.new(local_authority_name: "derbyshire").call
+    end
+  end
+
   context "when filename unknown" do
     let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
 
