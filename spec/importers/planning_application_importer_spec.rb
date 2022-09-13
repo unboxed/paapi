@@ -29,50 +29,6 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
 
       expect { importer }.to change { PlanningApplication.count }.by(0)
     end
-
-    describe "attributes" do
-      it "imports reference" do
-        expect { importer }.to change {
-          PlanningApplication.where(reference: "22/02180/POA").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports area" do
-        expect { importer }.to change {
-          PlanningApplication.where(area: "Central").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports proposal" do
-        expect { importer }.to change {
-          PlanningApplication.where(proposal: "Submission from Silverstone").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports received_at" do
-        expect { importer }.to change {
-          PlanningApplication.where(received_at: "14/06/2022").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports received_at" do
-        expect { importer }.to change {
-          PlanningApplication.where(officer_name: "Ms May Lo").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports decision" do
-        expect { importer }.to change {
-          PlanningApplication.where(decision: "Discharge - Satisfies Requirements").exists?
-        }.from(false).to(true)
-      end
-
-      it "imports decision issued at" do
-        expect { importer }.to change {
-          PlanningApplication.where(decision_issued_at: "02/09/2022").exists?
-        }.from(false).to(true)
-      end
-    end
   end
 
   context "when filename unknown" do
