@@ -10,12 +10,12 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
     CSV
   end
 
-  before do
-    create(:local_authority, name: "lambeth")
-    stub_request(:get, planning_application_url).to_return(planning_application_response)
-  end
-
   context "when the CSV downloads are successful" do
+    before do
+      create(:local_authority, name: "lambeth")
+      stub_request(:get, planning_application_url).to_return(planning_application_response)
+    end
+
     let(:planning_application_response) do
       { status: 200, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }
     end
@@ -36,6 +36,11 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
 
     let(:planning_application_response) do
       { status: 404, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }
+    end
+
+    before do
+      create(:local_authority, name: "lambeth")
+      stub_request(:get, planning_application_url).to_return(planning_application_response)
     end
 
     it "returns that the file is not found" do
