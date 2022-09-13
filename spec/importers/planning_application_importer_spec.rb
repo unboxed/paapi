@@ -74,6 +74,23 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
     end
   end
 
+  context "when filename unknown" do
+    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambath.csv" }
+
+    let(:planning_application_response) do
+      { status: 404, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }
+    end
+
+    it "returns that the file is not found" do
+      allow(Rails.logger).to receive(:info)
+
+      expect(ActiveJob::Base.logger).to receive(:info)
+        .with(%[Aws::S3::Errors::NotFound].strip)
+
+      PlanningApplicationsImporter.new(local_authority_name: "lambeth").call
+    end
+  end
+
   def importer
     PlanningApplicationsImporter.new(local_authority_name: "lambeth").call
   end
