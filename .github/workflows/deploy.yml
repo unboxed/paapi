@@ -66,7 +66,7 @@ jobs:
         split -b 5G paapi.tar docker-cache/x
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Download task definition for web and strip unused properties
+    - name: Download task definition for db_migrate and strip unused properties
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-staging --query taskDefinition | \
         jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > db_migrate.json
@@ -174,7 +174,7 @@ jobs:
         split -b 5G paapi.tar docker-cache/x
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Download task definition for web and strip unused properties
+    - name: Download task definition for db_migrate and strip unused properties
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-production --query taskDefinition | \
         jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > db_migrate.json
