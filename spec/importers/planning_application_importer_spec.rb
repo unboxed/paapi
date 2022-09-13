@@ -11,6 +11,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
   end
 
   before do
+    create(:local_authority, name: "lambeth")
     stub_request(:get, planning_application_url).to_return(planning_application_response)
   end
 
@@ -75,7 +76,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
   end
 
   context "when filename unknown" do
-    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambath.csv" }
+    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
 
     let(:planning_application_response) do
       { status: 404, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }

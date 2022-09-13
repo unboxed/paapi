@@ -13,6 +13,8 @@ class PlanningApplicationsImporter
 
  private
 
+   attr_reader :local_authority_name
+
    def log_exception(exception)
      Rails.logger.info(exception.message)
      puts exception.message
@@ -52,12 +54,8 @@ class PlanningApplicationsImporter
      end
    end
 
-   # Not sure how to get the local_authority
-   # Suggestion was from the file name
-   # I would need to know that this was the file to import.
-   # File name could have a date and I could keep a "last imported local_authority: Buckinghamshire, date: 3/9/2023"
    def local_authority
-     @local_authority ||= LocalAuthority.find_or_create_by(name: "Bucks")
+     @local_authority ||= LocalAuthority.find_by(name: local_authority_name)
    end
 
    def s3

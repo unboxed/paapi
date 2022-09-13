@@ -11,6 +11,7 @@ RSpec.describe "PlanningApplicationsImporter - property" do
   end
 
   before do
+    create(:local_authority, name: "lambeth")
     stub_request(:get, planning_application_url).to_return(planning_application_response)
   end
 
