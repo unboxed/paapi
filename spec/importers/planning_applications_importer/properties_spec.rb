@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "PlanningApplicationsImporter - property" do
-  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryBucks.csv" }
+  let(:importer) { PlanningApplicationsImporter.new(local_authority_name: "lambeth").call }
+  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
   let(:planning_applications_csv) do
     <<-CSV.strip_heredoc
       area, uprn, reference, address, proposal, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town
@@ -19,18 +20,18 @@ RSpec.describe "PlanningApplicationsImporter - property" do
     end
 
     it "imports a new Property object from CSV data" do
-      expect { PlanningApplicationsImporter.new.call }.to change { Property.count }.by(1)
+      expect { importer }.to change { Property.count }.by(1)
     end
 
     it "does not import the same uprn twice" do
       create(:property, uprn: "111222333444")
 
-      expect { PlanningApplicationsImporter.new.call }.to change { Property.count }.by(0)
+      expect { importer }.to change { Property.count }.by(0)
     end
 
     describe "attribute update" do
       it "sets the uprn" do
-        expect { PlanningApplicationsImporter.new.call }
+        expect { importer }
           .to change { Property.where(uprn: "111222333444").exists? }.from(false).to(true)
       end
     end

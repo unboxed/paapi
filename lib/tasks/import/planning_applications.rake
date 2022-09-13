@@ -4,8 +4,11 @@ namespace :import do
     broadcast "PlanningApplicationImporter:import\nBegin"
     broadcast "PlanningApplications:#{PlanningApplication.count} " \
               "(Property  #{Property.count}, Address: #{Address.count})"
+
+    ARGV.each { |a| task a.to_sym do ; end }
+
     begin
-      PlanningApplicationsImporter.new.call
+      PlanningApplicationsImporter.new(local_authority_name: ARGV[1]).call
     rescue => error
       broadcast error.message
     ensure

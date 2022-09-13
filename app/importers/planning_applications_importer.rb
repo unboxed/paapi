@@ -1,6 +1,10 @@
 require "csv"
 
 class PlanningApplicationsImporter
+  def initialize(local_authority_name:)
+    @local_authority_name = local_authority_name
+  end
+
  def call
    import_planning_applications
  rescue StandardError => exception
@@ -15,7 +19,7 @@ class PlanningApplicationsImporter
    end
 
    def import_planning_applications
-     import_rows("PlanningHistoryBucks.csv")
+     import_rows("PlanningHistoryLambeth.csv")
    end
 
    def import_rows(filename)
