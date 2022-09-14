@@ -24,6 +24,10 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
       expect { importer }.to change { PlanningApplication.count }.by(1)
     end
 
+    it "import local_authority_name is not case sensitive" do
+      expect { importer(local_authority_name: "LaMbEth") }.to change { PlanningApplication.count }.by(1)
+    end
+
     it "import only creates the same PlanningApplication once" do
       create(:planning_application, reference: "22/02180/POA")
 

@@ -2,7 +2,7 @@ require "csv"
 
 class PlanningApplicationsImporter
   def initialize(local_authority_name:)
-    @local_authority_name = local_authority_name
+    @local_authority_name = local_authority_name.downcase
   end
 
  def call
