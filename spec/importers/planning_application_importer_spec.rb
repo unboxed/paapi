@@ -74,7 +74,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
     end
   end
 
-  def importer
-    PlanningApplicationsImporter.new(local_authority_name: "lambeth").call
+  def importer(local_authority_name: "lambeth")
+    PlanningApplicationsImporter.new(local_authority_name: local_authority_name).call
   end
 end
