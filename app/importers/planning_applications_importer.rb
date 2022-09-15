@@ -16,8 +16,12 @@ class PlanningApplicationsImporter
    attr_reader :local_authority_name
 
    def log_exception(exception)
-     Rails.logger.info(exception.message)
-     puts exception.message
+     broadcast(message: exception.message)
+   end
+
+   def broadcast(message:)
+     Rails.logger.info(message)
+     puts message
    end
 
    def import_planning_applications
