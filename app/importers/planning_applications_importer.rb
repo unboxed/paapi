@@ -25,7 +25,7 @@ class PlanningApplicationsImporter
    end
 
    def filename
-     "PlanningHistory#{local_authority_name.capitalize}.csv"
+     "#{local_authority_name}/PlanningHistory#{local_authority_name.capitalize}.csv"
    end
 
    def import_rows(filename:)
