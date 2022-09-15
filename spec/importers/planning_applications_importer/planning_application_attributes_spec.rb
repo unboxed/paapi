@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "PlanningApplicationsImporter - Attributes" do
   let(:importer) { PlanningApplicationsImporter.new(local_authority_name: "lambeth").call }
-  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
+  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
   let(:planning_applications_csv) do
     <<-CSV.strip_heredoc
       area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, view_documents

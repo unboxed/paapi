@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
 
-  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
+  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
   let(:planning_applications_csv) do
     <<-CSV.strip_heredoc
       area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, view_documents
@@ -36,7 +36,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
   end
 
   context "when local authority unknown" do
-    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryDerbyshire.csv" }
+    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/derbyshire/PlanningHistoryDerbyshire.csv" }
 
     let(:planning_application_response) do
       { status: 200, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }
@@ -57,7 +57,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
   end
 
   context "when filename unknown" do
-    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
+    let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
 
     let(:planning_application_response) do
       { status: 404, body: planning_applications_csv, headers: { "Content-Type" => "text/csv"} }

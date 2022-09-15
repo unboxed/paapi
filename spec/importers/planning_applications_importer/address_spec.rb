@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "PlanningApplicationsImporter - address" do
   let(:importer) { PlanningApplicationsImporter.new(local_authority_name: "lambeth").call }
-  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
+  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
 
   context "when the CSV downloads are successful" do
     let(:planning_applications_csv) do
