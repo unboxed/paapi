@@ -16,11 +16,11 @@ RSpec.describe PlanningApplication, type: :model do
       expect(planning_application.errors.messages).to include(:area)
     end
 
-    it "must have a proposal set" do
-      planning_application = build(:planning_application, proposal: nil)
+    it "must have a proposal_details set" do
+      planning_application = build(:planning_application, proposal_details: nil)
       planning_application.save
 
-      expect(planning_application.errors.messages).to include(:proposal)
+      expect(planning_application.errors.messages).to include(:proposal_details)
     end
 
     it "must have at least one received_at set" do
