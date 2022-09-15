@@ -49,6 +49,7 @@ class PlanningApplicationsImporter
            officer_name: row[:officer_name],
            decision: row[:decision],
            decision_issued_at: row[:decision_issued_at],
+           view_documents: row[:view_documents],
            property: property,
            local_authority: local_authority)
      end
