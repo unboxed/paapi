@@ -44,7 +44,7 @@ class PlanningApplicationsImporter
          .update!(
            reference: row[:reference],
            area: row[:area],
-           proposal: row[:proposal],
+           proposal_details: row[:proposal_details],
            received_at: row[:received_at],
            officer_name: row[:officer_name],
            decision: row[:decision],
