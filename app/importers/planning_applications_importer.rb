@@ -21,10 +21,14 @@ class PlanningApplicationsImporter
    end
 
    def import_planning_applications
-     import_rows("PlanningHistory#{local_authority.name.capitalize}.csv")
+     import_rows(filename: filename)
    end
 
-   def import_rows(filename)
+   def filename
+     "PlanningHistory#{local_authority_name.capitalize}.csv"
+   end
+
+   def import_rows(filename:)
      file = Tempfile.new(["planning_applications", ".csv"])
 
      s3.get_object(bucket: "paapi-staging-import", key: filename) do |chunk|
