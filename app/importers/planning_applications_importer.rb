@@ -1,6 +1,10 @@
 require "csv"
 
 class PlanningApplicationsImporter
+  def initialize(local_authority_name:)
+    @local_authority_name = local_authority_name.downcase
+  end
+
  def call
    import_planning_applications
  rescue StandardError => exception
@@ -9,13 +13,15 @@ class PlanningApplicationsImporter
 
  private
 
+   attr_reader :local_authority_name
+
    def log_exception(exception)
      Rails.logger.info(exception.message)
      puts exception.message
    end
 
    def import_planning_applications
-     import_rows("PlanningHistoryBucks.csv")
+     import_rows("PlanningHistory#{local_authority.name.capitalize}.csv")
    end
 
    def import_rows(filename)
@@ -48,12 +54,8 @@ class PlanningApplicationsImporter
      end
    end
 
-   # Not sure how to get the local_authority
-   # Suggestion was from the file name
-   # I would need to know that this was the file to import.
-   # File name could have a date and I could keep a "last imported local_authority: Buckinghamshire, date: 3/9/2023"
    def local_authority
-     @local_authority ||= LocalAuthority.find_or_create_by(name: "Bucks")
+     @local_authority ||= LocalAuthority.find_by!(name: local_authority_name)
    end
 
    def s3

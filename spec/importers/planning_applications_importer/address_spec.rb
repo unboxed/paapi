@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "PlanningApplicationsImporter - address" do
-  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryBucks.csv" }
+  let(:importer) { PlanningApplicationsImporter.new(local_authority_name: "lambeth").call }
+  let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/PlanningHistoryLambeth.csv" }
 
   context "when the CSV downloads are successful" do
     let(:planning_applications_csv) do
@@ -12,6 +13,7 @@ RSpec.describe "PlanningApplicationsImporter - address" do
     end
 
     before do
+      create(:local_authority, name: "lambeth")
       stub_request(:get, planning_application_url).to_return(planning_application_response)
     end
 
@@ -20,35 +22,35 @@ RSpec.describe "PlanningApplicationsImporter - address" do
     end
 
     it "import creates an Address object from CSV data" do
-      expect { PlanningApplicationsImporter.new.call }.to change { Address.count }.by(1)
+      expect { importer }.to change { Address.count }.by(1)
     end
 
     it "imports full address" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(full: "Silverstone Motor Racing Circuit Silverstone Road Biddlesden Buckinghamshire NN12 8TN").exists?
       }.from(false).to(true)
     end
 
     it "imports postcode" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(postcode: "NN12 8TN").exists?
       }.from(false).to(true)
     end
 
     it "imports town" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(town: "Towcester").exists?
       }.from(false).to(true)
     end
 
     it "imports map_east" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(map_east: "467520").exists?
       }.from(false).to(true)
     end
 
     it "imports map_north" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(map_north: "241616").exists?
       }.from(false).to(true)
     end
@@ -67,11 +69,12 @@ RSpec.describe "PlanningApplicationsImporter - address" do
     end
 
     before do
+      create(:local_authority, name: "lambeth")
       stub_request(:get, planning_application_url).to_return(planning_application_response)
     end
 
     it "imports full address from planning application address" do
-      expect { PlanningApplicationsImporter.new.call }.to change {
+      expect { importer }.to change {
         Address.where(full: "Rockwell House Rockwell Lane Buckinghamshire RG9 6NF").exists?
       }.from(false).to(true)
     end
@@ -90,6 +93,7 @@ RSpec.describe "PlanningApplicationsImporter - address" do
     end
 
     before do
+      create(:local_authority, name: "lambeth")
       stub_request(:get, planning_application_url).to_return(planning_application_response)
     end
 
@@ -99,7 +103,7 @@ RSpec.describe "PlanningApplicationsImporter - address" do
       expect(ActiveJob::Base.logger).to receive(:info)
         .with(%[Planning application reference: 22/06867/PNP6A has invalid property: Full can't be blank].strip)
 
-      PlanningApplicationsImporter.new.call
+      importer
     end
   end
 end
