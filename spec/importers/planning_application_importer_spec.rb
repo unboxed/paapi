@@ -51,6 +51,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
 
       expect(ActiveJob::Base.logger).to receive(:info)
         .with(%[Couldn't find LocalAuthority with [WHERE "local_authorities"."name" = $1]].strip)
+        .with(%[Expected S3 filepath: paapi-staging-import/derbyshire/PlanningHistoryDerbyshire.csv].strip)
 
       PlanningApplicationsImporter.new(local_authority_name: "derbyshire").call
     end
@@ -73,6 +74,7 @@ RSpec.describe "PlanningApplicationsImporter - PlanningApplication" do
 
       expect(ActiveJob::Base.logger).to receive(:info)
         .with(%[Aws::S3::Errors::NotFound].strip)
+        .with(%[Expected S3 filepath: paapi-staging-import/lambeth/PlanningHistoryLambeth.csv].strip)
 
       PlanningApplicationsImporter.new(local_authority_name: "lambeth").call
     end

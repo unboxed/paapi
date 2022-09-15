@@ -17,6 +17,7 @@ class PlanningApplicationsImporter
 
    def log_exception(exception)
      broadcast(message: exception.message)
+     broadcast(message: "Expected S3 filepath: paapi-staging-import/#{filename}")
    end
 
    def broadcast(message:)
