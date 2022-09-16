@@ -7,8 +7,8 @@ RSpec.describe "PlanningApplicationsImporter - address" do
   context "when the CSV downloads are successful" do
     let(:planning_applications_csv) do
       <<-CSV.strip_heredoc
-        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, view_documents
-        North & Central,766298059,22/02180/POA,Silverstone Motor Racing Circuit Silverstone Road Biddlesden Buckinghamshire NN12 8TN,"Submission of details for approval in regards to clauses 11b and c Travel Plan Coordinator, 15b (Membership of Travel Plan Steering Group) and 20b (Membership of Transport Strategy Steering Group) of the Section 106 Agreement attached to Outline Planning Permission 17/01840/AOP Silverstone Circuit",14/06/2022,Mrs Rebecca Jarratt,Discharge - Satisfies Requirements,02/09/2022,467520,241616,Silverstone Motor Racing Circuit Silverstone Road Biddlesden Buckinghamshire NN12 8TN,NN12 8TN,Towcester,"https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
+        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, ward_c, ward, property_type, view_documents
+        North & Central,766298059,22/02180/POA,Silverstone Motor Racing Circuit Silverstone Road Biddlesden Buckinghamshire NN12 8TN,"Submission of details for approval in regards to clauses 11b and c Travel Plan Coordinator, 15b (Membership of Travel Plan Steering Group) and 20b (Membership of Transport Strategy Steering Group) of the Section 106 Agreement attached to Outline Planning Permission 17/01840/AOP Silverstone Circuit",14/06/2022,Mrs Rebecca Jarratt,Discharge - Satisfies Requirements,02/09/2022,467520,241616,Silverstone Motor Racing Circuit Silverstone Road Biddlesden Buckinghamshire NN12 8TN,NN12 8TN,Towcester,W049,WINSLOW,"Residential, Dwellings, Detached","https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
       CSV
     end
 
@@ -59,8 +59,8 @@ RSpec.describe "PlanningApplicationsImporter - address" do
   context "when full address is blank" do
     let(:planning_applications_without_full_address_csv) do
       <<-CSV.strip_heredoc
-        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, view_documents
-        West,766303499,22/06867/PNP6A,Rockwell House Rockwell Lane Buckinghamshire RG9 6NF,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,             ,RG9 6NF,Henley,"https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
+        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, ward_c, ward, property_type, view_documents
+        West,766303499,22/06867/PNP6A,Rockwell House Rockwell Lane Buckinghamshire RG9 6NF,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,             ,RG9 6NF,Henley,W049,WINSLOW,"Residential, Dwellings, Detached","https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
       CSV
     end
 
@@ -83,8 +83,8 @@ RSpec.describe "PlanningApplicationsImporter - address" do
   context "when planning application address and full address are blank" do
     let(:planning_applications_invalid_address_csv) do
       <<-CSV.strip_heredoc
-        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, view_documents
-        West,766303499,22/06867/PNP6A,,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,,RG9 6NF,Henley,"https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
+        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, ward_c, ward, property_type, view_documents
+        West,766303499,22/06867/PNP6A,,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,,RG9 6NF,Henley,W049,WINSLOW,"Residential, Dwellings, Detached","https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
       CSV
     end
 

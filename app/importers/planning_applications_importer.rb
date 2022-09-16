@@ -66,21 +66,34 @@ class PlanningApplicationsImporter
    def with_property(row)
      property = Property.find_by(uprn: row[:uprn])
      unless property
-       property = Property.new(uprn: row[:uprn])
-       property.build_address(
-                  full: row[:full].blank? ? row[:address] : row[:full],
-                  town: row[:town],
-                  postcode: row[:postcode],
-                  map_east: row[:map_east],
-                  map_north: row[:map_north])
+       with_address(row) do |address|
+         property = Property.find_or_initialize_by(uprn: row[:uprn])
+          .update!(
+            type: row[:property_type],
+            ward: row[:ward_c],
+            ward_name: row[:ward],
+            address: address)
 
-       if property.invalid?
-         message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"
-         raise PlanningApplicationImporterInvalidRow.new(message)
+         if property.invalid?
+           message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"
+           raise PlanningApplicationImporterInvalidRow.new(message)
+         end
        end
      end
+
      yield property
    end
+
+   def with_address(row)
+     Address.find_or_initialize_by(postcode: row[:postcode])
+      .update!(
+        full: row[:full].blank? ? row[:address] : row[:full],
+        town: row[:town],
+        map_east: row[:map_east],
+        map_north: row[:map_north])
+  rescue StandardError => exception
+    log_exception(exception)
+  end
 
    class PlanningApplicationImporterInvalidRow < StandardError; end
 end
