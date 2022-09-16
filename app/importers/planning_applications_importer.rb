@@ -73,11 +73,6 @@ class PlanningApplicationsImporter
             ward: row[:ward_c],
             ward_name: row[:ward],
             address: address)
-
-         if property.invalid?
-           message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"
-           raise PlanningApplicationImporterInvalidRow.new(message)
-         end
        end
      end
 
@@ -91,8 +86,10 @@ class PlanningApplicationsImporter
         town: row[:town],
         map_east: row[:map_east],
         map_north: row[:map_north])
+
   rescue StandardError => exception
-    log_exception(exception)
+    message = "Planning application reference: #{row[:reference]} has invalid address: #{exception.message}"
+    raise PlanningApplicationImporterInvalidRow.new(message)
   end
 
    class PlanningApplicationImporterInvalidRow < StandardError; end

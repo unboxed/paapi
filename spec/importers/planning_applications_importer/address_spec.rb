@@ -101,7 +101,7 @@ RSpec.describe "PlanningApplicationsImporter - address" do
       allow(Rails.logger).to receive(:info)
 
       expect(ActiveJob::Base.logger).to receive(:info)
-        .with(%[Planning application reference: 22/06867/PNP6A has invalid property: Full can't be blank].strip)
+        .with(%[Planning application reference: 22/06867/PNP6A has invalid address: Validation failed: Full can't be blank].strip)
 
       importer
     end
