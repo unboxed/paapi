@@ -8,7 +8,7 @@ namespace :import do
     ARGV.each { |a| task a.to_sym do ; end }
 
     begin
-      PlanningApplicationsImporter.new(local_authority_name: ARGV[1]).call
+      PlanningApplicationsImporter.new(local_authority_name: ARGV[0]).call
     rescue => error
       broadcast error.message
     ensure
