@@ -52,8 +52,9 @@ COPY Gemfile Gemfile.lock /app/
 
 # Install gems
 RUN bash -c "bundle install \
-    --without development test \
-    --deployment --no-cache && \
+    --local without 'development test' \
+    --local deployment 'true' \
+    --no-cache && \
     bundle clean --force"
 
 # Build image for npm dependencies
@@ -119,4 +120,8 @@ ARG RAILS_SERVE_STATIC_FILES=true
 ARG PORT=80
 ARG SECRET_KEY_BASE=notasecret
 
-RUN bash -c "bundle install --without development test --deployment --no-cache && bundle clean --force"
+RUN bash -c "bundle install \
+    --local without 'development test' \
+    --local deployment 'true' \
+    --no-cache && \
+    bundle clean --force"
