@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_12_154759) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_15_163300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_12_154759) do
   create_table "planning_applications", force: :cascade do |t|
     t.string "reference", null: false
     t.string "area", null: false
-    t.string "proposal", null: false
+    t.string "proposal_details", null: false
     t.datetime "received_at", null: false
     t.string "officer_name"
     t.string "decision", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_12_154759) do
     t.bigint "local_authority_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "view_documents"
     t.index ["local_authority_id"], name: "index_planning_applications_on_local_authority_id"
     t.index ["property_id"], name: "index_planning_applications_on_property_id"
   end

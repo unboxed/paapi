@@ -19,7 +19,7 @@ class CreateInitialSchema < ActiveRecord::Migration[7.0]
     create_table :planning_applications do |t|
       t.string :reference, null: false
       t.string :area, null: false
-      t.string :proposal, null: false
+      t.string :proposal_details, null: false
       t.datetime :received_at, null: false
       t.string :officer_name
       t.string :decision, null: false
