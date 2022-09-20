@@ -80,6 +80,8 @@ class PlanningApplicationsImporter
       property.build_address(
         full: row[:full].blank? ? row[:address] : row[:full],
         town: row[:town],
+        ward_code: row[:ward_code],
+        ward_name: row[:ward_name],
         postcode: row[:postcode],
         map_east: row[:map_east],
         map_north: row[:map_north]
