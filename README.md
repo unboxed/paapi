@@ -215,4 +215,4 @@ We use Github Actions as part of our continuous integration process to build, ru
     - `$ env`
 
 - Run Import task
-  - `$ rake import:planning_applications buckinghamshire`
+  - `$ rake import:planning_applications LOCAL_AUTHORITY=buckinghamshire`
