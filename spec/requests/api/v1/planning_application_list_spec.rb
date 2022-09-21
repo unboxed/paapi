@@ -91,5 +91,20 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true  do
         )
       end
     end
+
+    context "when search by uprn" do
+      let(:property_1) { create(:property, uprn: "abcd") }
+      let(:property_2) { create(:property, uprn: "1234") }
+
+      it "returns a list of serialized planning application" do
+        planning_application_1 = create(:planning_application, property: property_1)
+        planning_application_2 = create(:planning_application, property: property_2)
+
+        get "/api/v1/planning_applications", params: { uprn: "1234" }
+
+        expect(response).to be_successful
+        expect(data.first["uprn"]).to eq("1234")
+      end
+    end
   end
 end
