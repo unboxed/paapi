@@ -80,7 +80,7 @@ class PlanningApplicationsImporter
                               code: row[:property_code],
                               type: row[:property_type])
       property.build_address(
-        full: row[:full].blank? ? row[:address] : row[:full],
+        full: row[:full],
         town: row[:town],
         ward_code: row[:ward_code],
         ward_name: row[:ward_name],
@@ -88,14 +88,7 @@ class PlanningApplicationsImporter
         map_east: row[:map_east],
         map_north: row[:map_north]
       )
-
-      if property.invalid?
-        message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"
-        raise PlanningApplicationImporterInvalidRow.new(message)
-      end
     end
     yield property
   end
-
-  class PlanningApplicationImporterInvalidRow < StandardError; end
 end

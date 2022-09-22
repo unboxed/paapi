@@ -16,27 +16,6 @@ RSpec.describe PlanningApplication, type: :model do
       expect(planning_application.errors.messages).to include(:area)
     end
 
-    it "must have a proposal_details set" do
-      planning_application = build(:planning_application, proposal_details: nil)
-      planning_application.save
-
-      expect(planning_application.errors.messages).to include(:proposal_details)
-    end
-
-    it "must have at least one received_at set" do
-      planning_application = build(:planning_application, received_at: nil)
-      planning_application.save
-
-      expect(planning_application.errors.messages).to include(:received_at)
-    end
-
-    it "must have the decision set" do
-      planning_application = build(:planning_application, decision: nil)
-      planning_application.save
-
-      expect(planning_application.errors.messages).to include(:decision)
-    end
-
     it "must have the decision_issued_at set" do
       planning_application = build(:planning_application, decision_issued_at: nil)
       planning_application.save

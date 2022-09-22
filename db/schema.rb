@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_21_200412) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_22_150603) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.string "full", null: false
+    t.string "full"
     t.string "town"
     t.string "postcode"
     t.string "map_east"
@@ -35,10 +35,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_21_200412) do
   create_table "planning_applications", force: :cascade do |t|
     t.string "reference", null: false
     t.string "area", null: false
-    t.string "proposal_details", null: false
-    t.datetime "received_at", null: false
+    t.string "proposal_details"
+    t.datetime "received_at"
     t.string "officer_name"
-    t.string "decision", null: false
+    t.string "decision"
     t.datetime "decision_issued_at", null: false
     t.bigint "property_id", null: false
     t.bigint "local_authority_id", null: false
