@@ -1,0 +1,13 @@
+json.id planning_application.id
+json.reference planning_application.reference
+json.area planning_application.area
+json.proposal_details planning_application.proposal_details
+json.received_at planning_application.received_at.iso8601
+json.officer_name planning_application.officer_name
+json.decision planning_application.decision
+json.decision_issued_at planning_application.decision_issued_at.iso8601
+json.local_authority planning_application.local_authority.name
+json.created_at planning_application.created_at.iso8601
+json.view_documents planning_application.view_documents
+json.uprn planning_application.property.uprn
+json.address planning_application.property.address.full
