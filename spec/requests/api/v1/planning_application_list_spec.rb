@@ -69,7 +69,11 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true  do
               "local_authority" => planning_application_1.local_authority.name,
               "created_at" => planning_application_1.created_at.iso8601,
               "view_documents" => planning_application_1.view_documents,
-              "uprn" => planning_application_1.property.uprn,
+              "property" => a_hash_including(
+                "uprn" => planning_application_1.property.uprn,
+                "code" => planning_application_1.property.code,
+                "type" => planning_application_1.property.type,
+              ),
               "address" => planning_application_1.property.address.full,
             ),
             a_hash_including(
@@ -84,7 +88,11 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true  do
               "local_authority" => planning_application_2.local_authority.name,
               "created_at" => planning_application_2.created_at.iso8601,
               "view_documents" => planning_application_2.view_documents,
-              "uprn" => planning_application_2.property.uprn,
+              "property" => a_hash_including(
+                "uprn" => planning_application_2.property.uprn,
+                "code" => planning_application_2.property.code,
+                "type" => planning_application_2.property.type,
+              ),
               "address" => planning_application_2.property.address.full,
             )
           )
@@ -103,7 +111,7 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true  do
         get "/api/v1/planning_applications", params: { uprn: "1234" }
 
         expect(response).to be_successful
-        expect(data.first["uprn"]).to eq("1234")
+        expect(data.first["property"]["uprn"]).to eq("1234")
       end
     end
   end
