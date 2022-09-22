@@ -76,7 +76,9 @@ class PlanningApplicationsImporter
   def with_property(row)
     property = Property.find_by(uprn: row[:uprn])
     unless property
-      property = Property.new(uprn: row[:uprn])
+      property = Property.new(uprn: row[:uprn],
+                              code: row[:property_code],
+                              type: row[:property_type])
       property.build_address(
         full: row[:full].blank? ? row[:address] : row[:full],
         town: row[:town],
