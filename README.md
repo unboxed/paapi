@@ -134,6 +134,24 @@ $ bundle install
 $ bundle exec rails db:setup
 ```
 
+### Importing PlanningApplications
+
+- Use AWS SSO to get credentials
+  - https://unboxed.awsapps.com/start#/
+  -> Planning Application API -> Command line or programmatic access
+  1. Copy option 1: Set AWS environment variables (Option 2 probably works as well)
+    export AWS_ACCESS_KEY_ID="123456"
+    export AWS_SECRET_ACCESS_KEY="abcde"
+    export AWS_SESSION_TOKEN="SECRET"
+  2. Paste environment into terminal
+  3. Verify the environment has been updated
+    - `$ env`
+
+- Run Import task
+```sh
+$ rake import:planning_applications LOCAL_AUTHORITY=buckinghamshire
+```
+
 #### Tests
 
 You can run the full test suite using following command:
@@ -194,25 +212,41 @@ docker run --rm -it -p 3000:3000 -e DATABASE_URL=postgres://postgres@host.docker
 docker run --rm -it -e DATABASE_URL=postgres://postgres@host.docker.internal:5432/paapi_development -e RAILS_SERVE_STATIC_FILES=true -e RAILS_ENV=production -e RAILS_LOG_TO_STDOUT=true paapi:latest /bin/bash
 ```
 
+## Working with api documentation: aggregate swagger files
+
+We need a single openapi file to exist, but to keep the code easier to maintain we have multiple files that are then compiled into this single file:
+
+```
+public/api-docs/v1/_build/swagger_doc.yaml
+```
+
+So to create a new api endpoint, create your yaml doc inside public/api-docs/v1 and reference it in
+
+```
+public/api-docs/v1/swagger_doc.yaml
+```
+
+like so:
+
+```
+  $ref: "./your_new_file_name.yaml"
+```
+
+Make changes to your new file, and when you're happy aggregate them into our single file by installing this package in your machine:
+
+```
+npm install -g swagger-cli
+```
+
+and running:
+
+```
+swagger-cli bundle public/api-docs/v1/swagger_doc.yaml --outfile public/api-docs/v1/_build/swagger_doc.yaml --type yaml
+```
+
 ## Github Actions
 
 We use Github Actions as part of our continuous integration process to build, run and test the application.
 
 [1]: https://www.docker.com/products/docker-desktop
 [2]: http://localhost:3000/
-
-## Importing PlanningApplications
-
-- Use AWS SSO to get credentials
-  - https://unboxed.awsapps.com/start#/
-  -> Planning Application API -> Command line or programmatic access
-  1. Copy option 1: Set AWS environment variables (Option 2 probably works as well)
-    export AWS_ACCESS_KEY_ID="123456"
-    export AWS_SECRET_ACCESS_KEY="abcde"
-    export AWS_SESSION_TOKEN="SECRET"
-  2. Paste environment into terminal
-  3. Verify the environment has been updated
-    - `$ env`
-
-- Run Import task
-  - `$ rake import:planning_applications LOCAL_AUTHORITY=buckinghamshire`
