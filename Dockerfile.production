@@ -101,8 +101,8 @@ COPY --chown=app:app ./db/ /app/db/
 COPY --chown=app:app ./Gemfile /app/Gemfile
 COPY --chown=app:app ./Gemfile.lock /app/Gemfile.lock
 COPY --chown=app:app ./lib/ /app/lib/
-COPY --chown=app:app ./public/ /app/lib/
-COPY --chown=app:app ./public/robots.txt /app/lib/public/robots.txt
+COPY --chown=app:app ./public/ /app/public/
+COPY --chown=app:app ./public/robots.txt /app/public/robots.txt
 COPY --chown=app:app ./Rakefile /app/Rakefile
 
 USER app:app
