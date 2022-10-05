@@ -136,6 +136,7 @@ $ bundle exec rails db:setup
 
 ### Importing PlanningApplications
 
+We can import historical planning applications from a CSV, which should be on S3.
 - Use AWS SSO to get credentials
   - https://unboxed.awsapps.com/start#/
   -> Planning Application API -> Command line or programmatic access
