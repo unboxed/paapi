@@ -32,6 +32,23 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Setup docker cache
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: docker-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Load docker cache
+      run: |
+        if [ -d "docker-cache" ]; then
+          cat docker-cache/x* > paapi.tar
+          docker load < paapi.tar
+          rm -rf docker-cache
+        fi
+
     - name: Build, tag, and push staging image to Amazon ECR
       id: build-image
       env:
@@ -44,6 +61,10 @@ jobs:
         # be deployed to ECS.
         docker build -t paapi:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.production .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker save paapi:$IMAGE_TAG $(docker history -q paapi:$IMAGE_TAG | awk '!/<missing>/{print}') >paapi.tar
+        mkdir docker-cache
+        split -b 5G paapi.tar docker-cache/x
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
       run: |
@@ -107,7 +128,6 @@ jobs:
       id: image_tag
       run: |
         echo "::set-output name=sha::$(echo ${GITHUB_SHA} | cut -c1-7)"
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -118,6 +138,23 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Setup docker cache
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: docker-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Load docker cache
+      run: |
+        if [ -d "docker-cache" ]; then
+          cat docker-cache/x* > paapi.tar
+          docker load < paapi.tar
+          rm -rf docker-cache
+        fi
 
     - name: Build, tag, and push production image to Amazon ECR
       id: build-image
@@ -131,6 +168,10 @@ jobs:
         # be deployed to ECS.
         docker build -t paapi:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.production .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker save paapi:$IMAGE_TAG $(docker history -q paapi:$IMAGE_TAG | awk '!/<missing>/{print}') >paapi.tar
+        mkdir docker-cache
+        split -b 5G paapi.tar docker-cache/x
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
       run: |
