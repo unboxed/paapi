@@ -37,9 +37,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: docker-cache
-        key: ${{ runner.os }}-docker-${{ github.sha }}
+        key: ${{ runner.os }}-docker-v1-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-docker-
+          ${{ runner.os }}-docker-v1-
 
     - name: Load docker cache
       run: |
