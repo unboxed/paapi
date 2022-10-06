@@ -90,8 +90,6 @@ RUN mkdir /app/log && \
     mkdir /app/tmp && \
     chown -R app:app /app
 
-COPY --from=gems --chown=app:app /app/vendor/ /app/vendor
-
 # Copy neccessary files to app directory
 COPY --chown=app:app ./app/ /app/app/
 COPY --chown=app:app ./bin/ /app/bin/
@@ -102,8 +100,9 @@ COPY --chown=app:app ./Gemfile /app/Gemfile
 COPY --chown=app:app ./Gemfile.lock /app/Gemfile.lock
 COPY --chown=app:app ./lib/ /app/lib/
 COPY --chown=app:app ./public/ /app/public/
-COPY --chown=app:app ./public/robots.txt /app/public/robots.txt
 COPY --chown=app:app ./Rakefile /app/Rakefile
+
+COPY --from=gems --chown=app:app /app/vendor/ /app/vendor
 
 USER app:app
 
