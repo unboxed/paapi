@@ -91,31 +91,4 @@ RSpec.describe "PlanningApplicationsImporter - address" do
       }.from(false).to(true)
     end
   end
-
-  context "when planning application address and full address are blank" do
-    let(:planning_applications_invalid_address_csv) do
-      <<-CSV.strip_heredoc
-        area, uprn, reference, address, proposal_details, received_at, officer_name, decision, decision_issued_at, map_east, map_north, full, postcode, town, ward_code, ward_name, property_code, property_type, view_documents
-        West,766303499,22/06867/PNP6A,,"Prior approval application (Part 6, Class A) for construction of agricultural building for storage of hay, concentrate feed, bedding and machinery",2022-07-08T00:00:00,Victoria Burdett,Details Not Required to be Submitted,2022-08-05T00:00:00,479625,188169,,RG9 6NF,Henley,W037,Ridgeway West,RD03,"Residential, Dwellings, Detached","https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
-      CSV
-    end
-
-    let(:planning_application_response) do
-      { status: 200, body: planning_applications_invalid_address_csv, headers: { "Content-Type" => "text/csv"} }
-    end
-
-    before do
-      create(:local_authority, name: "lambeth")
-      stub_request(:get, planning_application_url).to_return(planning_application_response)
-    end
-
-    it "logs the invalid row" do
-      allow(Rails.logger).to receive(:info)
-
-      expect(ActiveJob::Base.logger).to receive(:info)
-        .with(%[Planning application reference: 22/06867/PNP6A has invalid property: Full can't be blank].strip)
-
-      importer
-    end
-  end
 end

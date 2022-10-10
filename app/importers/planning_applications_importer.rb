@@ -48,21 +48,28 @@ class PlanningApplicationsImporter
   end
 
   def import_row(row)
-    with_property(row) do |property|
-      PlanningApplication.find_or_initialize_by(reference: row[:reference])
-                         .update!(
-                           reference: row[:reference],
-                           area: row[:area],
-                           proposal_details: row[:proposal_details],
-                           received_at: row[:received_at],
-                           officer_name: row[:officer_name],
-                           decision: row[:decision],
-                           decision_issued_at: row[:decision_issued_at],
-                           view_documents: row[:view_documents],
-                           property: property,
-                           local_authority: local_authority
-                         )
-    end
+    PlanningApplicationCreation.new(
+      local_authority: local_authority,
+      reference: row[:reference],
+      area: row[:area],
+      proposal_details: row[:proposal_details],
+      received_at: row[:received_at],
+      officer_name: row[:officer_name],
+      decision: row[:decision],
+      decision_issued_at: row[:decision_issued_at],
+      view_documents: row[:view_documents],
+      uprn: row[:uprn],
+      property_code: row[:property_code],
+      property_type: row[:property_type],
+      full: row[:full],
+      address: row[:address],
+      town: row[:town],
+      postcode: row[:postcode],
+      map_east: row[:map_east],
+      map_north: row[:map_north],
+      ward_code: row[:ward_code],
+      ward_name: row[:ward_name],
+    ).perform
   end
 
   def local_authority
@@ -72,30 +79,4 @@ class PlanningApplicationsImporter
   def s3
     @_s3 ||= Aws::S3::Client.new
   end
-
-  def with_property(row)
-    property = Property.find_by(uprn: row[:uprn])
-    unless property
-      property = Property.new(uprn: row[:uprn],
-                              code: row[:property_code],
-                              type: row[:property_type])
-      property.build_address(
-        full: row[:full].blank? ? row[:address] : row[:full],
-        town: row[:town],
-        ward_code: row[:ward_code],
-        ward_name: row[:ward_name],
-        postcode: row[:postcode],
-        map_east: row[:map_east],
-        map_north: row[:map_north]
-      )
-
-      if property.invalid?
-        message = "Planning application reference: #{row[:reference]} has invalid property: #{property.address.errors.full_messages.join(",")}"
-        raise PlanningApplicationImporterInvalidRow.new(message)
-      end
-    end
-    yield property
-  end
-
-  class PlanningApplicationImporterInvalidRow < StandardError; end
 end
