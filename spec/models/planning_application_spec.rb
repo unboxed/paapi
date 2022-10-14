@@ -37,13 +37,6 @@ RSpec.describe PlanningApplication, type: :model do
       expect(planning_application.errors.messages).to include(:decision)
     end
 
-    it "must have the decision_issued_at set" do
-      planning_application = build(:planning_application, decision_issued_at: nil)
-      planning_application.save
-
-      expect(planning_application.errors.messages).to include(:decision_issued_at)
-    end
-
     it "must have the local_authority set" do
       planning_application = build(:planning_application, local_authority: nil)
       planning_application.save

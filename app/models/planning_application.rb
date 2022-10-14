@@ -4,5 +4,5 @@ class PlanningApplication < ApplicationRecord
 
   delegate :address, to: :property
 
-  validates :reference, :area, :description, :received_at, :decision, :decision_issued_at, :local_authority, :property, presence: true
+  validates :reference, :area, :description, :received_at, :decision, :local_authority, :property, presence: true
 end
