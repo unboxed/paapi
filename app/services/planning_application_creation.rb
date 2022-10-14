@@ -6,9 +6,9 @@ class PlanningApplicationCreation
 
     @reference = params.fetch(:reference, nil)
     @area = params.fetch(:area, nil)
-    @proposal_details = params.fetch(:proposal_details, nil)
+    @description = params.fetch(:description, nil)
     @received_at = params.fetch(:received_at, nil)
-    @officer_name = params.fetch(:officer_name, nil)
+    @assessor = params.fetch(:assessor, nil)
     @decision = params.fetch(:decision, nil)
     @decision_issued_at = params.fetch(:decision_issued_at, nil)
     @view_documents = params.fetch(:view_documents, nil)
@@ -33,7 +33,7 @@ class PlanningApplicationCreation
 
   private
 
-  attr_reader :local_authority, :reference, :area, :proposal_details, :received_at, :officer_name, :decision, :decision_issued_at, :view_documents,
+  attr_reader :local_authority, :reference, :area, :description, :received_at, :assessor, :decision, :decision_issued_at, :view_documents,
               :uprn, :property_code, :property_type,
               :full, :address, :town, :postcode, :map_east, :map_north, :ward_code, :ward_name
 
@@ -43,9 +43,9 @@ class PlanningApplicationCreation
                          .update!(
                            reference: reference,
                            area: area,
-                           proposal_details: proposal_details,
+                           description: description,
                            received_at: received_at,
-                           officer_name: officer_name,
+                           assessor: assessor,
                            decision: decision,
                            decision_issued_at: decision_issued_at,
                            view_documents: view_documents,
