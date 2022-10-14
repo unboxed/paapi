@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "factory_bot"
 
 # Make `file_fixture` and `fixture_file_upload` available in factories

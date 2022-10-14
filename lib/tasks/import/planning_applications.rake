@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :import do
   desc "Import planning applications from S3"
   task planning_applications: :environment do
@@ -8,8 +10,8 @@ namespace :import do
 
     begin
       PlanningApplicationsImporter.new(local_authority_name: ENV["LOCAL_AUTHORITY"].to_sym).call
-    rescue => error
-      broadcast error.message
+    rescue StandardError => e
+      broadcast e.message
     ensure
       broadcast "PlanningApplications:#{PlanningApplication.count} " \
                 "(Property  #{Property.count}, Address: #{Address.count})"

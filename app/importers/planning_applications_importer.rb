@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "csv"
 
 class PlanningApplicationsImporter
@@ -7,8 +9,8 @@ class PlanningApplicationsImporter
 
   def call
     import_planning_applications
-  rescue StandardError => exception
-    log_exception(exception)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   private
@@ -22,25 +24,26 @@ class PlanningApplicationsImporter
 
   def broadcast(message:)
     Rails.logger.info(message)
-    puts message
+    Rails.logger.debug message
   end
 
   def import_planning_applications
-    import_rows(filename: filename)
+    import_rows
   end
 
   def filename
     "#{local_authority_name}/PlanningHistory#{local_authority_name.capitalize}.csv"
   end
 
-  def import_rows(filename:)
+  def import_rows
     file = Tempfile.new(["planning_applications", ".csv"])
     write_tempfile(file)
     file.close
 
-    CSV.foreach(file.path,
-                headers: true, header_converters: :symbol,
-                &method(:import_row))
+    CSV.read(file.path, headers: true, header_converters: :symbol).each do |row|
+      import_row(row)
+    end
+
     file.unlink
   end
 
@@ -58,9 +61,10 @@ class PlanningApplicationsImporter
     File.read(Rails.root.join("tmp", filename))
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def import_row(row)
     PlanningApplicationCreation.new(
-      local_authority: local_authority,
+      local_authority:,
       reference: row[:reference],
       area: row[:area],
       description: row[:description],
@@ -79,15 +83,16 @@ class PlanningApplicationsImporter
       map_east: row[:map_east],
       map_north: row[:map_north],
       ward_code: row[:ward_code],
-      ward_name: row[:ward_name],
+      ward_name: row[:ward_name]
     ).perform
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def local_authority
     @local_authority ||= LocalAuthority.find_by!(name: local_authority_name)
   end
 
   def s3
-    @_s3 ||= Aws::S3::Client.new
+    @s3 ||= Aws::S3::Client.new
   end
 end
