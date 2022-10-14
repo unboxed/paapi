@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_21_200412) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_14_123048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,9 +35,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_21_200412) do
   create_table "planning_applications", force: :cascade do |t|
     t.string "reference", null: false
     t.string "area", null: false
-    t.string "proposal_details", null: false
+    t.string "description", null: false
     t.datetime "received_at", null: false
-    t.string "officer_name"
+    t.string "assessor"
     t.string "decision", null: false
     t.datetime "decision_issued_at", null: false
     t.bigint "property_id", null: false
