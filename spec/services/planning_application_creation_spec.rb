@@ -6,9 +6,9 @@ RSpec.describe PlanningApplicationCreation do
   let(:planning_application_attrs) do
     { reference: "22/01001/FUL",
     area: "South & East",
-    proposal_details: "This householder application is for construction of detached garage",
+    description: "This householder application is for construction of detached garage",
     received_at: "13/06/2022",
-    officer_name: "Anthony Kwok",
+    assessor: "Anthony Kwok",
     decision: "Application Refused",
     decision_issued_at: "16/09/2022",
     view_documents: "https://publicaccess.gov.uk/web-url" }
