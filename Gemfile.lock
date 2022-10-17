@@ -130,6 +130,7 @@ GEM
       activesupport (>= 5.0.0)
     jmespath (1.6.1)
     json (2.6.2)
+    jwt (2.5.0)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -282,6 +283,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   jbuilder
+  jwt
   pg (~> 1.1)
   pry-byebug
   puma (~> 5.0)
