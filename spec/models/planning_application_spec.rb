@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe PlanningApplication, type: :model do
-  context "#validations" do
+  context "when validations are run" do
     it "must have a reference set" do
       planning_application = build(:planning_application, reference: nil)
       planning_application.save

@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class PlanningApplicationCreation
   class PlanningApplicationCreationInvalidProperty < StandardError; end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def initialize(**params)
     @local_authority = params.fetch(:local_authority, nil)
 
@@ -26,6 +29,7 @@ class PlanningApplicationCreation
     @ward_code = params.fetch(:ward_code, nil)
     @ward_name = params.fetch(:ward_name, nil)
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def perform
     importer
@@ -33,49 +37,75 @@ class PlanningApplicationCreation
 
   private
 
-  attr_reader :local_authority, :reference, :area, :description, :received_at, :assessor, :decision, :decision_issued_at, :view_documents,
-              :uprn, :property_code, :property_type,
-              :full, :address, :town, :postcode, :map_east, :map_north, :ward_code, :ward_name
+  attr_reader :local_authority,
+              :reference,
+              :area,
+              :description,
+              :received_at,
+              :assessor,
+              :decision,
+              :decision_issued_at,
+              :view_documents,
+              :uprn,
+              :property_code,
+              :property_type,
+              :full,
+              :address,
+              :town,
+              :postcode,
+              :map_east,
+              :map_north,
+              :ward_code,
+              :ward_name
 
+  # rubocop:disable Metrics/MethodLength
   def importer
     with_property do |property|
-      PlanningApplication.find_or_initialize_by(reference: reference)
-                         .update!(
-                           reference: reference,
-                           area: area,
-                           description: description,
-                           received_at: received_at,
-                           assessor: assessor,
-                           decision: decision,
-                           decision_issued_at: decision_issued_at,
-                           view_documents: view_documents,
-                           property: property,
-                           local_authority: local_authority
-                         )
+      PlanningApplication
+        .find_or_initialize_by(reference:)
+        .update!(
+          reference:,
+          area:,
+          description:,
+          received_at:,
+          assessor:,
+          decision:,
+          decision_issued_at:,
+          view_documents:,
+          property:,
+          local_authority:
+        )
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def with_property
-    property = Property.find_by(uprn: uprn)
+    property = Property.find_by(uprn:)
     unless property
-      property = Property.new(uprn: uprn,
-                              code: property_code,
-                              type: property_type)
+      property = Property.new(
+        uprn:,
+        code: property_code,
+        type: property_type
+      )
+
       property.build_address(
-        full: full.blank? ? address : full,
-        town: town,
-        ward_code: ward_code,
-        ward_name: ward_name,
-        postcode: postcode,
-        map_east: map_east,
-        map_north: map_north
+        full: full.presence || address,
+        town:,
+        ward_code:,
+        ward_name:,
+        postcode:,
+        map_east:,
+        map_north:
       )
 
       if property.invalid?
-        message = "Planning application reference: #{reference} has invalid property: #{property.address.errors.full_messages.join(",")}"
-        raise PlanningApplicationCreationInvalidProperty.new(message)
+        errors = property.address.errors.full_messages.join(",")
+        message = "Planning application reference: #{reference} has invalid property: #{errors}"
+        raise PlanningApplicationCreationInvalidProperty, message
       end
     end
     yield property
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 end
