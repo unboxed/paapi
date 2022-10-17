@@ -19,7 +19,11 @@ Style/StringLiterals:
 # be a bit kinder with our metrics
 Metrics/BlockLength:
   Max: 100
+Metrics/MethodLength:
+  CountAsOne: ["array", "heredoc", "hash"]
 RSpec/MultipleExpectations:
   Enabled: false
 RSpec/FilePath:
   SpecSuffixOnly: true
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

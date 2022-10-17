@@ -3,6 +3,129 @@
 require "rails_helper"
 
 RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
+  describe "#create" do
+    before { create(:local_authority, name: "buckinghamshire") }
+
+    let(:api_client) { create(:api_client) }
+    let(:headers) { AuthHelper.auth_headers(api_client.token) }
+    let(:reference) { "AB/22/1234/FA" }
+
+    let(:planning_application_attributes) do
+      {
+        reference:,
+        application_type_code: "FA",
+        application_type: "Full Application",
+        area: "South & East",
+        description: "Demolition of existing first floor.",
+        received_at: "2022-05-30",
+        assessor: "Keira Jones",
+        reviewer: "Leila Smith",
+        decision: "Conditional permission",
+        decision_issued_at: "2022-10-14",
+        validated_at: "2022-06-23",
+        view_documents: "https://example.gov.uk"
+      }
+    end
+
+    let(:property_attributes) do
+      {
+        uprn: "123456789123",
+        code: "RD02",
+        type: "Residential, Dwellings, Detached"
+      }
+    end
+
+    let(:address_attributes) do
+      {
+        full: "123 High Street, Big City, AB3 4EF",
+        town: "Big City",
+        postcode: "AB3 4EF",
+        map_east: "123456",
+        map_north: "654321",
+        ward_code: "W16",
+        ward_name: "Ward 16"
+      }
+    end
+
+    let(:params) do
+      {
+        planning_applications: [
+          **planning_application_attributes,
+          **property_attributes,
+          **address_attributes
+        ]
+      }
+    end
+
+    def parse_date(value)
+      Date.parse(value)
+    rescue Date::Error
+      value
+    end
+
+    it "creates planning applications" do
+      expect { post "/api/v1/planning_applications", params:, headers: }
+        .to change(PlanningApplication, :count)
+        .by(1)
+    end
+
+    it "creates property" do
+      expect { post "/api/v1/planning_applications", params:, headers: }
+        .to change(Property, :count)
+        .by(1)
+    end
+
+    it "creates address" do
+      expect { post "/api/v1/planning_applications", params:, headers: }
+        .to change(Address, :count)
+        .by(1)
+    end
+
+    it "saves planning application attributes" do
+      post("/api/v1/planning_applications", params:, headers:)
+
+      expect(PlanningApplication.last).to have_attributes(
+        planning_application_attributes.transform_values { |v| parse_date(v) }
+      )
+    end
+
+    it "saves property attributes" do
+      post("/api/v1/planning_applications", params:, headers:)
+
+      expect(Property.last).to have_attributes(property_attributes)
+    end
+
+    it "saves address attributes" do
+      post("/api/v1/planning_applications", params:, headers:)
+
+      expect(Address.last).to have_attributes(address_attributes)
+    end
+
+    it "returns 201" do
+      post("/api/v1/planning_applications", params:, headers:)
+
+      expect(response).to have_http_status(:created)
+    end
+
+    context "when params are invalid" do
+      let(:reference) { nil }
+
+      it "returns 400" do
+        post("/api/v1/planning_applications", params:, headers:)
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it "returns error message" do
+        post("/api/v1/planning_applications", params:, headers:)
+
+        expect(JSON.parse(response.body)).to eq(
+          "Validation failed: Reference can't be blank"
+        )
+      end
+    end
+  end
+
   describe "GET /index" do
     let(:data) { json["data"] }
 

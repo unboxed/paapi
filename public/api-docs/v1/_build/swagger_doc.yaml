@@ -62,3 +62,43 @@ paths:
                           code: RD03
                           type: 'Residential, Dwellings, Semi-Detached'
                         address: Byre House Dollicott Haddenham Buckinghamshire HP17 8JG
+    post:
+      summary: Creates planning applications
+      tags:
+        - Planning application
+      responses:
+        '201':
+          description: Planning applications created
+        '400':
+          description: Request invalid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planning_applications:
+                  type: array
+                  example:
+                    - reference: AB/22/1234/FA
+                      application_type_code: FA
+                      application_type: Full Application
+                      area: South
+                      description: Demolition of existing first floor.
+                      received_at: '2022-05-30'
+                      assessor: Keira Jones
+                      reviewer: Leila Smith
+                      decision: Conditional permission
+                      decision_issued_at: '2022-10-14'
+                      validated_at: '2022-06-23'
+                      view_documents: 'https://example.gov.uk'
+                      uprn: '123456789123'
+                      code: RD02
+                      type: Residential
+                      full: '123 High Street, Big City, AB3 4EF'
+                      town: Big City
+                      postcode: AB3 4EF
+                      map_east: '123456'
+                      map_north: '654321'
+                      ward_code: W16
+                      ward_name: Ward 16
