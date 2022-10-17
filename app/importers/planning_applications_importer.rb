@@ -35,16 +35,27 @@ class PlanningApplicationsImporter
 
   def import_rows(filename:)
     file = Tempfile.new(["planning_applications", ".csv"])
-
-    s3.get_object(bucket: "paapi-staging-import", key: filename) do |chunk|
-      file.write(chunk.dup.force_encoding("utf-8"))
-    end
-
+    write_tempfile(file)
     file.close
+
     CSV.foreach(file.path,
                 headers: true, header_converters: :symbol,
                 &method(:import_row))
     file.unlink
+  end
+
+  def write_tempfile(file)
+    if ENV["LOCAL_IMPORT_FILE"] == "true"
+      file.write(local_import_file)
+    else
+      s3.get_object(bucket: "paapi-staging-import", key: filename) do |chunk|
+        file.write(chunk.dup.force_encoding("utf-8"))
+      end
+    end
+  end
+
+  def local_import_file
+    File.read(Rails.root.join("tmp", filename))
   end
 
   def import_row(row)
