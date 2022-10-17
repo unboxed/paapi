@@ -3,6 +3,8 @@
 module Api
   module V1
     class PlanningApplicationsController < ApplicationController
+      skip_before_action :authenticate_token!, only: [:index]
+
       def index
         @planning_applications = if params[:uprn].present?
                                    Property.find_by(uprn: params[:uprn]).planning_applications
