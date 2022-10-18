@@ -47,14 +47,11 @@ class PlanningApplicationCreation
   attr_reader(*ATTRIBUTES)
 
   def importer
-    with_property do |property|
-      PlanningApplication
-        .find_or_initialize_by(reference:)
-        .update!(
-          **planning_application_attributes,
-          property:
-        )
-    end
+    validate_property
+
+    PlanningApplication
+      .find_or_initialize_by(reference:)
+      .update!(**planning_application_attributes)
   end
 
   def planning_application_attributes
@@ -71,37 +68,37 @@ class PlanningApplicationCreation
       decision:,
       decision_issued_at:,
       view_documents:,
-      local_authority:
+      local_authority:,
+      property:
     }
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def with_property
-    property = Property.find_by(uprn:)
-    unless property
-      property = Property.new(
-        uprn:,
-        code: code.presence || property_code,
-        type: type.presence || property_type
-      )
-
-      property.build_address(
-        full: full.presence || address,
-        town:,
-        ward_code:,
-        ward_name:,
-        postcode:,
-        map_east:,
-        map_north:
-      )
-
-      if property.invalid?
-        errors = property.address.errors.full_messages.join(",")
-        message = "Planning application reference: #{reference} has invalid property: #{errors}"
-        raise PlanningApplicationCreationInvalidProperty, message
-      end
-    end
-    yield property
+  def property
+    @property ||= Property.find_by(uprn:) || Property.new(
+      uprn:,
+      code: code.presence || property_code,
+      type: type.presence || property_type,
+      address: new_address
+    )
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  def new_address
+    @new_address ||= Address.new(
+      full: full.presence || address,
+      town:,
+      ward_code:,
+      ward_name:,
+      postcode:,
+      map_east:,
+      map_north:
+    )
+  end
+
+  def validate_property
+    return if property.valid?
+
+    errors = new_address.errors.full_messages.join(",")
+    message = "Planning application reference: #{reference} has invalid property: #{errors}"
+    raise PlanningApplicationCreationInvalidProperty, message
+  end
 end
