@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_17_130915) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_17_131750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_17_130915) do
     t.string "application_type"
     t.string "reviewer"
     t.datetime "validated_at"
+    t.string "application_type_code"
     t.index ["local_authority_id"], name: "index_planning_applications_on_local_authority_id"
     t.index ["property_id"], name: "index_planning_applications_on_property_id"
   end

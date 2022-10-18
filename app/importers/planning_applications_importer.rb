@@ -61,7 +61,7 @@ class PlanningApplicationsImporter
     File.read(Rails.root.join("tmp", filename))
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
   def import_row(row)
     PlanningApplicationCreation.new(
       local_authority:,
@@ -86,7 +86,7 @@ class PlanningApplicationsImporter
       ward_name: row[:ward_name]
     ).perform
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize
 
   def local_authority
     @local_authority ||= LocalAuthority.find_by!(name: local_authority_name)

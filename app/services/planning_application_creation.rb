@@ -3,33 +3,40 @@
 class PlanningApplicationCreation
   class PlanningApplicationCreationInvalidProperty < StandardError; end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  ATTRIBUTES = %i[
+    address
+    application_type
+    application_type_code
+    area
+    assessor
+    code
+    decision
+    decision_issued_at
+    description
+    full
+    local_authority
+    map_east
+    map_north
+    postcode
+    property_code
+    property_type
+    received_at
+    reference
+    reviewer
+    town
+    type
+    uprn
+    validated_at
+    view_documents
+    ward_code
+    ward_name
+  ].freeze
+
   def initialize(**params)
-    @local_authority = params.fetch(:local_authority, nil)
-
-    @reference = params.fetch(:reference, nil)
-    @area = params.fetch(:area, nil)
-    @description = params.fetch(:description, nil)
-    @received_at = params.fetch(:received_at, nil)
-    @assessor = params.fetch(:assessor, nil)
-    @decision = params.fetch(:decision, nil)
-    @decision_issued_at = params.fetch(:decision_issued_at, nil)
-    @view_documents = params.fetch(:view_documents, nil)
-
-    @uprn = params.fetch(:uprn, nil)
-    @property_code = params.fetch(:property_code, nil)
-    @property_type = params.fetch(:property_type, nil)
-
-    @full = params.fetch(:full, nil)
-    @address = params.fetch(:address, nil)
-    @town = params.fetch(:town, nil)
-    @postcode = params.fetch(:postcode, nil)
-    @map_east = params.fetch(:map_east, nil)
-    @map_north = params.fetch(:map_north, nil)
-    @ward_code = params.fetch(:ward_code, nil)
-    @ward_name = params.fetch(:ward_name, nil)
+    ATTRIBUTES.each do |attribute|
+      instance_variable_set("@#{attribute}", params.fetch(attribute, nil))
+    end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def perform
     importer
@@ -37,47 +44,36 @@ class PlanningApplicationCreation
 
   private
 
-  attr_reader :local_authority,
-              :reference,
-              :area,
-              :description,
-              :received_at,
-              :assessor,
-              :decision,
-              :decision_issued_at,
-              :view_documents,
-              :uprn,
-              :property_code,
-              :property_type,
-              :full,
-              :address,
-              :town,
-              :postcode,
-              :map_east,
-              :map_north,
-              :ward_code,
-              :ward_name
+  attr_reader(*ATTRIBUTES)
 
-  # rubocop:disable Metrics/MethodLength
   def importer
     with_property do |property|
       PlanningApplication
         .find_or_initialize_by(reference:)
         .update!(
-          reference:,
-          area:,
-          description:,
-          received_at:,
-          assessor:,
-          decision:,
-          decision_issued_at:,
-          view_documents:,
-          property:,
-          local_authority:
+          **planning_application_attributes,
+          property:
         )
     end
   end
-  # rubocop:enable Metrics/MethodLength
+
+  def planning_application_attributes
+    {
+      application_type:,
+      application_type_code:,
+      reviewer:,
+      validated_at:,
+      reference:,
+      area:,
+      description:,
+      received_at:,
+      assessor:,
+      decision:,
+      decision_issued_at:,
+      view_documents:,
+      local_authority:
+    }
+  end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def with_property
@@ -85,8 +81,8 @@ class PlanningApplicationCreation
     unless property
       property = Property.new(
         uprn:,
-        code: property_code,
-        type: property_type
+        code: code.presence || property_code,
+        type: type.presence || property_type
       )
 
       property.build_address(
