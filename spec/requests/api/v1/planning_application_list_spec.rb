@@ -4,8 +4,6 @@ require "rails_helper"
 
 RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
   describe "POST /api/v1/planning_applications" do
-    before { create(:local_authority, name: "buckinghamshire") }
-
     let(:api_client) { create(:api_client) }
     let(:headers) { AuthHelper.auth_headers(api_client.token) }
     let(:reference) { "AB/22/1234/FA" }
@@ -55,6 +53,10 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
           **address_attributes
         ]
       }
+    end
+
+    before do
+      create(:local_authority, name: "buckinghamshire", api_client:)
     end
 
     def parse_date(value)
