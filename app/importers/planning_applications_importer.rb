@@ -61,32 +61,11 @@ class PlanningApplicationsImporter
     File.read(Rails.root.join("tmp", filename))
   end
 
-  # rubocop:disable Metrics/AbcSize
   def import_row(row)
     PlanningApplicationCreation.new(
-      local_authority:,
-      reference: row[:reference],
-      area: row[:area],
-      description: row[:description],
-      received_at: row[:received_at],
-      assessor: row[:assessor],
-      decision: row[:decision],
-      decision_issued_at: row[:decision_issued_at],
-      view_documents: row[:view_documents],
-      uprn: row[:uprn],
-      property_code: row[:property_code],
-      property_type: row[:property_type],
-      full: row[:full],
-      address: row[:address],
-      town: row[:town],
-      postcode: row[:postcode],
-      map_east: row[:map_east],
-      map_north: row[:map_north],
-      ward_code: row[:ward_code],
-      ward_name: row[:ward_name]
+      **row.to_h.merge(local_authority:)
     ).perform
   end
-  # rubocop:enable Metrics/AbcSize
 
   def local_authority
     @local_authority ||= LocalAuthority.find_by!(name: local_authority_name)
