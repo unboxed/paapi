@@ -3,7 +3,7 @@
 module Api
   module V1
     class PlanningApplicationsController < ApplicationController
-      skip_before_action :authenticate_token!, only: [:index]
+      skip_before_action :authenticate_token!, :set_local_authority, only: [:index]
 
       def index
         @planning_applications = if params[:uprn].present?
@@ -31,7 +31,7 @@ module Api
 
       def planning_applications_params
         params.require(:planning_applications).map do |attributes|
-          attributes.permit(permitted_attributes).merge(local_authority:)
+          attributes.permit(permitted_attributes).merge(local_authority: @local_authority)
         end
       end
 
@@ -60,11 +60,6 @@ module Api
           ward_code
           ward_name
         ]
-      end
-
-      # TODO: Get local authority from auth key
-      def local_authority
-        LocalAuthority.find_by(name: "buckinghamshire")
       end
     end
   end

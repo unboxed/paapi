@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
-  describe "#create" do
+  describe "POST /api/v1/planning_applications" do
     before { create(:local_authority, name: "buckinghamshire") }
 
     let(:api_client) { create(:api_client) }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  before_action :set_default_format, :set_cors_headers, :authenticate_token!
+  before_action :set_default_format, :set_cors_headers, :set_local_authority, :authenticate_token!
 
   def authenticate_token!
     payload = JsonWebToken.decode(auth_token)
@@ -13,6 +13,12 @@ class ApplicationController < ActionController::API
     render json: { errors: e.message }, status: :unauthorized
   rescue JWT::DecodeError
     render json: { errors: "Invalid auth token" }, status: :unauthorized
+  end
+
+  def set_local_authority
+    payload = JsonWebToken.decode(auth_token)
+
+    @local_authority = LocalAuthority.find_by(name: payload["client_name"])
   end
 
   private

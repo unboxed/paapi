@@ -56,6 +56,8 @@
     summary: Creates planning applications
     tags:
       - Planning application
+    security:
+      - bearerAuth: []
     responses:
       "201":
         description: Planning applications created
