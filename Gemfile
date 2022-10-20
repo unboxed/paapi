@@ -12,7 +12,7 @@ gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "jbuilder"
 gem "jwt"
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.4"
 gem "puma", "~> 5.0"
 gem "rails", "~> 7.0.4"
 gem "rswag-ui"
