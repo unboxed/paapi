@@ -5,4 +5,10 @@ class LocalAuthority < ApplicationRecord
   belongs_to :api_client, optional: true
 
   validates :name, presence: true
+
+  enum name: {
+    lambeth: "lambeth",
+    southwark: "southwark",
+    buckinghamshire: "buckinghamshire"
+  }
 end
