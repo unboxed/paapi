@@ -68,6 +68,7 @@ paths:
         - Planning application
       security:
         - bearerAuth: []
+      parameters: []
       responses:
         '201':
           description: Planning applications created
