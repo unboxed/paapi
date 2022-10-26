@@ -22,9 +22,9 @@ module Api
           end
         end
 
-        head :created
+        render json: { message: "Applications created" }, status: :created
       rescue StandardError => e
-        render(json: e, status: :bad_request)
+        render json: { message: e }, status: :bad_request
       end
 
       private

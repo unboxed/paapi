@@ -106,6 +106,10 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
     it "returns 201" do
       post("/api/v1/planning_applications", params:, headers:)
 
+      expect(response.body).to eq(
+        "{\"message\":\"Applications created\"}"
+      )
+
       expect(response).to have_http_status(:created)
     end
 
@@ -121,8 +125,8 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
       it "returns error message" do
         post("/api/v1/planning_applications", params:, headers:)
 
-        expect(JSON.parse(response.body)).to eq(
-          "Validation failed: Reference can't be blank"
+        expect(response.body).to eq(
+          "{\"message\":\"Validation failed: Reference can't be blank\"}"
         )
       end
     end
