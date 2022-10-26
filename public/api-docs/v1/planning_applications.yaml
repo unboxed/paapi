@@ -52,12 +52,14 @@
                         code: RD03
                         type: Residential, Dwellings, Semi-Detached
                       address: Byre House Dollicott Haddenham Buckinghamshire HP17 8JG
+
   post:
     summary: Creates planning applications
     tags:
       - Planning application
     security:
       - bearerAuth: []
+    parameters: []
     responses:
       "201":
         description: Planning applications created
