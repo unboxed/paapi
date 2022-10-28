@@ -67,12 +67,12 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
-      with:
-        image: ${{ steps.build-image.outputs.image }}
+      env:
+        IMAGE_ARN: ${{ steps.build-image.outputs.image }}
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-staging --query taskDefinition | \
         jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' | \
-        jq -r '.containerDefinitions[].image = "'$image'"' > db_migrate.json
+        jq -r '.containerDefinitions[].image = "'$IMAGE_ARN'"' > db_migrate.json
 
     - name: Register db_migrate on a new revision
       run: |
@@ -174,12 +174,12 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
-      with:
-        image: ${{ steps.build-image.outputs.image }}
+      env:
+        IMAGE_ARN: ${{ steps.build-image.outputs.image }}
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-production --query taskDefinition | \
         jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' | \
-        jq -r '.containerDefinitions[].image = "'$image'"' > db_migrate.json
+        jq -r '.containerDefinitions[].image = "'$IMAGE_ARN'"' > db_migrate.json
 
     - name: Register db_migrate on a new revision
       run: |
