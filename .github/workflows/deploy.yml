@@ -191,6 +191,22 @@ jobs:
         container-name: paapi
         image: ${{ steps.build-image.outputs.image }}
 
+    - name: Register db_migrate on a new revision
+      run: |
+        aws ecs register-task-definition \
+          --cli-input-json file://db_migrate.json
+
+    - name: Run db_migrate
+      env:
+        CLUSTER: paapi-production
+        TASK_DEFINITION: paapi-db-migrate-production
+        PAAPI_SUBNETS: subnet-${{ secrets.PAAPI_SUBNETS }}
+        PAAPI_SG: sg-${{ secrets.PAAPI_SG }}
+      run: |
+        aws ecs run-task --cluster $CLUSTER \
+          --task-definition $TASK_DEFINITION --launch-type FARGATE \
+          --network-configuration '{"awsvpcConfiguration": {"subnets": ["'$PAAPI_SUBNETS'"],"securityGroups": ["'$PAAPI_SG'"],"assignPublicIp": "ENABLED"}}'
+
     - name: Download task definition for web and strip unused properties
       run: |
         aws ecs describe-task-definition --task-definition paapi-web-production --query taskDefinition | \
@@ -203,17 +219,6 @@ jobs:
         task-definition: web.json
         container-name: paapi
         image: ${{ steps.build-image.outputs.image }}
-
-    - name: Deploy db_migrate
-      env:
-        CLUSTER: paapi-production
-        TASK_DEFINITION: paapi-db-migrate-production
-        PAAPI_SUBNETS: subnet-${{ secrets.PAAPI_SUBNETS }}
-        PAAPI_SG: sg-${{ secrets.PAAPI_SG }}
-      run: |
-        aws ecs run-task --cluster $CLUSTER \
-          --task-definition $TASK_DEFINITION --launch-type FARGATE \
-          --network-configuration '{"awsvpcConfiguration": {"subnets": ["'$PAAPI_SUBNETS'"],"securityGroups": ["'$PAAPI_SG'"],"assignPublicIp": "ENABLED"}}'
 
     - name: Deploy web
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
