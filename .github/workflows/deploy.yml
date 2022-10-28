@@ -67,26 +67,17 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
+      with:
+        image: ${{ steps.build-image.outputs.image }}
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-staging --query taskDefinition | \
-        jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > db_migrate.json
-
-    - name: Generate task definition for db_migrate
-      id: task-def-db-migrate
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: db_migrate.json
-        container-name: paapi
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Store output json to file
-      run: |
-        echo '${{ steps.task-def-db-migrate.outputs.task-definition }}' > updated_db_migrate.json
+        jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' | \
+        jq -r '.containerDefinitions[].image = "'$image'"' > db_migrate.json
 
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json file://updated_db_migrate.json
+          --cli-input-json file://db_migrate.json
 
     - name: Run db_migrate
       env:
@@ -183,26 +174,17 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Download task definition for db_migrate and strip unused properties
+      with:
+        image: ${{ steps.build-image.outputs.image }}
       run: |
         aws ecs describe-task-definition --task-definition paapi-db-migrate-production --query taskDefinition | \
-        jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > db_migrate.json
-
-    - name: Generate task definition for db_migrate
-      id: task-def-db-migrate
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: db_migrate.json
-        container-name: paapi
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Store output json to file
-      run: |
-        echo '${{ steps.task-def-db-migrate.outputs.task-definition }}' > updated_db_migrate.json
+        jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' | \
+        jq -r '.containerDefinitions[].image = "'$image'"' > db_migrate.json
 
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json file://updated_db_migrate.json
+          --cli-input-json file://db_migrate.json
 
     - name: Run db_migrate
       env:
