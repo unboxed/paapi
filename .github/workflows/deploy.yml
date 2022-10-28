@@ -79,10 +79,14 @@ jobs:
         container-name: paapi
         image: ${{ steps.build-image.outputs.image }}
 
+    - name: Store output json to file
+      run: |
+        echo '${{ steps.task-def-db-migrate.outputs.task-definition }}' > updated_db_migrate.json
+
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json ${{ steps.task-def-db-migrate.outputs.task-definition }}
+          --cli-input-json file://updated_db_migrate.json
 
     - name: Run db_migrate
       env:
@@ -191,10 +195,14 @@ jobs:
         container-name: paapi
         image: ${{ steps.build-image.outputs.image }}
 
+    - name: Store output json to file
+      run: |
+        echo '${{ steps.task-def-db-migrate.outputs.task-definition }}' > updated_db_migrate.json
+
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json ${{ steps.task-def-db-migrate.outputs.task-definition }}
+          --cli-input-json file://updated_db_migrate.json
 
     - name: Run db_migrate
       env:
