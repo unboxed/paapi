@@ -82,7 +82,7 @@ jobs:
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json file://db_migrate.json
+          --cli-input-json ${{ steps.task-def-db-migrate.outputs.task-definition }}
 
     - name: Run db_migrate
       env:
@@ -194,7 +194,7 @@ jobs:
     - name: Register db_migrate on a new revision
       run: |
         aws ecs register-task-definition \
-          --cli-input-json file://db_migrate.json
+          --cli-input-json ${{ steps.task-def-db-migrate.outputs.task-definition }}
 
     - name: Run db_migrate
       env:
