@@ -7,4 +7,5 @@ class Property < ApplicationRecord
   belongs_to :address
 
   validates_associated :address
+  validates :uprn, :type, :code, presence: true
 end
