@@ -14,16 +14,30 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 # be a bit kinder with our metrics
+
 Metrics/BlockLength:
   Max: 100
+
 Metrics/MethodLength:
+  Max: 15
   CountAsOne: ["array", "heredoc", "hash"]
+
+Layout/LineLength:
+  Exclude:
+    - spec/**/*
+
 RSpec/MultipleExpectations:
   Enabled: false
+
 RSpec/FilePath:
   SpecSuffixOnly: true
+
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+RSpec/NestedGroups:
+  Max: 5
