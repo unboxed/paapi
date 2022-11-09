@@ -17,6 +17,8 @@ class PlanningApplicationCreation
     local_authority
     map_east
     map_north
+    latitude
+    longitude
     postcode
     property_code
     property_type
@@ -90,7 +92,9 @@ class PlanningApplicationCreation
       ward_name:,
       postcode:,
       map_east:,
-      map_north:
+      map_north:,
+      latitude:,
+      longitude:
     )
   end
 

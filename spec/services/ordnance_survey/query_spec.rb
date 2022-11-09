@@ -27,7 +27,7 @@ RSpec.describe OrdnanceSurvey::Query do
         end
 
         it "returns an empty array" do
-          expect(query.fetch("20001001992")).to eq([])
+          expect(query.fetch("10008104351")).to eq([])
         end
       end
 
