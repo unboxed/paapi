@@ -40,7 +40,7 @@ class PlanningApplicationsImporter
     write_tempfile(file)
     file.close
 
-    CSV.read(file.path, headers: true, header_converters: :symbol).each do |row|
+    CSV.foreach(file.path, headers: true, header_converters: :symbol) do |row|
       import_row(row)
     end
 
