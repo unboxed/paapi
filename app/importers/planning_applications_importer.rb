@@ -58,7 +58,7 @@ class PlanningApplicationsImporter
   end
 
   def local_import_file
-    File.read(Rails.root.join("tmp", filename))
+    Rails.root.join("tmp", filename).read
   end
 
   def import_row(row)
