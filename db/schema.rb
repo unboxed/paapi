@@ -24,6 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_130206) do
     t.datetime "updated_at", null: false
     t.string "ward_code"
     t.string "ward_name"
+    t.string "latitude"
+    t.string "longitude"
   end
 
   create_table "api_clients", force: :cascade do |t|

@@ -18,4 +18,4 @@ runs:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
         RAILS_ENV: test
       run: |
-        bundle exec rails db:setup
+        bundle exec rails db:create db:schema:load
