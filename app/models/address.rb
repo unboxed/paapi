@@ -5,19 +5,9 @@ class Address < ApplicationRecord
 
   validates :full, presence: true
 
-  after_create :lat_and_long
+  before_save :set_lat_and_long
 
-  def lat_and_long
-    return if lat_and_long?
-
-    uprn_place = OrdnanceSurvey::Query.new.fetch(property&.uprn)
-
-    return if uprn_place.nil?
-
-    update!(latitude: uprn_place.first["DPA"]["LAT"], longitude: uprn_place.first["DPA"]["LNG"])
-  end
-
-  def lat_and_long?
-    latitude.present? && longitude.present?
+  def set_lat_and_long
+    self.longitude, self.latitude = NationalGrid.os_ng_to_wgs84(map_east.to_i, map_north.to_i)
   end
 end
