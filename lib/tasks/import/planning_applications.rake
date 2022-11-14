@@ -19,32 +19,21 @@ namespace :import do
     end
   end
 
-  desc "Set latitude and longitude using OS Data Hub"
+  desc "Updating latitude and longitude based on easting and northing coordinates"
   task lat_and_long: :environment do
     broadcast "PlanningApplicationImporter:import:lat_and_long\nBegin"
     broadcast "PlanningApplications:#{PlanningApplication.count} " \
               "(Property  #{Property.count}, Address: #{Address.count})"
 
     begin
-      addresses = []
-
       Address.all.find_each do |address|
-        uprn_place = OrdnanceSurvey::Query.new.fetch(address.property.uprn)
-
-        if uprn_place.nil?
-          addresses << address.property.uprn
-        else
-          address.update!(
-            latitude: uprn_place.first["DPA"]["LAT"],
-            longitude: uprn_place.first["DPA"]["LNG"]
-          )
-        end
+        address.longitude, address.latitude = NationalGrid.os_ng_to_wgs84(address.map_east.to_i, address.map_north.to_i)
+        address.save
       end
     rescue StandardError => e
       broadcast e.message
     ensure
-      broadcast "PlanningApplications:#{PlanningApplication.count} " \
-                "(Address not changed: #{addresses.count})"
+      broadcast "PlanningApplications:#{PlanningApplication.count} "
       broadcast "End"
     end
   end

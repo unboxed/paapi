@@ -10,7 +10,6 @@ gem "dotenv-rails", require: "dotenv/rails-now"
 gem "appsignal"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
-gem "faraday"
 gem "jbuilder"
 gem "jwt"
 gem "pg", "~> 1.4"
