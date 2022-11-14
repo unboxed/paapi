@@ -4,13 +4,17 @@ module Api
   module V1
     class PlanningApplicationsController < ApplicationController
       skip_before_action :authenticate_token!, :set_local_authority, only: [:index]
+      before_action :check_uprn_param_is_present,
+                    :check_uprn_type_size, only: :index
 
       def index
-        @planning_applications = if params[:uprn].present?
-                                   Property.find_by(uprn: params[:uprn]).planning_applications
-                                 else
-                                   PlanningApplication.all
-                                 end
+        property = Property.find_by(uprn: params[:uprn])
+
+        if property
+          @planning_applications = property.planning_applications
+        else
+          render json: { message: "Unable to find record" }, status: :not_found
+        end
       end
 
       def create
@@ -60,6 +64,18 @@ module Api
           ward_code
           ward_name
         ]
+      end
+
+      def check_uprn_param_is_present
+        return if params[:uprn].present?
+
+        render json: { message: "UPRN must be present to proceed" }, status: :bad_request
+      end
+
+      def check_uprn_type_size
+        return if params[:uprn].match?(/(\d{12})$/)
+
+        render json: { message: "UPRN must be a number 12 character" }, status: :bad_request
       end
     end
   end
