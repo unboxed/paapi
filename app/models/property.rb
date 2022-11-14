@@ -8,4 +8,18 @@ class Property < ApplicationRecord
 
   validates_associated :address
   validates :uprn, :type, :code, presence: true
+
+  before_save :set_exponential_notation
+
+  def set_exponential_notation
+    return unless exponential_notation?
+
+    self.uprn = Float(uprn).to_i.to_s
+  end
+
+  private
+
+  def exponential_notation?
+    uprn.upcase.include?("E+")
+  end
 end
