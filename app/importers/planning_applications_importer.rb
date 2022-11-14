@@ -40,7 +40,7 @@ class PlanningApplicationsImporter
     write_tempfile(file)
     file.close
 
-    CSV.read(file.path, headers: true, header_converters: :symbol).each do |row|
+    CSV.foreach(file.path, headers: true, header_converters: :symbol) do |row|
       import_row(row)
     end
 
@@ -58,7 +58,7 @@ class PlanningApplicationsImporter
   end
 
   def local_import_file
-    File.read(Rails.root.join("tmp", filename))
+    Rails.root.join("tmp", filename).read
   end
 
   def import_row(row)

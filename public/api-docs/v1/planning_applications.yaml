@@ -4,12 +4,13 @@
     tags:
       - Planning application
     parameters:
-      - in: path
+      - in: query
         name: uprn
         required: false
         schema:
           type: string
-          minimum: 1
+          minLength: 12
+          maxLength: 12
         description: The uprn of property's planning application
     responses:
       '200':
