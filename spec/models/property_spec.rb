@@ -32,4 +32,28 @@ RSpec.describe Property, type: :model do
       expect(property.errors.messages).to include(:code)
     end
   end
+
+  describe "#set_exponential_notation" do
+    let(:property) do
+      build(:property, uprn: "1.00081E+11")
+    end
+
+    it "has the right uprn format" do
+      property.save!
+
+      expect(property.reload.uprn).to eq("100081000000")
+    end
+  end
+
+  describe "#set_missing_zeros" do
+    let(:property) do
+      build(:property, uprn: "123456789")
+    end
+
+    it "has the right uprn format" do
+      property.save!
+
+      expect(property.reload.uprn).to eq("000123456789")
+    end
+  end
 end
