@@ -76,6 +76,15 @@
                 type: array
                 items:
                   type: object
+                  required:
+                    - reference
+                    - area
+                    - description
+                    - received_at
+                    - decision
+                    - decision_issued_at
+                    - uprn
+                    - full
                   properties:
                     reference:
                       type: string
