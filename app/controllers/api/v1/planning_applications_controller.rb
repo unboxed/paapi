@@ -52,6 +52,8 @@ module Api
           full
           map_east
           map_north
+          latitude
+          longitude
           postcode
           received_at
           reference

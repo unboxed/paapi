@@ -40,6 +40,8 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
         postcode: "AB3 4EF",
         map_east: "123456",
         map_north: "654321",
+        latitude: "55.703226",
+        longitude: "-6.403439",
         ward_code: "W16",
         ward_name: "Ward 16"
       }
