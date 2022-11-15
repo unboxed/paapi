@@ -60,6 +60,28 @@ namespace :import do
     end
   end
 
+  desc "Correct UPRNs with missing zeros"
+  task correct_uprn_with_missing_zeros: :environment do
+    broadcast "rails import:correct_uprn_with_missing_zeros\nBegin"
+    broadcast "Property  #{Property.count}"
+    counter = 0
+
+    begin
+      Property.all.find_each do |property|
+        next if property.uprn.match?(/(\d{12})$/)
+
+        property.uprn = property.uprn.to_s.rjust(12, "0")
+        property.save
+        counter += 1
+      end
+    rescue StandardError => e
+      broadcast e.message
+    ensure
+      broadcast "Properties changed with missing zeros #{counter}"
+      broadcast "End"
+    end
+  end
+
   def broadcast(message)
     puts message
     Rails.logger.info message
