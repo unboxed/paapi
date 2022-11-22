@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_03_130206) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_21_095301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,7 +53,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_130206) do
     t.string "assessor"
     t.string "decision", null: false
     t.datetime "decision_issued_at", null: false
-    t.bigint "property_id", null: false
     t.bigint "local_authority_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -63,7 +62,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_130206) do
     t.datetime "validated_at"
     t.string "application_type_code"
     t.index ["local_authority_id"], name: "index_planning_applications_on_local_authority_id"
-    t.index ["property_id"], name: "index_planning_applications_on_property_id"
+  end
+
+  create_table "planning_applications_properties", force: :cascade do |t|
+    t.bigint "planning_application_id"
+    t.bigint "property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planning_application_id"], name: "idx_planning_applications_properties_on_planning_application"
+    t.index ["property_id"], name: "idx_planning_applications_properties_on_property"
   end
 
   create_table "properties", force: :cascade do |t|
@@ -76,4 +83,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_03_130206) do
     t.index ["address_id"], name: "index_properties_on_address_id"
   end
 
+  add_foreign_key "planning_applications_properties", "planning_applications"
+  add_foreign_key "planning_applications_properties", "properties"
 end

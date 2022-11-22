@@ -52,12 +52,5 @@ RSpec.describe PlanningApplication, type: :model do
 
       expect(planning_application.errors.messages).to include(:local_authority)
     end
-
-    it "must have the property set" do
-      planning_application = build(:planning_application, property: nil)
-      planning_application.save
-
-      expect(planning_application.errors.messages).to include(:property)
-    end
   end
 end

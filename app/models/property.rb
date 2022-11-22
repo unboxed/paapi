@@ -3,7 +3,9 @@
 class Property < ApplicationRecord
   self.inheritance_column = "inheritance_type"
 
-  has_many :planning_applications, dependent: :destroy
+  has_many :planning_applications_properties, dependent: :destroy
+  has_many :planning_applications, through: :planning_applications_properties
+
   belongs_to :address
 
   validates_associated :address

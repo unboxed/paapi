@@ -108,9 +108,7 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
     it "returns 201" do
       post("/api/v1/planning_applications", params:, headers:)
 
-      expect(response.body).to eq(
-        "{\"message\":\"Applications created\"}"
-      )
+      expect(json).to eq({ "message" => "Applications created" })
 
       expect(response).to have_http_status(:created)
     end
@@ -158,9 +156,9 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
       let(:property2) { create(:property, uprn: "123456789123") }
 
       before do
-        create(:planning_application, property: property1)
-        create(:planning_application, property: property2)
-        create(:planning_application, property: property2)
+        create(:planning_application, properties: [property1])
+        create(:planning_application, properties: [property2])
+        create(:planning_application, properties: [property2])
 
         get "/api/v1/planning_applications", params: { uprn: }
       end
@@ -202,12 +200,20 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
                 "local_authority" => planning_application1.local_authority.name,
                 "created_at" => planning_application1.created_at.iso8601,
                 "view_documents" => planning_application1.view_documents,
-                "property" => a_hash_including(
-                  "uprn" => planning_application1.property.uprn,
-                  "code" => planning_application1.property.code,
-                  "type" => planning_application1.property.type
-                ),
-                "address" => planning_application1.property.address.full
+                "properties" => a_collection_containing_exactly(
+                  a_hash_including(
+                    "uprn" => planning_application1.properties.first.uprn,
+                    "code" => planning_application1.properties.first.code,
+                    "type" => planning_application1.properties.first.type,
+                    "address" => planning_application1.properties.first.address.full
+                  ),
+                  a_hash_including(
+                    "uprn" => planning_application1.properties.second.uprn,
+                    "code" => planning_application1.properties.second.code,
+                    "type" => planning_application1.properties.second.type,
+                    "address" => planning_application1.properties.second.address.full
+                  )
+                )
               ),
               a_hash_including(
                 "id" => planning_application2.id,
@@ -221,12 +227,20 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
                 "local_authority" => planning_application2.local_authority.name,
                 "created_at" => planning_application2.created_at.iso8601,
                 "view_documents" => planning_application2.view_documents,
-                "property" => a_hash_including(
-                  "uprn" => planning_application2.property.uprn,
-                  "code" => planning_application2.property.code,
-                  "type" => planning_application2.property.type
-                ),
-                "address" => planning_application2.property.address.full
+                "properties" => a_collection_containing_exactly(
+                  a_hash_including(
+                    "uprn" => planning_application2.properties.first.uprn,
+                    "code" => planning_application2.properties.first.code,
+                    "type" => planning_application2.properties.first.type,
+                    "address" => planning_application2.properties.first.address.full
+                  ),
+                  a_hash_including(
+                    "uprn" => planning_application2.properties.second.uprn,
+                    "code" => planning_application2.properties.second.code,
+                    "type" => planning_application2.properties.second.type,
+                    "address" => planning_application2.properties.second.address.full
+                  )
+                )
               )
             )
           )
