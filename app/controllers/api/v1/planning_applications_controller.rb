@@ -41,10 +41,10 @@ module Api
 
       def permitted_attributes
         %i[
-          assessor
           application_type
           application_type_code
           area
+          assessor
           code
           decision
           decision_issued_at
