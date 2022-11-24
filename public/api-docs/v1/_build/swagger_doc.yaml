@@ -31,8 +31,7 @@ paths:
                 Sample:
                   value:
                     data:
-                      - id: 1
-                        reference: 89/00090/APPLIC
+                      - reference: 89/00090/APPLIC
                         area: South & East
                         description: Listed Building Application for replacement non-illuminated fascia sign.
                         received_at: 1900-01-01T00:00:00.000Z
@@ -47,8 +46,7 @@ paths:
                             address: 100 London End Beaconsfield Buckinghamshire HP9 2HN
                             code: CR08
                             type: 'Commercial, Retail, Shops and Showrooms'
-                      - id: 3
-                        reference: 22/00836/ALB
+                      - reference: 22/00836/ALB
                         area: North & Central
                         description: Listed building application for formalisation of works previously undertaken and alterations to interior and exterior of barn (retrospective)
                         received_at: 2022-03-08T00:00:00.000Z

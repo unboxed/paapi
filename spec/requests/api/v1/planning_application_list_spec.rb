@@ -189,7 +189,6 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
           expect(data).to match(
             a_collection_containing_exactly(
               a_hash_including(
-                "id" => planning_application1.id,
                 "reference" => planning_application1.reference,
                 "area" => planning_application1.area,
                 "description" => planning_application1.description,
@@ -216,7 +215,6 @@ RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
                 )
               ),
               a_hash_including(
-                "id" => planning_application2.id,
                 "reference" => planning_application2.reference,
                 "area" => planning_application2.area,
                 "description" => planning_application2.description,

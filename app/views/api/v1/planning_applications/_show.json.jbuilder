@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-json.id planning_application.id
 json.reference planning_application.reference
 json.area planning_application.area
 json.description planning_application.description
