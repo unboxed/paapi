@@ -20,8 +20,6 @@ class PlanningApplicationCreation
     latitude
     longitude
     postcode
-    property_code
-    property_type
     received_at
     reference
     reviewer
@@ -78,8 +76,8 @@ class PlanningApplicationCreation
   def property
     @property ||= Property.find_by(uprn:) || Property.new(
       uprn:,
-      code: code.presence || property_code,
-      type: type.presence || property_type,
+      code:,
+      type:,
       address: new_address
     )
   end

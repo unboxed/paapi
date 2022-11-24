@@ -7,8 +7,8 @@ RSpec.describe PlanningApplicationsImporter do
   let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
   let(:planning_applications_csv) do
     <<~CSV
-      area, uprn, reference, address, description, received_at, assessor, decision, decision_issued_at, map_east, map_north, full, postcode, town, ward_code, ward_name, property_code, property_type, view_documents
-      Central,766298059,22/02180/POA,1 Silverstone Road NN12 8TN,"Submission from Silverstone",14/06/2022,Ms May Lo,Discharge - Satisfies Requirements,02/09/2022,467520,241616,Silverstone Silverstone Road Biddlesden Buckinghamshire NN12 8TN,NN12 8TN,Towcester,W037,Ridgeway West,RD03,"Residential, Dwellings, Detached","https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123"
+      reference, application_type_code, application_type, area, description, received_at, assessor, reviewer, decision, decision_issued_at, validated_at, view_documents, uprn, code, type, address, full, town, postcode, map_east, map_north, latitude, longitude, ward_code, ward_name
+      22/02180/POA,FA,Full Application,Central,"Submission from Silverstone",14/06/2022,Ms May Lo,,Discharge - Satisfies Requirements,02/09/2022,,"https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=AB123",766298059,RD03,"Residential, Dwellings, Detached",1 Silverstone Road NN12 8TN,Silverstone Silverstone Road Biddlesden Buckinghamshire NN12 8TN,Towcester,NN12 8TN,467520,241616,,,W037,Ridgeway West
     CSV
   end
 
