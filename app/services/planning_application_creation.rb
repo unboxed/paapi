@@ -49,9 +49,11 @@ class PlanningApplicationCreation
   def importer
     validate_property
 
-    PlanningApplication
-      .find_or_initialize_by(reference:)
-      .update!(**planning_application_attributes)
+    pa = PlanningApplication.find_or_initialize_by(reference:)
+    pa.properties.push(property) unless pa.properties.include?(property)
+    pa.update!(**planning_application_attributes)
+
+    pa
   end
 
   def planning_application_attributes
@@ -68,8 +70,7 @@ class PlanningApplicationCreation
       decision:,
       decision_issued_at:,
       view_documents:,
-      local_authority:,
-      property:
+      local_authority:
     }
   end
 

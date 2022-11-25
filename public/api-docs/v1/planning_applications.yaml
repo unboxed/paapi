@@ -21,8 +21,7 @@
               Sample:
                 value:
                   data:
-                    - id: 1
-                      reference: 89/00090/APPLIC
+                    - reference: 89/00090/APPLIC
                       area: South & East
                       description: Listed Building Application for replacement non-illuminated fascia sign.
                       received_at: 1900-01-01T00:00:00Z
@@ -32,13 +31,12 @@
                       local_authority: buckinghamshire
                       created_at: 2022-09-22T15:12:13Z
                       view_documents: https://pa.chilternandsouthbucks.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=ZZZZZYESPM408
-                      property:
-                        uprn: 100080483593
-                        code: CR08
-                        type: Commercial, Retail, Shops and Showrooms
-                      address: 9 London End Beaconsfield Buckinghamshire HP9 2HN
-                    - id: 3,
-                      reference: 22/00836/ALB
+                      properties:
+                        - uprn: '100080488721'
+                          address: 100 London End Beaconsfield Buckinghamshire HP9 2HN
+                          code: CR08
+                          type: Commercial, Retail, Shops and Showrooms
+                    - reference: 22/00836/ALB
                       area: North & Central
                       description: Listed building application for formalisation of works previously undertaken and alterations to interior and exterior of barn (retrospective)
                       received_at: 2022-03-08T00:00:00Z
@@ -48,11 +46,11 @@
                       local_authority: buckinghamshire
                       created_at: 2022-09-22T15:12:13Z
                       view_documents: https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=R8FT58CLG3N00
-                      property:
-                        uprn: 000766310186
-                        code: RD03
-                        type: Residential, Dwellings, Semi-Detached
-                      address: Byre House Dollicott Haddenham Buckinghamshire HP17 8JG
+                      properties:
+                        - uprn: '100080488732'
+                          address: Byre House Dollicott Haddenham Buckinghamshire HP17 8JG
+                          code: RD03
+                          type: Residential, Dwellings, Semi-Detached
 
   post:
     summary: Creates planning applications
