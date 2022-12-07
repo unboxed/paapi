@@ -5,7 +5,7 @@ on: [push, pull_request]
 
 jobs:
   bundle-audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:
@@ -37,7 +37,7 @@ jobs:
           bundle exec bundle-audit
 
   brakeman:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:
@@ -68,7 +68,7 @@ jobs:
         run: bundle exec brakeman
 
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:
@@ -99,7 +99,7 @@ jobs:
         run: bundle exec rubocop
 
   spec:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:

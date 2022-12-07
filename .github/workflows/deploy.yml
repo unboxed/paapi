@@ -9,7 +9,7 @@ on:
 jobs:
   deploy-staging:
     name: Deploy to staging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: staging
 
     steps:
@@ -116,7 +116,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to production
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: production
     needs: deploy-staging
 
