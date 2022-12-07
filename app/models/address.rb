@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Address < ApplicationRecord
-  has_one :property, dependent: :destroy
+  belongs_to :property
 
   validates :full, presence: true
 

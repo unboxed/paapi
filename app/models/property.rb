@@ -6,7 +6,7 @@ class Property < ApplicationRecord
   has_many :planning_applications_properties, dependent: :destroy
   has_many :planning_applications, through: :planning_applications_properties
 
-  belongs_to :address
+  has_one :address, dependent: :delete
 
   validates_associated :address
   validates :uprn, :type, :code, presence: true
