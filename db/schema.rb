@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_21_095301) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_151625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_21_095301) do
     t.string "ward_name"
     t.string "latitude"
     t.string "longitude"
+    t.bigint "property_id", null: false
+    t.index ["property_id"], name: "index_addresses_on_property_id"
   end
 
   create_table "api_clients", force: :cascade do |t|
@@ -83,6 +85,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_21_095301) do
     t.index ["address_id"], name: "index_properties_on_address_id"
   end
 
+  add_foreign_key "addresses", "properties"
   add_foreign_key "planning_applications_properties", "planning_applications"
   add_foreign_key "planning_applications_properties", "properties"
 end
