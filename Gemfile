@@ -10,12 +10,18 @@ gem "dotenv-rails", require: "dotenv/rails-now"
 gem "appsignal"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
+gem "cssbundling-rails"
 gem "jbuilder"
+gem "jsbundling-rails"
 gem "jwt"
 gem "pg", "~> 1.4"
 gem "puma", "~> 6.0"
 gem "rails", "~> 7.0.4"
 gem "rswag-ui"
+gem "sassc-rails"
+gem "sprockets-rails"
+gem "stimulus-rails"
+gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do

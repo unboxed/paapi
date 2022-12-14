@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "PlanningApplications", type: :request, show_exceptions: true do
+RSpec.describe "PlanningApplications", show_exceptions: true do
   describe "POST /api/v1/planning_applications" do
     let(:api_client) { create(:api_client) }
     let(:headers) { AuthHelper.auth_headers(api_client.token) }

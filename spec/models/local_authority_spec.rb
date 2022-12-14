@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe LocalAuthority, type: :model do
+RSpec.describe LocalAuthority do
   it "raises an error with wrong name" do
     expect { build(:local_authority, name: "local_authority") }
       .to raise_error(ArgumentError)

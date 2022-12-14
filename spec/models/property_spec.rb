@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Property, type: :model do
+RSpec.describe Property do
   context "when validations are run" do
     it "must have the uprn set" do
       property = build(:property, uprn: nil)
