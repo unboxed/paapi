@@ -2,12 +2,12 @@
 
 require "csv"
 
-class PlanningApplicationsImporter
-  def initialize(local_authority_name:)
-    @local_authority_name = local_authority_name.downcase
-  end
+class PlanningApplicationsImporterJob < ApplicationJob
+  queue_as :high_priority
 
-  def call
+  def perform(local_authority_name:)
+    @local_authority_name = local_authority_name.downcase
+
     import_planning_applications
   rescue StandardError => e
     log_exception(e)
@@ -29,10 +29,6 @@ class PlanningApplicationsImporter
 
   def import_planning_applications
     import_rows
-  end
-
-  def filename
-    "#{local_authority_name}/PlanningHistory#{local_authority_name.capitalize}.csv"
   end
 
   def import_rows
@@ -59,6 +55,10 @@ class PlanningApplicationsImporter
 
   def local_import_file
     Rails.root.join("tmp", filename).read
+  end
+
+  def filename
+    "#{local_authority_name}/PlanningHistory#{local_authority_name.capitalize}.csv"
   end
 
   def import_row(row)

@@ -9,6 +9,8 @@ require "rspec/rails"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+ActiveJob::Base.queue_adapter = :test
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e

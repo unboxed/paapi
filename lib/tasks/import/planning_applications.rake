@@ -9,7 +9,7 @@ namespace :import do
               "(Property  #{Property.count}, Address: #{Address.count})"
 
     begin
-      PlanningApplicationsImporter.new(local_authority_name: ENV["LOCAL_AUTHORITY"].to_sym).call
+      PlanningApplicationImporterJob.perform_later(local_authority_name: ENV["LOCAL_AUTHORITY"].to_sym)
     rescue StandardError => e
       broadcast e.message
     ensure
