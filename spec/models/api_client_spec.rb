@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiClient, type: :model do
+RSpec.describe ApiClient do
   describe "#validations" do
     it "cannot create an api_client without a client_name set" do
       api_client = build(:api_client, client_name: nil)

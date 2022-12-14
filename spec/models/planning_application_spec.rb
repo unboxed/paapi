@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe PlanningApplication, type: :model do
+RSpec.describe PlanningApplication do
   context "when validations are run" do
     it "must have a reference set" do
       planning_application = build(:planning_application, reference: nil)
