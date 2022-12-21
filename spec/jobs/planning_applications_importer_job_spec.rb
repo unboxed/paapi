@@ -87,28 +87,6 @@ RSpec.describe PlanningApplicationsImporterJob do
     # rubocop:enable RSpec/ExampleLength
   end
 
-  context "when LOCAL_IMPORT_FILE env var is set to true" do
-    let(:planning_applications_importer) do
-      described_class.perform_now(local_authority_name: "Lambeth")
-    end
-
-    before do
-      create(:local_authority, name: "lambeth")
-      allow(ENV).to receive(:[]).and_call_original
-      allow(ENV).to receive(:[]).with("LOCAL_IMPORT_FILE").and_return("true")
-
-      allow(planning_applications_importer)
-        .to receive(:local_import_file)
-        .and_return(planning_applications_csv)
-    end
-
-    it "imports data from local file" do
-      expect { planning_applications_importer }
-        .to change(PlanningApplication, :count)
-        .by(1)
-    end
-  end
-
   def importer(local_authority_name: "lambeth")
     PlanningApplicationsImporterJob.perform_now(local_authority_name:)
   end
