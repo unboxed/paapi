@@ -16,6 +16,9 @@ jobs:
     name: Deploy to ${{ inputs.environment-name }}
     runs-on: ubuntu-20.04
     environment: ${{ inputs.environment-name }}
+    strategy:
+      matrix:
+        worker_type: [ 'high-priority', 'low-priority' ]
 
     steps:
       - name: Checkout
@@ -95,9 +98,6 @@ jobs:
             --task-definition $TASK_DEFINITION --launch-type FARGATE \
             --network-configuration '{"awsvpcConfiguration": {"subnets": ["'$PAAPI_SUBNETS'"],"securityGroups": ["'$PAAPI_SG'"],"assignPublicIp": "ENABLED"}}'
 
-      strategy:
-        matrix:
-          worker_type: [ 'high-priority', 'low-priority' ]
       - name: Download task definition for worker ${{ matrix.worker_type }} and strip unused properties
         env:
           IMAGE_ARN: ${{ steps.build-image.outputs.image }}
