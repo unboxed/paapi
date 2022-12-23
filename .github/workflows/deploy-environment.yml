@@ -113,7 +113,7 @@ jobs:
       - name: Deploy worker high-priority
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps[format('task-def-worker-{0}', matrix.worker_type)].outputs.task-definition }}
+          task-definition: ${{ steps.task-def-worker-high-priority.outputs.task-definition }}
           service: paapi-worker-high-priority-${{ inputs.environment-name }}
           cluster: paapi-${{ inputs.environment-name }}
           wait-for-service-stability: true
@@ -136,7 +136,7 @@ jobs:
       - name: Deploy worker low-priority
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps[format('task-def-worker-{0}', matrix.worker_type)].outputs.task-definition }}
+          task-definition: ${{ steps.task-def-worker-low-priority.outputs.task-definition }}
           service: paapi-worker-low-priority-${{ inputs.environment-name }}
           cluster: paapi-${{ inputs.environment-name }}
           wait-for-service-stability: true
