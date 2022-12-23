@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe PlanningApplicationsImporter do
+RSpec.describe PlanningApplicationsImporterJob do
   let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
   let(:planning_applications_csv) do
     <<~CSV
@@ -51,7 +51,7 @@ RSpec.describe PlanningApplicationsImporter do
     it "returns that local authority couldn't be found" do
       allow(Rails.logger).to receive(:info)
 
-      described_class.new(local_authority_name: "derbyshire").call
+      described_class.perform_now(local_authority_name: "derbyshire")
 
       expect(ActiveJob::Base.logger)
         .to have_received(:info)
@@ -77,7 +77,7 @@ RSpec.describe PlanningApplicationsImporter do
     it "returns that the file is not found" do
       allow(Rails.logger).to receive(:info)
 
-      described_class.new(local_authority_name: "lambeth").call
+      described_class.perform_now(local_authority_name: "lambeth")
 
       expect(ActiveJob::Base.logger)
         .to have_received(:info)
@@ -87,29 +87,7 @@ RSpec.describe PlanningApplicationsImporter do
     # rubocop:enable RSpec/ExampleLength
   end
 
-  context "when LOCAL_IMPORT_FILE env var is set to true" do
-    let(:planning_applications_importer) do
-      described_class.new(local_authority_name: "Lambeth")
-    end
-
-    before do
-      create(:local_authority, name: "lambeth")
-      allow(ENV).to receive(:[]).and_call_original
-      allow(ENV).to receive(:[]).with("LOCAL_IMPORT_FILE").and_return("true")
-
-      allow(planning_applications_importer)
-        .to receive(:local_import_file)
-        .and_return(planning_applications_csv)
-    end
-
-    it "imports data from local file" do
-      expect { planning_applications_importer.call }
-        .to change(PlanningApplication, :count)
-        .by(1)
-    end
-  end
-
   def importer(local_authority_name: "lambeth")
-    PlanningApplicationsImporter.new(local_authority_name:).call
+    PlanningApplicationsImporterJob.perform_now(local_authority_name:)
   end
 end

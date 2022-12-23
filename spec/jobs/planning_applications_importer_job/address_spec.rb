@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe PlanningApplicationsImporter do
-  let(:importer) { described_class.new(local_authority_name: "lambeth").call }
+RSpec.describe PlanningApplicationsImporterJob do
+  let(:importer) { described_class.perform_now(local_authority_name: "lambeth") }
   let(:planning_application_url) { "https://paapi-staging-import.s3.eu-west-2.amazonaws.com/lambeth/PlanningHistoryLambeth.csv" }
 
   context "when the CSV downloads are successful" do
