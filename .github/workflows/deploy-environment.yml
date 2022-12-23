@@ -16,6 +16,9 @@ jobs:
     name: Deploy to ${{ inputs.environment-name }}
     runs-on: ubuntu-20.04
     environment: ${{ inputs.environment-name }}
+    strategy:
+      matrix:
+        worker_type: [ 'high-priority', 'low-priority' ]
 
     steps:
       - name: Checkout
@@ -103,9 +106,6 @@ jobs:
           jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > worker-${{ matrix.worker_type }}.json
 
       - name: Generate task definition for worker ${{ matrix.worker_type }}
-        strategy:
-          matrix:
-            worker_type: [ 'high-priority', 'low-priority' ]
         id: task-def-worker-${{ matrix.worker_type }}
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
