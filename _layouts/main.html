@@ -4,13 +4,11 @@
     {% include meta.html %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <!--[if !IE 8]><!-->
-      <link rel="stylesheet" href="/stylesheets/govuk-frontend-4.4.1.min.css">
+      <link rel="stylesheet" href="{{ site.baseurl }}/stylesheets/govuk-frontend-4.4.1.min.css">
     <!--<![endif]-->
     <!--[if IE 8]>
       <link rel="stylesheet" href="/stylesheets/govuk-frontend-ie8-<VERSION-NUMBER>.min.css">
     <![endif]-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="" rel="stylesheet">
   </head>
   <body class="govuk-template__body govuk-body">
@@ -23,7 +21,7 @@
       document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
     <!-- component HTML -->
-    <script src="/javascript/govuk-frontend-4.4.1.min.js"></script>
+    <script src="{{ site.baseurl }}/javascript/govuk-frontend-4.4.1.min.js"></script>
     <script>
       window.GOVUKFrontend.initAll()
     </script>

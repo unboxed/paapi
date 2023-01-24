@@ -9,7 +9,7 @@ description: paapi description
 <script>
   window.onload = () => {
     window.ui = SwaggerUIBundle({
-      url: 'swagger_doc.yaml',
+      url: '../swagger_doc.yaml',
       dom_id: '#swagger-ui'
     });
   }

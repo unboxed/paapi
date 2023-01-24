@@ -17,7 +17,7 @@ description: Planning Register API
       </div>
       <div class="govuk-grid-column-one-third-from-desktop">
         <div class="app-hero__image">
-          <img src="/assets/images/proposition-image.svg" alt="" role="presentation">
+          <img src="{{ site.baseurl }}/assets/images/proposition-image.svg" alt="" role="presentation">
         </div>
       </div>
     </div>
@@ -41,13 +41,13 @@ In the short term, and almost certainly for the lifetime of this prototype, data
 The main tool currently used to extract planning data at Lambeth and Southwark councils is PowerBI. 
 For now, we will work with CSV data extracted from this.
 
-![Short term diagram](/assets/images/short-term.png)
+![Short term diagram](assets/images/short-term.png)
 
 ### Long term
 
 We want other organisations to use our API to send us the historical data.
 
-![Long term diagram](/assets/images/long-term.png)
+![Long term diagram](assets/images/long-term.png)
 
 ## Database schema
 
