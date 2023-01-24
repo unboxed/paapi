@@ -1,0 +1,193 @@
+openapi: 3.0.1
+info:
+  title: Planning Applications API
+  version: v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /api/v1/planning_applications:
+    get:
+      summary: Retrieves all planning applications
+      tags:
+        - Planning application
+      parameters:
+        - in: query
+          name: uprn
+          required: true
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+          description: The uprn of property's planning application
+      responses:
+        '200':
+          description: All planning applications
+          content:
+            application/json:
+              examples:
+                Sample:
+                  value:
+                    data:
+                      - reference: 89/00090/APPLIC
+                        area: South & East
+                        description: Listed Building Application for replacement non-illuminated fascia sign.
+                        received_at: 1900-01-01T00:00:00.000Z
+                        assessor: null
+                        decision: Conditional permission
+                        decision_issued_at: 4989-04-13T00:00:00.000Z
+                        local_authority: buckinghamshire
+                        created_at: 2022-09-22T15:12:13.000Z
+                        view_documents: 'https://pa.chilternandsouthbucks.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=ZZZZZYESPM408'
+                        properties:
+                          - uprn: '100080488721'
+                            address: 100 London End Beaconsfield Buckinghamshire HP9 2HN
+                            code: CR08
+                            type: 'Commercial, Retail, Shops and Showrooms'
+                      - reference: 22/00836/ALB
+                        area: North & Central
+                        description: Listed building application for formalisation of works previously undertaken and alterations to interior and exterior of barn (retrospective)
+                        received_at: 2022-03-08T00:00:00.000Z
+                        assessor: Anna Souter
+                        decision: Listed Building Consent
+                        decision_issued_at: 2022-09-20T00:00:00.000Z
+                        local_authority: buckinghamshire
+                        created_at: 2022-09-22T15:12:13.000Z
+                        view_documents: 'https://publicaccess.aylesburyvaledc.gov.uk/online-applications/applicationDetails.do?activeTab=documents&keyVal=R8FT58CLG3N00'
+                        properties:
+                          - uprn: '100080488732'
+                            address: Byre House Dollicott Haddenham Buckinghamshire HP17 8JG
+                            code: RD03
+                            type: 'Residential, Dwellings, Semi-Detached'
+    post:
+      summary: Creates planning applications
+      tags:
+        - Planning application
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: Planning applications created
+        '400':
+          description: Request invalid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planning_applications:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - reference
+                      - area
+                      - description
+                      - received_at
+                      - decision
+                      - decision_issued_at
+                      - uprn
+                      - full
+                    properties:
+                      reference:
+                        type: string
+                        example: AB/22/1234/FA
+                      application_type_code:
+                        type: string
+                        example: FA
+                      application_type:
+                        type: string
+                        example: Full Application
+                      area:
+                        type: string
+                        example: South
+                      description:
+                        type: string
+                        example: Demolition of existing first floor.
+                      received_at:
+                        type: string
+                        example: '2022-05-30'
+                      assessor:
+                        type: string
+                        example: Keira Jones
+                      reviewer:
+                        type: string
+                        example: Leila Smith
+                      decision:
+                        type: string
+                        example: Conditional permission
+                      decision_issued_at:
+                        type: string
+                        example: '2022-10-14'
+                      validated_at:
+                        type: string
+                        example: '2022-06-23'
+                      view_documents:
+                        type: string
+                        example: 'https://example.gov.uk'
+                      uprn:
+                        type: string
+                        example: '123456789123'
+                      code:
+                        type: string
+                        example: RD02
+                      type:
+                        type: string
+                        example: Residential
+                      full:
+                        type: string
+                        example: '123 High Street, Big City, AB3 4EF'
+                      town:
+                        type: string
+                        example: Big City
+                      postcode:
+                        type: string
+                        example: AB3 4EF
+                      map_east:
+                        type: string
+                        example: '123456'
+                      map_north:
+                        type: string
+                        example: '654321'
+                      latitude:
+                        type: string
+                        example: '55.703226'
+                      longitude:
+                        type: string
+                        example: '-6.403439'
+                      ward_code:
+                        type: string
+                        example: W16
+                      ward_name:
+                        type: string
+                        example: Ward 16
+            example:
+              planning_applications:
+                - reference: AB/22/1234/FA
+                  application_type_code: FA
+                  application_type: Full Application
+                  area: South
+                  description: Demolition of existing first floor.
+                  received_at: '2022-05-30'
+                  assessor: Keira Jones
+                  reviewer: Leila Smith
+                  decision: Conditional permission
+                  decision_issued_at: '2022-10-14'
+                  validated_at: '2022-06-23'
+                  view_documents: 'https://example.gov.uk'
+                  uprn: '123456789123'
+                  code: RD02
+                  type: Residential
+                  full: '123 High Street, Big City, AB3 4EF'
+                  town: Big City
+                  postcode: AB3 4EF
+                  map_east: '123456'
+                  map_north: '654321'
+                  latitude: '55.703226'
+                  longitude: '-6.403439'
+                  ward_code: W16
+                  ward_name: Ward 16
