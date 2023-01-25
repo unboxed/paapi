@@ -130,4 +130,4 @@ We are working on including this.
 
 ## API Docs
 
-We are building the API in this prototype. [View the API Docs / Swagger](/api-docs).
+We are building the API in this prototype. [View the API Docs / Swagger](api-docs).
