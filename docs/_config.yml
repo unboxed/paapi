@@ -1,4 +1,4 @@
-baseurl: "/paapi"
+baseurl: ""
 permalink: pretty
 title: "Planning Register API"
 collections_dir: collections

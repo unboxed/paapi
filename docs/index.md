@@ -51,13 +51,13 @@ We want other organisations to use our API to send us the historical data.
 
 ## Database schema
 
-We are opening up our intended database schema to try to capture all of the relevant available historical and related data.
+We are opening up our intended database schema to try to capture all of the relevant available historical and related data. Please note we have not included document metadata or planning conditions and their relations - we are working on including this. We are welcoming comments on this schema. 
 
 #### `addresses`
 
-| Name | Type | Relation |
-| ----- | ----- | ----- |
-| id | bigint |
+| Name | Type | Description | Relation |
+| ----- | ----- | ----- | ----- |
+| id | bigint | 
 | full | string |
 | town | string |
 | postcode | string |
@@ -73,7 +73,7 @@ We are opening up our intended database schema to try to capture all of the rele
 
 #### `local_authorities`
 
-| Name | Type | 
+| Name | Type |
 | ----- | ----- 
 | id | bigint |
 | name | string |
@@ -82,8 +82,8 @@ We are opening up our intended database schema to try to capture all of the rele
 
 #### `planning_applications`
 
-| Name | Type | 
-| ----- | ----- | 
+| Name | Type | Description |
+| ----- | ----- | ----- | 
 | id | bigint |
 | reference | string |
 | area | string |
@@ -116,17 +116,14 @@ We are opening up our intended database schema to try to capture all of the rele
 
 #### `properties`
 
-| Name | Type | 
-| ----- | ----- | 
+| Name | Type | Description |
+| ----- | ----- | ----- |
 | id | bigint |
 | uprn | string |
 | type | string |
 | code | string |
 | created_at | datetime |
 | updated_at | datetime |
-
-Please note the above does not consider document metadata or planning conditions and their relations.
-We are working on including this.
 
 ## API Docs
 
