@@ -153,6 +153,13 @@ We can import historical planning applications from a CSV, which should be on S3
 $ rake import:planning_applications LOCAL_AUTHORITY=buckinghamshire
 ```
 
+#### Documentation
+
+An API website is available at [docs.paapi.services](https://docs.paapi.services) and can be served locally using:
+```sh
+npm run serve:pages
+```
+
 #### Tests
 
 You can run the full test suite using following command:
