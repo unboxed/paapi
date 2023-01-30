@@ -1,0 +1,55 @@
+<header class="govuk-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="govuk-header__logo">
+      <a href="{{ site.baseurl }}" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__logotype">
+          <span class="govuk-header__logotype-text"> PAAPI<small>.services</small> </span>
+        </span>
+      </a>
+    </div>
+
+    <div class="govuk-header__content">
+      <a href="{{ site.baseurl }}" class="govuk-header__link govuk-header__service-name">
+        Planning Register API
+      </a>
+
+      <nav aria-label="Menu" class="govuk-header__navigation">
+        <button
+          type="button"
+          class="govuk-header__menu-button govuk-js-header-toggle"
+          aria-controls="navigation"
+          aria-label="Show or hide menu"
+          hidden=""
+        >
+          Menu
+        </button>
+
+        <ul id="navigation" class="govuk-header__navigation-list">
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" href="{{ site.baseurl }}/"> Home </a>
+          </li>
+
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" href="{{ site.baseurl }}/api-docs"> API Docs </a>
+          </li>
+
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" href="{{ site.baseurl }}/about"> About </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+<div id="wrapper" class="direction-ltr govuk-width-container">
+  <div class="govuk-phase-banner">
+    <p class="govuk-phase-banner__content">
+      <strong class="govuk-tag govuk-phase-banner__content__tag app-tag--inverse">
+        Beta
+      </strong>
+      <span class="govuk-phase-banner__text">
+        This is a new service – your <a class="govuk-link" href="mailto:bops.register.feedback@unboxed.co?subject=PAAPI%20feedback">feedback</a> will help us to improve it.
+      </span>
+    </p>
+  </div>
+</div>

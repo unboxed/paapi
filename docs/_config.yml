@@ -1,0 +1,38 @@
+baseurl: ""
+permalink: pretty
+title: "Planning Register API"
+collections_dir: collections
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-environment-variables
+  - jekyll-paginate
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: "images"
+    values:
+      image: true
+
+include: [".well-known"]
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - yarn.lock
+  - package.json
+  - package-lock.json
+  - vendor
+  - LICENSE.md
+  - LICENSE
+  - README.md
+  - .vscode
+  - .gitignore
+  - .liquidrc
