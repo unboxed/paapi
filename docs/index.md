@@ -61,15 +61,19 @@ We are opening up our intended database schema to try to capture all of the rele
 | full | string |
 | town | string |
 | postcode | string |
-| map_east | string | 
-| map_north | string | 
+| map_east | string | Eastings[^1]
+| map_north | string | Northings[^1]
 | created_at | datetime |
 | updated_at | datetime |
-| ward_code | string |
-| ward_name | string |
-| latitude | string |
-| longitude | string |
+| ward_code | string | [Electoral ward code[^2]
+| ward_name | string | Electoral ward name
+| latitude | string | Latitude[^3]
+| longitude | string | Longitude[^3]
 | property_id | bigint | properties.id
+
+[^1]: Northings / Eastings / lat lng will be updated as data is ingressed. 
+[^2]: [Ward codes are defined by the ONS](https://www.ons.gov.uk/methodology/geography/geographicalproducts/namescodesandlookups)
+[^3]: Lat/lng data is stored as is for now, we have not set a format for now.
 
 #### `local_authorities`
 
@@ -82,7 +86,7 @@ We are opening up our intended database schema to try to capture all of the rele
 
 #### `planning_applications`
 
-| Name | Type | Description |
+| Name | Type |  Relation
 | ----- | ----- | ----- | 
 | id | bigint |
 | reference | string |
@@ -94,7 +98,7 @@ We are opening up our intended database schema to try to capture all of the rele
 | assessor | string |
 | decision | string |
 | decision_issued_at | datetime |
-| local_authority_id | bigint | 
+| local_authority_id | bigint | local_authorities.id
 | view_documents | string |
 | application_type | string |
 | reviewer | string |
@@ -102,7 +106,7 @@ We are opening up our intended database schema to try to capture all of the rele
 | created_at | datetime |
 | updated_at | datetime |
 | view_documents | string |
-| application_type_code | string |
+| application_type_code | string | 
 
 #### `planning_applications_properties`
 
@@ -127,4 +131,4 @@ We are opening up our intended database schema to try to capture all of the rele
 
 ## API Docs
 
-We are building the API in this prototype. [View the API Docs / Swagger](api-docs).
+We are building the API in this prototype. [View the API Docs / Swagger](api-docs). 
