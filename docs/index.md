@@ -41,13 +41,13 @@ In the short term, and almost certainly for the lifetime of this prototype, data
 The main tool currently used to extract planning data at Lambeth and Southwark councils is PowerBI. 
 For now, we will work with CSV data extracted from this.
 
-![Short term diagram](assets/images/short-term.png)
+![Short term diagram](assets/images/short-term.svg)
 
 ### Long term
 
 We want other organisations to use our API to send us the historical data.
 
-![Long term diagram](assets/images/long-term.png)
+![Long term diagram](assets/images/long-term.svg)
 
 ## Database schema
 
@@ -61,8 +61,8 @@ We are opening up our intended database schema to try to capture all of the rele
 | full | string |
 | town | string |
 | postcode | string |
-| map_east | string |
-| map_north | string |
+| map_east | string | 
+| map_north | string | 
 | created_at | datetime |
 | updated_at | datetime |
 | ward_code | string |
