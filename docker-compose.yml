@@ -1,14 +1,5 @@
 ---
 services:
-  db:
-    image: postgres:latest
-    volumes:
-     - db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
   web:
     build:
       context: .
@@ -28,7 +19,15 @@ services:
     volumes:
       - .:/app
       - bundle:/bundle
-
+  db:
+    image: postgres:latest
+    volumes:
+     - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
 volumes:
   bundle:
   db:
