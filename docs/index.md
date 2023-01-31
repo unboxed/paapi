@@ -51,7 +51,7 @@ We want other organisations to use our API to send us the historical data.
 
 ## Database schema
 
-We are opening up our intended database schema to try to capture all of the relevant available historical and related data. Please note we have not included document metadata or planning conditions and their relations - we are working on including this. We are welcoming comments on this schema. 
+We are opening up our intended database schema to try to capture all of the relevant available historical and related data. Please note we have not included document metadata or planning conditions and their relations - we are working on including this. We are welcoming comments on this schema on the ODP slack channel [#group-planning-register-data](https://opendigitalplanning.slack.com/archives/C04MB9HA6N6) or [via email](mailto:bops.register.feedback@unboxed.co).
 
 #### `addresses`
 
