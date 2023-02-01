@@ -1,29 +1,39 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
+<% content_for :page_title do %>
+  Sign up - <%= t('page_title') %>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">
+      Sign up
+    </h1>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="govuk-form-group">
+        <div class="field">
+          <%= f.label :email, class: "govuk-label govuk-!-margin-top-8", for: "width-30"%>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "govuk-input govuk-input--width-30", value: params[:email] %>
+        </div>
+        <div class="field">
+          <%= f.label :password, class: "govuk-label govuk-!-margin-top-8", for: "width-30"%>
+          <%= f.password_field :password, class: "govuk-input govuk-input--width-30", value: params[:email] %>
+        </div>
+        <div class="field">
+          <%= f.label :password_confirmation, class: "govuk-label govuk-!-margin-top-8", for: "width-30"%>
+          <%= f.password_field :password_confirmation, class: "govuk-input govuk-input--width-30", value: params[:email] %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Create account", class: "govuk-button" %>
+      </div>
+    <% end %>
+
+    <p class="govuk-body govuk-!-margin-top-8">
+      <%= render "devise/shared/links" %>
+    </p>
+
+  </div>
+</div>
