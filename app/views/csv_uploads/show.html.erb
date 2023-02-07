@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @csv_upload %>
+
+<div>
+  <%= link_to "Edit this csv upload", edit_csv_upload_path(@csv_upload) %> |
+  <%= link_to "Back to csv uploads", csv_uploads_path %>
+
+  <%= button_to "Destroy this csv upload", @csv_upload, method: :delete %>
+</div>

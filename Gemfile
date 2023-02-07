@@ -43,3 +43,5 @@ end
 group :test do
   gem "webmock"
 end
+
+gem "importmap-rails", "~> 1.1"

@@ -1,0 +1,13 @@
+<div id="<%= dom_id csv_upload %>">
+  <p>
+    <strong>Title:</strong>
+    <%= csv_upload.title %>
+  </p>
+  <p>Files:
+  <ul>
+    <% csv_upload.csv_files.each do |csv| %>
+       <li><% link_to csv.filename, csv %></li>
+    <% end %>
+  </ul>
+  </p>
+</div>

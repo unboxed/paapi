@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Csv uploads</h1>
+
+<div id="csv_uploads">
+  <% @csv_uploads.each do |csv_upload| %>
+    <%= render csv_upload %>
+    <p>
+      <%= link_to "Show this csv upload", csv_upload %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New csv upload", new_csv_upload_path %>
