@@ -1,0 +1,26 @@
+<% content_for :page_title do %>
+  Change your password - <%= t('page_title') %>
+<% end %>
+
+<h1 class="govuk-heading-l">Change your password</h1>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= f.hidden_field :reset_password_token %>
+  <div class="govuk-form-group govuk-!-margin-top-8">
+    <%= f.label :password, "New password", class: "govuk-heading-s govuk-!-margin-bottom-1" %>
+    <% if @minimum_password_length %>
+      <span class="govuk-hint govuk-!-margin-bottom-1"><%= @minimum_password_length %> characters minimum</span>
+    <% end %>
+    <%= f.password_field :password, class: "govuk-input govuk-input--width-20", autofocus: true, autocomplete: "new-password" %>
+
+    <%= f.label :password_confirmation, "Confirm new password", class: "govuk-heading-s govuk-!-margin-top-6" %>
+    <%= f.password_field :password_confirmation, class: "govuk-input govuk-input--width-20", autocomplete: "new-password" %> <br>
+
+    <%= f.submit "Change password", class: "govuk-button govuk-!-margin-top-7  govuk-!-margin-bottom-4", data: { module: "govuk-button" } %>
+  </div>
+<% end %>
+
+<p class="govuk-body govuk-!-margin-top-8">
+  <%= render "devise/shared/links" %>
+</p>
