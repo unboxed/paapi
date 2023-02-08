@@ -25,8 +25,9 @@ class CsvUploadsController < ApplicationController
 
     respond_to do |format|
       if @csv_upload.save
-        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Csv upload was successfully created." }
+        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Upload was successfully created." }
         format.json { render :show, status: :created, location: @csv_upload }
+        DownloadLocalCopy.perform_async(csv_upload)
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @csv_upload.errors, status: :unprocessable_entity }
@@ -38,7 +39,7 @@ class CsvUploadsController < ApplicationController
   def update
     respond_to do |format|
       if @csv_upload.update(csv_upload_params)
-        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Csv upload was successfully updated." }
+        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Upload was successfully updated." }
         format.json { render :show, status: :ok, location: @csv_upload }
       else
         format.html { render :edit, status: :unprocessable_entity }

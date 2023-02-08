@@ -3272,9 +3272,6 @@
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (min-resolution: 2dppx),
   only screen and (min-resolution: 192dpi) {
-  .govuk-footer__copyright-logo {
-    background-image: url(/assets/images/govuk-crest-2x.png);
-  }
 }
 .govuk-footer__inline-list {
   margin-top: 0;

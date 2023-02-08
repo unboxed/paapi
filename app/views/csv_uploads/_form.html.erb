@@ -6,22 +6,24 @@
       <ul>
         <% csv_upload.errors.each do |error| %>
           <li><%= error.full_message %></li>
-        <% end %>
+        <% end %>A
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class=govuk-form-group>
+    <%= form.label :title, class: 'govuk-label' %>
+    <%= form.text_field :title, class: 'govuk-file-upload' %>
+  </div>
+
+  <div class=govuk-form-group>
+    <%= form.label :csv_files, 'Upload CSV files', class: 'govuk-label' %>
+    <%= form.file_field :csv_files, multiple: true, accept: ".csv", direct_upload: true, class: 'govuk-file-upload' %>
   </div>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.file_field :csv_files, multiple: true %>
+    <%= form.submit 'Upload' %>
   </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= javascript_include_tag "activestorage-directupload" %>
 <% end %>

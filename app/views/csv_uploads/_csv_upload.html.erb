@@ -3,10 +3,13 @@
     <strong>Title:</strong>
     <%= csv_upload.title %>
   </p>
+  <p>
+    <strong>Latest message:</strong>
+  </p>
   <p>Files:
   <ul>
     <% csv_upload.csv_files.each do |csv| %>
-       <li><% link_to csv.filename, csv %></li>
+       <li><%= link_to csv.filename, csv %></li>
     <% end %>
   </ul>
   </p>

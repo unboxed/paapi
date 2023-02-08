@@ -4,7 +4,6 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.2"
-
 gem "dotenv-rails", require: "dotenv/rails-now"
 
 gem "appsignal"
@@ -17,6 +16,7 @@ gem "jwt"
 gem "pg", "~> 1.4"
 gem "puma", "~> 6.0"
 gem "rails", "~> 7.0.4"
+gem "redis"
 gem "rswag-ui"
 gem "sass-rails"
 gem "sassc-rails"

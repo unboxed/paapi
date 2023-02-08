@@ -1,4 +1,4 @@
----
+version: '3'
 services:
   web:
     build:
@@ -16,6 +16,8 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    env_file:
+      - .env
     volumes:
       - .:/app
       - bundle:/bundle
@@ -28,6 +30,11 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
+  redis:
+    image: 'redis:5-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
 volumes:
   bundle:
   db:

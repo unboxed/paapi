@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_121814) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_07_221712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_121814) do
     t.datetime "updated_at", null: false
     t.index ["client_name"], name: "index_api_clients_on_client_name", unique: true
     t.index ["client_secret"], name: "index_api_clients_on_client_secret", unique: true
+  end
+
+  create_table "csv_processing_messages", force: :cascade do |t|
+    t.bigint "csv_upload_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["csv_upload_id"], name: "index_csv_processing_messages_on_csv_upload_id"
   end
 
   create_table "csv_uploads", force: :cascade do |t|
@@ -133,6 +140,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_121814) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "properties"
+  add_foreign_key "csv_processing_messages", "csv_uploads"
   add_foreign_key "planning_applications_properties", "planning_applications"
   add_foreign_key "planning_applications_properties", "properties"
 end
