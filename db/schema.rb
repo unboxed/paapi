@@ -68,9 +68,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_221712) do
   end
 
   create_table "csv_processing_messages", force: :cascade do |t|
+    t.string "body"
+    t.jsonb "data"
     t.bigint "csv_upload_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["csv_upload_id"], name: "index_csv_processing_messages_on_csv_upload_id"
   end
 
@@ -140,7 +140,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_221712) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "properties"
-  add_foreign_key "csv_processing_messages", "csv_uploads"
   add_foreign_key "planning_applications_properties", "planning_applications"
   add_foreign_key "planning_applications_properties", "properties"
 end

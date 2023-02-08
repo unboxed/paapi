@@ -5,6 +5,11 @@
   </p>
   <p>
     <strong>Latest message:</strong>
+    <ul>
+    <% csv_upload.csv_processing_messages.each do |msg| %>
+      <li><%= msg.body %></li>
+    <% end %>
+    </ul>
   </p>
   <p>Files:
   <ul>
