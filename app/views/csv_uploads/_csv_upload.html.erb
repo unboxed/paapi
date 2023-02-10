@@ -5,7 +5,7 @@
   </p>
   <p>
     <strong>Latest message:</strong>
-    <ul data-search-target="messages">
+    <ul data-csv-processing-messages-target="messages">
     <% csv_upload.csv_processing_messages.each do |msg| %>
       <li data-message-id="<%= msg.id %>"><%= msg.body %></li>
     <% end %>

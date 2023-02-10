@@ -25,18 +25,13 @@ export default class extends Controller {
   }
 
   _cableReceived(data) {
-    console.log(data);
-
-    debugger;
-
-    if(this.querySelectorAll(`[data-message-id=${data.id}]`)) {
+    if(this.messagesTarget.querySelectorAll(`[data-message-id="${data.id}"]`).length > 0) {
       console.log('Already added');
       return;
     }
-
-    this.messagesTarget.insertAdjacentHTML(
-      'beforeend',
-      `<li data-message-id="${data.id}">${data.body}</li>`
-    );
+    const li = document.createElement('li');
+    li.setAttribute('data-message-id', data.id);
+    li.textContent = data.body;
+    this.messagesTarget.appendChild(li);
   }
 }

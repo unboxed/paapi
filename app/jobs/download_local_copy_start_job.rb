@@ -20,6 +20,7 @@ class DownloadLocalCopyStartJob < ApplicationJob
     )
     new_message.save!
 
-    ActionCable.server.broadcast 'message_channel', {message: new_message}
+    ActionCable.server.broadcast 'message_channel/csv_uploads/' + @csv_upload.id.to_s, {body: new_message.body, id: new_message.id}
+    ActionCable.server.broadcast 'message_channel', {body: new_message.body, id: new_message.id}
   end
 end

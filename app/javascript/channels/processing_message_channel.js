@@ -1,7 +1,7 @@
 import consumer from "./consumer"
 
 let channelName = "MessageChannel"; 
-consumer.subscriptions.create({channel: channelName}, {
+consumer.subscriptions.create({channel: channelName, path: window.location.pathname, search: window.location.search}, {
   connected() {
     console.log(`Connected to ${channelName}`);
     // Called when the subscription is ready for use on the server

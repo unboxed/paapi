@@ -1,8 +1,9 @@
 class MessageChannel < ApplicationCable::Channel
   def subscribed
-    Rails.logger.info('Subscribed')
-    stream_from "message_channel"
-    Rails.logger.info('Set stream_from message_channel')
+
+    subscription_string = 'message_channel' + ((params.key? 'path') ? (params['path']) : '')
+    stream_from subscription_string
+    Rails.logger.info('Set stream_from to ' + subscription_string)
   end
 
   def unsubscribed
