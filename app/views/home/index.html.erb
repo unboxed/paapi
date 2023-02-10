@@ -1,9 +1,16 @@
 
 <h1 class="govuk-heading-xl">Home page</h1>
 <% if user_signed_in? %> 
- <p> Welcome <%= current_user.email %> </p> 
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+ <h2 class="govuk-heading-l"> Welcome <%= current_user.email %> </h2> 
+
+ <p class="govuk-body"><%= link_to "Upload a CSV", csv_uploads %></p>
+
+ <div class="actions">
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: 'govuk-button' %> 
+ </div>
 <% else %>
-  <%= button_to "Sign in", new_user_session_path %> 
+  <p class="govuk-body"><%= link_to "Sign in", new_user_session_path %></p>
+  <p class="govuk-body"><%= link_to "Upload a CSV", csv_uploads_url %></p>
+
 <% end %>
 

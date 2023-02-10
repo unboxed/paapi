@@ -4,5 +4,5 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import CsvProcessingMessagesController from "./csv_processing_messages_controller.js"
+application.register("csv-processing-messages", CsvProcessingMessagesController)
