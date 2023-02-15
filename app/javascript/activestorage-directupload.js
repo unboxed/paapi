@@ -1,41 +1,86 @@
 import * as activestorage from "@rails/activestorage"
+import { DirectUpload } from "@rails/activestorage";
 
 activestorage.start();
 
-self.addEventListener("direct-upload:initialize", event => {
-  const { target, detail } = event
-  const { id, file } = detail
-  target.insertAdjacentHTML("beforebegin", `
-    <div id="direct-upload-${id}" class="direct-upload direct-upload--pending">
-      <div id="direct-upload-progress-${id}" class="direct-upload__progress" style="width: 0%"></div>
-      <span class="direct-upload__filename"></span>
-    </div>
-  `)
-  target.previousElementSibling.querySelector(`.direct-upload__filename`).textContent = file.name
+const input = document.querySelector('input[type=file][data-direct-upload-url]:not([disabled])');
+
+// Bind to normal file selection
+input.addEventListener('change', (event) => {
+  const fileInput = event.target;
+  let titleEl = document.getElementById('csv_upload_title');
+
+  if(titleEl) {
+    if(titleEl.value === null || titleEl.value.match(/^ *$/) !== null) {
+      titleEl.value = fileInput.value.split(/(\\|\/)/g).pop().replace('.csv', '');
+    }
+  }
+  Array.from(input.files).forEach(file => uploadFile(file, fileInput))
+  // you might clear the selected files from the input
+  input.value = null
 })
 
-self.addEventListener("direct-upload:start", event => {
-  const { id } = event.detail
-  const element = document.getElementById(`direct-upload-${id}`)
-  element.classList.remove("direct-upload--pending")
-})
+const uploadFile = (file, fileInput) => {
+  // your form needs the file_field direct_upload: true, which
+  //  provides data-direct-upload-url
+  const url = input.dataset.directUploadUrl;
+  new Uploader(file, url, fileInput);
+}
 
-self.addEventListener("direct-upload:progress", event => {
-  const { id, progress } = event.detail
-  const progressElement = document.getElementById(`direct-upload-progress-${id}`)
-  progressElement.style.width = `${progress}%`
-})
+class Uploader {
+  constructor(file, url, fileInput) {
+    this.file = file;
+    this.uid = String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '');
+    this.url = url;
+    this.upload = new DirectUpload(this.file, this.url, this);
+    this.fileInput = fileInput;
+    this.parser = new DOMParser();
+    this.progressTemplate = this.fileInput.form.querySelector('template.directupload-progress').innerHTML
+    this.progressDiv = document.createElement('div')
+    this.fileInput.after(this.progressDiv);
+    this.fileInput.blur();
 
-self.addEventListener("direct-upload:error", event => {
-  event.preventDefault()
-  const { id, error } = event.detail
-  const element = document.getElementById(`direct-upload-${id}`)
-  element.classList.add("direct-upload--error")
-  element.setAttribute("title", error)
-})
+    this.progressDiv.id = 'directupload-progress-' + this.uid;
+    if(this.progressTemplate != null) {
+      let templateWithFilename = document.createElement('div');
+      templateWithFilename.innerHTML = this.progressTemplate;
+      templateWithFilename.querySelector('span.directupload-progress-filename').textContent = file.name;
 
-self.addEventListener("direct-upload:end", event => {
-  const { id } = event.detail
-  const element = document.getElementById(`direct-upload-${id}`)
-  element.classList.add("direct-upload--complete")
-})
+      this.progressTemplate = templateWithFilename.innerHTML;
+      let parsedTemplate = this.progressTemplate.replaceAll('{{status}}', 'Uploading');
+      parsedTemplate.replaceAll('{{progress}}', 0);
+      this.progressDiv.innerHTML = parsedTemplate;
+    }
+
+    this.upload.create((error, blob) => {
+      if (error) {
+        // Handle the error
+        this.progressDiv.innerHTML = this.progressTemplate
+          .replaceAll('{{status}}', 'Error')
+          .replaceAll('{{progress}}', 0)
+      } else {
+        const hiddenField = document.createElement('input')
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("value", blob.signed_id);
+        hiddenField.name = input.name;
+        this.fileInput.form.appendChild(hiddenField);
+        this.progressDiv.innerHTML = this.progressTemplate
+        .replaceAll('{{status}}', 'Uploaded')
+        .replaceAll('{{progress}}', 100);
+      }
+    })
+  }
+
+  directUploadWillStoreFileWithXHR(request) {
+    request.upload.addEventListener("progress",
+      event => this.directUploadDidProgress(event))
+  }
+
+  directUploadDidProgress(event) {
+    console.log(event, Math.max(1, Math.floor((event.loaded / event.total) * 100)));
+
+    this.progressDiv.innerHTML = this.progressTemplate
+      .replaceAll('{{status}}', 'Uploading')
+      .replaceAll('{{progress}}', Math.max(1, Math.floor((event.loaded / event.total) * 100)));
+  }
+}

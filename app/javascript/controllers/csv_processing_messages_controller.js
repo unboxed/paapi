@@ -32,6 +32,9 @@ export default class extends Controller {
     const li = document.createElement('li');
     li.setAttribute('data-message-id', data.id);
     li.textContent = data.body;
+    if(data.type == 'update_last') {
+      this.messagesTarget.removeChild(this.messagesTarget.lastElementChild)
+    }
     this.messagesTarget.appendChild(li);
   }
 }

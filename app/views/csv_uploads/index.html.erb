@@ -1,14 +1,18 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Csv uploads</h1>
+<h1 class=govuk-heading-l>CSV Uploads</h1>
 
 <div id="csv_uploads">
+  <% if @csv_uploads.empty? %>
+   <div class="govuk-inset-text">
+    No CSV files have been uploaded.
+   </div>
+  <% end %>
+
   <% @csv_uploads.each do |csv_upload| %>
     <%= render csv_upload %>
-    <p>
+    <p class=govuk-body>
       <%= link_to "Show this csv upload", csv_upload %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New csv upload", new_csv_upload_path %>
+<%= link_to "New CSV Upload", new_csv_upload_path, {class: "govuk-body"} %>

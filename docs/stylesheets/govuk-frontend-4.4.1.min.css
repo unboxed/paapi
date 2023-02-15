@@ -4439,6 +4439,49 @@
   display: table-cell;
   vertical-align: middle;
 }
+.govuk-progress-banner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #b1b4b6;
+}
+.govuk-progress-banner__content {
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.14286;
+  color: #0b0c0c;
+  display: table;
+  margin: 0;
+}
+@media print {
+  .govuk-progress-banner__content {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .govuk-progress-banner__content {
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+@media print {
+  .govuk-progress-banner__content {
+    font-size: 14pt;
+    line-height: 1.2;
+    color: #000;
+  }
+}
+.govuk-progress-banner__content__tag {
+  margin-right: 10px;
+}
+.govuk-progress-banner__text {
+  display: table-cell;
+  vertical-align: middle;
+}
 .govuk-tabs {
   margin-top: 5px;
   margin-bottom: 20px;

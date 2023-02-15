@@ -7,6 +7,7 @@ ruby "3.1.2"
 gem "dotenv-rails", require: "dotenv/rails-now"
 
 gem "appsignal"
+gem "activeadmin"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"

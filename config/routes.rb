@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   resources :csv_uploads
   devise_for :users
   mount Rswag::Ui::Engine => "/api-docs"
@@ -12,6 +14,6 @@ Rails.application.routes.draw do
       resources :planning_applications, only: %i[index create]
     end
   end
-  root to: 'home#index'
+  root to: 'csv_uploads#index'
 
 end

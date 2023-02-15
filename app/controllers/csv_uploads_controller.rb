@@ -53,7 +53,7 @@ class CsvUploadsController < ApplicationController
     @csv_upload.destroy
 
     respond_to do |format|
-      format.html { redirect_to csv_uploads_url, notice: "Csv upload was successfully destroyed." }
+      format.html { redirect_to csv_uploads_url, notice: "CSV Upload was successfully destroyed." }
       format.json { head :no_content }
     end
   end

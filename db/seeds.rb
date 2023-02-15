@@ -5,3 +5,4 @@
 
   LocalAuthority.find_or_create_by!(name:, api_client:)
 end
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
