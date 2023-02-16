@@ -5,5 +5,4 @@ class CheckFormatJob < ApplicationJob
       sleep(rand(0.1...1.2))
     end
   end
-
 end
