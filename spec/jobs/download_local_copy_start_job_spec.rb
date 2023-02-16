@@ -2,6 +2,6 @@
 
 require "rails_helper"
 
-RSpec.describe DownloadLocalCopyJob do
+RSpec.describe DownloadLocalCopyStartJob do
   pending "add some examples to (or delete) #{__FILE__}"
 end
