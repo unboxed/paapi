@@ -1,10 +1,12 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "csv_uploads/show", type: :view do
-  before(:each) do
+require "rails_helper"
+
+RSpec.describe "csv_uploads/show" do
+  before do
     assign(:csv_upload, CsvUpload.create!(
-      title: "Title"
-    ))
+                          title: "Title"
+                        ))
   end
 
   it "renders attributes in <p>" do

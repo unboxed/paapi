@@ -1,5 +1,7 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe CheckFormatJob, type: :job do
+require "rails_helper"
+
+RSpec.describe CheckFormatJob do
   pending "add some examples to (or delete) #{__FILE__}"
 end

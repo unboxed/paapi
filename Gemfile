@@ -6,11 +6,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.1.2"
 gem "dotenv-rails", require: "dotenv/rails-now"
 
-gem "appsignal"
 gem "activeadmin"
+gem "appsignal"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
+gem "devise"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "jwt"
@@ -19,13 +20,12 @@ gem "puma", "~> 6.0"
 gem "rails", "~> 7.0.4"
 gem "redis"
 gem "rswag-ui"
-gem "sass-rails"
 gem "sassc-rails"
+gem "sass-rails"
 gem "sidekiq", "~> 5.2.10"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
-gem "devise" 
 
 group :development, :test do
   gem "brakeman", require: false
@@ -33,14 +33,13 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "faker"
+  gem "jekyll", require: false
   gem "pry-byebug"
   gem "rspec-rails", "~> 6.0"
   gem "rubocop", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
-  gem "jekyll", require: false
-  
 end
 
 group :test do

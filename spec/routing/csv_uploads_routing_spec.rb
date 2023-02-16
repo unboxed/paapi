@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
-RSpec.describe CsvUploadsController, type: :routing do
+RSpec.describe CsvUploadsController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/csv_uploads").to route_to("csv_uploads#index")
@@ -17,7 +19,6 @@ RSpec.describe CsvUploadsController, type: :routing do
     it "routes to #edit" do
       expect(get: "/csv_uploads/1/edit").to route_to("csv_uploads#edit", id: "1")
     end
-
 
     it "routes to #create" do
       expect(post: "/csv_uploads").to route_to("csv_uploads#create")

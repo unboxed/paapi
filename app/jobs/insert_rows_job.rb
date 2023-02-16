@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InsertRowsJob < ApplicationJob
   queue_as :default
 

@@ -1,13 +1,15 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "csv_uploads/edit", type: :view do
-  let(:csv_upload) {
+require "rails_helper"
+
+RSpec.describe "csv_uploads/edit" do
+  let(:csv_upload) do
     CsvUpload.create!(
       title: "MyString"
     )
-  }
+  end
 
-  before(:each) do
+  before do
     assign(:csv_upload, csv_upload)
   end
 
@@ -15,7 +17,6 @@ RSpec.describe "csv_uploads/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", csv_upload_path(csv_upload), "post" do
-
       assert_select "input[name=?]", "csv_upload[title]"
     end
   end

@@ -1,5 +1,7 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe DownloadLocalCopyJob, type: :job do
+require "rails_helper"
+
+RSpec.describe DownloadLocalCopyJob do
   pending "add some examples to (or delete) #{__FILE__}"
 end

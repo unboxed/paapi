@@ -9,10 +9,9 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  config.mailer_sender = "bops.register.feedback@unboxed.co"
 
-  config.mailer_sender = 'bops.register.feedback@unboxed.co'
-
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   config.case_insensitive_keys = [:email]
 
@@ -22,7 +21,8 @@ Devise.setup do |config|
 
   config.stretches = Rails.env.test? ? 1 : 12
 
-  config.pepper = 'dcf0b2d2891b398c3d3d0a8ffa95559d125bdb50d9b61b6b97da81d3577a186d30bdf8ae7b8e0e491ce4932251033f284cb81a8b59373d7c101644b97ea299ca'
+  config.pepper = "dcf0b2d2891b398c3d3d0a8ffa95559d125bdb50d9b61b6b97da81d3577a186d" \
+                  "30bdf8ae7b8e0e491ce4932251033f284cb81a8b59373d7c101644b97ea299ca"
 
   config.reconfirmable = true
 
@@ -34,7 +34,7 @@ Devise.setup do |config|
 
   config.reset_password_within = 6.hours
 
-  config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.navigational_formats = ["*/*", :html, :turbo_stream]
 
   config.sign_out_via = :delete
 
