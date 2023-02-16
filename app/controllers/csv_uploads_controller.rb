@@ -25,7 +25,7 @@ class CsvUploadsController < ApplicationController
 
     respond_to do |format|
       if @csv_upload.save
-        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Upload was successfully created." }
+        format.html { redirect_to csv_upload_url(@csv_upload), notice: "Upload was successfully created. You can now monitor it's import progress." }
         format.json { render :show, status: :created, location: @csv_upload }
         DownloadLocalCopyStartJob.set(wait: 2.seconds).perform_later @csv_upload
       else

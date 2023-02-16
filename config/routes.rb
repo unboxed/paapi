@@ -14,6 +14,6 @@ Rails.application.routes.draw do
       resources :planning_applications, only: %i[index create]
     end
   end
-  root to: 'csv_uploads#index'
+  root to: 'home#index'
 
 end

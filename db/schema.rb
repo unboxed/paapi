@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_14_193931) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_15_181318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,8 +96,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_14_193931) do
   create_table "csv_processing_messages", force: :cascade do |t|
     t.string "body"
     t.jsonb "data"
+    t.integer "message_type", default: 0
     t.bigint "csv_upload_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["created_at"], name: "index_csv_processing_messages_on_created_at"
     t.index ["csv_upload_id"], name: "index_csv_processing_messages_on_csv_upload_id"
+    t.index ["updated_at"], name: "index_csv_processing_messages_on_updated_at"
   end
 
   create_table "csv_uploads", force: :cascade do |t|

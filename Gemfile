@@ -40,6 +40,7 @@ group :development, :test do
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
   gem "jekyll", require: false
+  
 end
 
 group :test do
