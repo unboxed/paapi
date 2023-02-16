@@ -21,7 +21,7 @@ gem "redis"
 gem "rswag-ui"
 gem "sass-rails"
 gem "sassc-rails"
-gem "sidekiq"
+gem "sidekiq", "~> 5.2.10"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
