@@ -10,4 +10,6 @@ Rails.application.routes.draw do
       resources :planning_applications, only: %i[index create]
     end
   end
+
+  root to: "home#index"
 end
