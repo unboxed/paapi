@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "csv_uploads/index" do
+RSpec.describe "csv_uploads/" do
   before do
     assign(:csv_uploads, [
              CsvUpload.create!(

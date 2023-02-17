@@ -1,15 +1,15 @@
 redis: &redis
   adapter: redis
-  url: redis://redis:6379/0
+  url: redis://localhost:6379/0
 
 development:
   adapter: redis
-  url: redis://redis:6379/0
+  url: redis://localhost:6379/0
 
 test:
   adapter: test
 
 production:
   adapter: redis
-  url: <% ENV.fetch("REDIS_URL") { "redis://redis:6379/0" } %>
+  url: <% ENV.fetch("REDIS_URL") { "redis://localhost:6379/0" } %>
   channel_prefix: paapi_production

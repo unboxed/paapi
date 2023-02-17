@@ -26,7 +26,7 @@ class CsvUploadsController < ApplicationController
     respond_to do |format|
       if @csv_upload.save
         format.html do
-          redirect_to csv_upload_url(@csv_upload), I18n.t("upload_successfully_created_notice")
+          redirect_to csv_upload_url(@csv_upload), notice: I18n.t("upload_successfully_created_notice")
         end
         format.json { render :show, status: :created, location: @csv_upload }
         start_job
