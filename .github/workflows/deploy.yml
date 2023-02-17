@@ -4,7 +4,7 @@ name: Deploy
 on:
   push:
     branches:
-      - add-homepage
+      - main
 
 jobs:
   deploy-staging:
