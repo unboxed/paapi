@@ -50,6 +50,14 @@
               <li class="govuk-header__navigation-item">
                 <a class="govuk-header__link" href="https://docs.paapi.services/about"> About </a>
               </li>
+
+              <li class="govuk-header__navigation-item">
+              <% if user_signed_in? %>
+                <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: 'govuk-header__link' %>
+              <% else %>
+                <%= link_to "Sign in", new_user_session_path, class: 'govuk-header__link' %>
+              <% end %>
+              </li>
             </ul>
           </nav>
         </div>

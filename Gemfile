@@ -11,6 +11,7 @@ gem "appsignal"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
+gem "devise"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "jwt"
