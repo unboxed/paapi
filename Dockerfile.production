@@ -17,18 +17,6 @@ ENV LANG=en_US.UTF-8
 # Generates localisation files from templates
 RUN locale-gen
 
-# Install NODE_MAJOR
-ARG NODE_MAJOR=14
-RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
-    curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash - && \
-    apt-get update && apt-get install -y nodejs"
-
-# Install Yarn via Debian package repository
-RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update -qq && apt install yarn"
-
 # Install Bundler
 ARG BUNDLER_VERSION=2.3.19
 RUN bash -c "gem update --system && gem install bundler -v $BUNDLER_VERSION"
@@ -75,13 +63,8 @@ FROM gems AS packages
 # and set it as the working directory
 WORKDIR /app
 
-# Add Javascript files
-COPY package.json yarn.lock /app/
-
-RUN bash -c "bundle exec yarn install"
-
 # Build image for application
-FROM packages AS application
+FROM base_image AS application
 
 # Run security updates, install libpq5
 RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
@@ -93,13 +76,17 @@ RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
 
 # Create a directory for our application
 # and set it as the working directory
-WORKDIR /app
-
-RUN groupadd -r app && \
+RUN mkdir /app && \
+    groupadd -r app && \
     useradd --no-log-init -r -g app -d /app app
+
+# Create a directory for our application
+# and set it as the working directory
+WORKDIR /app/
 
 # Create various directories
 RUN mkdir /app/log && \
+    mkdir /app/public && \
     mkdir /app/tmp && \
     chown -R app:app /app
 
@@ -109,9 +96,13 @@ COPY --chown=app:app ./bin/ /app/bin/
 COPY --chown=app:app ./config/ /app/config/
 COPY --chown=app:app ./config.ru /app/config.ru
 COPY --chown=app:app ./db/ /app/db/
+COPY --chown=app:app ./Gemfile /app/Gemfile
+COPY --chown=app:app ./Gemfile.lock /app/Gemfile.lock
 COPY --chown=app:app ./lib/ /app/lib/
 COPY --chown=app:app ./public/ /app/public/
 COPY --chown=app:app ./Rakefile /app/Rakefile
+
+COPY --from=gems --chown=app:app /app/vendor/ /app/vendor
 
 USER app:app
 
@@ -127,4 +118,7 @@ ARG RAILS_SERVE_STATIC_FILES=true
 ARG PORT=80
 ARG SECRET_KEY_BASE=notasecret
 
-RUN bash -c "bundle exec rake assets:precompile"
+RUN bash -c "bundle config set --local without 'development test' && \
+  bundle config set --local deployment 'true' && \
+  bundle install --no-cache && \
+  bundle clean --force"
