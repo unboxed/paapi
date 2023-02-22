@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   devise_for :users
+  resources :csv_uploads
   mount Rswag::Ui::Engine => "/api-docs"
 
   get :healthcheck, to: proc { [200, {}, %w[OK]] }
