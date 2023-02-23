@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
-  # Automatically retry jobs that encountered a deadlock
-  # retry_on ActiveRecord::Deadlocked
+  queue_as :low_priority
 
-  # Most jobs are safe to ignore if the underlying records are no longer available
-  # discard_on ActiveJob::DeserializationError
+  def add_message(message_text, type = :success)
+    new_message = CsvProcessingMessage.new(
+      message_type: type,
+      body: message_text,
+      data: [],
+      csv_upload: @csv_upload
+    )
+    new_message.save!
+  end
 end

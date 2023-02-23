@@ -29,6 +29,8 @@ class CsvUploadsController < ApplicationController
           redirect_to csv_upload_url(@csv_upload), notice: I18n.t("upload_successfully_created_notice")
         end
         format.json { render :show, status: :created, location: @csv_upload }
+
+        start_job
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @csv_upload.errors, status: :unprocessable_entity }
@@ -61,6 +63,12 @@ class CsvUploadsController < ApplicationController
 
   private
 
+  # start first csv upload job
+  def start_job
+    # set a wait so front end can load
+    DownloadLocalCopyStartJob.set(wait: 2.seconds).perform_later @csv_upload
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_csv_upload
     @csv_upload = CsvUpload.find(params[:id])
@@ -68,6 +76,6 @@ class CsvUploadsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def csv_upload_params
-    params.require(:csv_upload).permit(:title, csv_files: [])
+    params.require(:csv_upload).permit(:title, :local_authority_id, csv_files: [])
   end
 end
