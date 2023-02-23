@@ -11,5 +11,11 @@ class ApplicationJob < ActiveJob::Base
       csv_upload: @csv_upload
     )
     new_message.save!
+
+    payload = { body: new_message.body, id: new_message.id, type: new_message.message_type,
+                created_at: new_message.created_at }
+
+    ActionCable.server.broadcast "message_channel/csv_uploads/#{@csv_upload.id}", payload
+    ActionCable.server.broadcast "message_channel", payload
   end
 end
