@@ -17,6 +17,11 @@
   </div>
 
   <div class=govuk-form-group>
+    <%= form.label :local_authority_id, class: 'govuk-label' %>
+    <%= form.select :local_authority_id, LocalAuthority.all.collect {|la| [la.name.capitalize, la.id] }, {}, class: 'govuk-select' %>
+  </div>
+
+  <div class=govuk-form-group>
     <%= form.label :csv_files, 'Upload CSV files', class: 'govuk-label' %>
     <%= form.file_field :csv_files, multiple: true, accept: ".csv", direct_upload: true, class: 'govuk-file-upload' %>
     <template class="directupload-progress">

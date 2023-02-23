@@ -1,8 +1,8 @@
 <div id="<%= dom_id csv_upload %>">
   <h2 class="govuk-heading-m">
-
     <%= csv_upload.title %>
   </h2>
+  <p class="govuk-body">Uploaded <%= csv_upload.created_at.to_fs(:short) %></p>
   <h3 class="govuk-heading-s">Progress</h3>
   <ul class="govuk-list govuk-list--bullet">
     <li>Starting import job...</li>
@@ -10,6 +10,7 @@
     <li data-created-at="<%= msg.created_at %>" data-message-id="<%= msg.id %>"><%= msg.body %></li>
     <% end %>
   </ul>
+  <a href="" class="govuk-button">Refresh progress</a>
   <h3 class="govuk-heading-s">Attached files</h3>
   <ul class="govuk-list govuk-list--bullet">
     <% csv_upload.csv_files.each do |csv| %>

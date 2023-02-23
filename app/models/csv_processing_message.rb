@@ -2,5 +2,5 @@
 
 class CsvProcessingMessage < ApplicationRecord
   belongs_to :csv_upload
-  enum message_type: { success: 0, error: 1 }
+  enum message_type: { info: 0, success: 1, error: 2 }
 end
