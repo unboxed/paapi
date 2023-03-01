@@ -13,25 +13,28 @@ class CheckFormatJob < ApplicationJob
       end
     end
 
-    InsertRowsJob.perform_later @csv_upload
-    add_message "Inserting rows"
+    #InsertRowsJob.perform_later @csv_upload
+    add_message "Job stopped - errors in import"
   end
 
   def check_rows(file_info)
     results = []
+    error_occured = false
     CSV.foreach(file_info.path, headers: true, header_converters: :symbol) do |row|
-      errors = check_row_for_errors(row)
+      error = check_row_for_errors(row)
 
-      if errors
-        results.push errors
-        add_message "Error in row #{results.count}", :error
+      if error
+        results.push error
+        error_occured = true
+        add_message "Error in row #{results.count} - #{error}", :error
       else
         add_message "No errors in row #{results.count}"
+        results.push true
       end
     end
 
     file_info.unlink
-    results
+    [error_occured, results]
   end
 
   def check_row_for_errors(row)
@@ -39,10 +42,10 @@ class CheckFormatJob < ApplicationJob
       **row.to_h.merge(local_authority:)
     )
     begin
-      planning_application.validate_property
+      planning_application.validate
       false
-    rescue StandardError
-      true
+    rescue StandardError => e
+      e.message
     end
   end
 

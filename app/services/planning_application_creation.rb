@@ -42,9 +42,25 @@ class PlanningApplicationCreation
     importer
   end
 
+  def validate 
+    validate_property
+  end
+
   private
 
   attr_reader(*ATTRIBUTES)
+
+  def validate_property
+    return if property.valid?
+
+    property_error_messages = property.errors.full_messages
+    address_error_messages = new_address.errors.full_messages
+    error_messages = address_error_messages.append property_error_messages
+
+    errors = error_messages.join(",")
+    message = "Planning application reference: #{reference} has errors: #{errors}"
+    raise PlanningApplicationCreationInvalidProperty, message
+  end
 
   def importer
     validate_property
@@ -95,13 +111,5 @@ class PlanningApplicationCreation
       latitude:,
       longitude:
     )
-  end
-
-  def validate_property
-    return if property.valid?
-
-    errors = new_address.errors.full_messages.join(",")
-    message = "Planning application reference: #{reference} has invalid property: #{errors}"
-    raise PlanningApplicationCreationInvalidProperty, message
   end
 end
