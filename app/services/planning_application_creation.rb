@@ -42,7 +42,7 @@ class PlanningApplicationCreation
     importer
   end
 
-  def validate 
+  def validate
     validate_property
   end
 
