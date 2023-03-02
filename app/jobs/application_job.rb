@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
-
   discard_on ActiveJob::DeserializationError
   queue_as :low_priority
 
