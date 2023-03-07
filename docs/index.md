@@ -52,7 +52,6 @@ We are working with councils and other stakeholders to develop a reliable, effic
   </div>
 </div>
 
-
 <div class="app-width-container">
   <div class="govuk-main-wrapper">
     <h2>Join the conversation</h2>

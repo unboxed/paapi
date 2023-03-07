@@ -1,4 +1,7 @@
 openapi: 3.0.1
+servers:
+  - url: https://staging.paapi.services
+    description: PAAPI
 info:
   title: Planning Applications API
   version: v1
