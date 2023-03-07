@@ -1,6 +1,6 @@
 openapi: 3.0.1
 servers:
-  - url: https://staging.paapi.services
+  - url: http://127.0.0.1:3000
     description: PAAPI
 info:
   title: Planning Applications API
