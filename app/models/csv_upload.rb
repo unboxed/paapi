@@ -23,4 +23,8 @@ class CsvUpload < ApplicationRecord
       error_messages
     end
   end
+
+  def latest_csv_processing_message
+    csv_processing_messages.last
+  end
 end
