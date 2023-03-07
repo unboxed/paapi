@@ -7,11 +7,8 @@
    </div>
   <% end %>
   <% @csv_uploads.each do |csv_upload| %>
-    <%= render csv_upload %>
-    <p class=govuk-body>
-      <%= link_to "Show this csv upload", csv_upload %>
-    </p>
+    <%= render csv_upload, latest_progress_only: true %>
   <% end %>
 </div>
-
-<%= link_to "New CSV Upload", new_csv_upload_path, {class: "govuk-body"} %>
+<hr>
+<%= link_to "New CSV Upload", new_csv_upload_path, {class: "govuk-button govuk-body"} %>

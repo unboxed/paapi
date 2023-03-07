@@ -1,16 +1,22 @@
+<% latest_progress_only ||= false %>
+
 <div id="<%= dom_id csv_upload %>" data-controller="csv-processing-messages">
   <h2 class="govuk-heading-m">
-    <%= csv_upload.title %>
+    <%= link_to csv_upload.title, csv_upload %>
   </h2>
   <p class="govuk-body">Uploaded <%= csv_upload.created_at.to_fs(:short) %></p>
   <h3 class="govuk-heading-s">Progress</h3>
-  <ul data-csv-processing-messages-target="messages" class="govuk-list govuk-list--bullet">
-    <li>Starting import job...</li>
-    <% csv_upload.filtered_csv_processing_messages.each do |msg| %>
-    <li data-created-at="<%= msg.created_at %>" data-message-id="<%= msg.id %>"><%= msg.body %></li>
+  <ul data-csv-processing-messages-target="messages" class="govuk-list govuk-list--bullet" style="overflow:auto; max-height: 30em">
+    <% if latest_progress_only %>
+      <li data-created-at="<%= csv_upload.latest_csv_processing_message.created_at %>" data-message-id="<%= csv_upload.latest_csv_processing_message.id %>"><%= csv_upload.latest_csv_processing_message.body %></li>
+    <% else %>
+      <li>Starting import job...</li>
+      <% csv_upload.filtered_csv_processing_messages.each do |msg| %>
+      <li data-created-at="<%= msg.created_at %>" data-message-id="<%= msg.id %>"><%= msg.body %></li>
+      <% end %>
     <% end %>
   </ul>
-  <a href="" class="govuk-button">Refresh progress</a>
+  <% if !latest_progress_only %><a href="" class="govuk-button">Refresh progress</a><% end %>
   <h3 class="govuk-heading-s">Attached files</h3>
   <ul class="govuk-list govuk-list--bullet">
     <% csv_upload.csv_files.each do |csv| %>
