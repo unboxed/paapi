@@ -88,7 +88,7 @@ systems to a central database.
     <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
       An open API standard for planning application information data exchange. Suppliers would send data and pull data to and from endpoints.
 
-      <img src=/assets/images/hybrid_data_store.svg alt="Hybrid data store">
+      <img src="/assets/images/hybrid_data_store.svg" alt="Hybrid data store">
     </div>
   </div>
 </div>
