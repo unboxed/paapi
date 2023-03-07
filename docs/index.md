@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Planning Register API
+title: Home
 description: Planning Register API
 ---
 
@@ -12,7 +12,7 @@ description: Planning Register API
           Find historical and current planning data 
         </h1>
         <p class="app-hero__description">
-          A platform to help you create services using planning data.
+          A platform to help you create services using planning data, and proposals for standardising this information exchange.
         </p>
       </div>
       <div class="govuk-grid-column-one-third-from-desktop">
@@ -24,113 +24,48 @@ description: Planning Register API
   </div>
 </div>
 
-<strong class="govuk-tag govuk-!-margin-top-4 govuk-!-margin-bottom-2">Updated: JAN 2022</strong>
+<strong class="govuk-tag govuk-!-margin-top-4 govuk-!-margin-bottom-2">Updated: MARCH 2023</strong>
 
-Our Planning Register system will provide an open platform to store, analyse and access planning data in a uniform way. 
+The Planning Register will provide an open platform to store, analyse and access planning data in a uniform way. 
 The system will include an API as well as other tools to ensure that all legacy data is accessible. 
 We are working with councils and other stakeholders to develop a reliable, efficient register prototype.
 
-## Historical data
+<div class="app-width-container">
+  <div class="govuk-main-wrapper govuk-main-wrapper--l">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third-from-desktop govuk-!-margin-bottom-8">
+        <h2 class="govuk-heading-l">Collecting data</h2>
+        <p>Explore how we plan to get planning data from sources, the tools we have in place, and future plans for collecting data.</p>
+        <a href="/collecting-data/" class="govuk-button">Collecting data</a>
+      </div>
+      <div class="govuk-grid-column-one-third-from-desktop govuk-!-margin-bottom-8">
+        <h2 class="govuk-heading-l">Storing data</h2>
+        <p class="govuk-body">Current methods of storing planning data, and our recommendations for opening up access with standards and APIs.</p>
+        <a href="/storing-data/" class="govuk-button">Storing data</a>
+      </div>
+      <div class="govuk-grid-column-one-third-from-desktop govuk-!-margin-bottom-8">
+        <h2 class="govuk-heading-l">Sharing data</h2>
+        <p class="govuk-body">How we plan to share data from the register, an API explorer for the current API, and future recommended strategies.</p>
+        <a href="/sharing-data/" class="govuk-button">Sharing data</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-We are working with several councils to look at their historical data, and how we can take this data from various sources and put it in a database.
-We are developing methods of doing this in the short term, and working on long-term plans of doing this through an API.
-
-### Short term
-
-In the short term, and almost certainly for the lifetime of this prototype, data will be extracted from existing tools. 
-The main tool currently used to extract planning data at Lambeth and Southwark councils is PowerBI. 
-For now, we will work with CSV data extracted from this.
-
-![Short term diagram](assets/images/short-term.svg)
-
-### Long term
-
-We want other organisations to use our API to send us the historical data.
-
-![Long term diagram](assets/images/long-term.svg)
-
-## Database schema
-
-We are opening up our intended database schema to try to capture all of the relevant available historical and related data. Please note we have not included document metadata or planning conditions and their relations - we are working on including this. We are welcoming comments on this schema on the ODP slack channel [#group-planning-register-data](https://opendigitalplanning.slack.com/archives/C04MB9HA6N6) or [via email](mailto:bops.register.feedback@unboxed.co).
-
-#### `addresses`
-
-| Name | Type | Description | Relation |
-| ----- | ----- | ----- | ----- |
-| id | bigint | - | -
-| full | string | - | -
-| town | string | - | -
-| postcode | string | - | -
-| map_east | string | Eastings[^1] | -
-| map_north | string | Northings[^1] | -
-| created_at | datetime | - | -
-| updated_at | datetime | - | -
-| ward_code | string | Electoral ward code[^2] | -
-| ward_name | string | Electoral ward name | -
-| latitude | string | Latitude[^3] | -
-| longitude | string | Longitude[^3] | -
-| property_id | bigint | - | properties.id
-
-[^1]: Northings / Eastings / lat lng will be updated as data is ingressed. 
-[^2]: [Ward codes are defined by the ONS](https://www.ons.gov.uk/methodology/geography/geographicalproducts/namescodesandlookups)
-[^3]: Lat/lng data is stored as is for now, we have not set a format for now.
-
-#### `local_authorities`
-
-| Name | Type |
-| ----- | ----- 
-| id | bigint |
-| name | string |
-| created_at | datetime |
-| updated_at | datetime |
-
-#### `planning_applications`
-
-| Name | Type |  Relation
-| ----- | ----- | ----- | 
-| id | bigint | -
-| reference | string | -
-| area | string | -
-| description | string | -
-| received_at | datetime | -
-| created_at | datetime | -
-| updated_at | datetime | -
-| assessor | string | -
-| decision | string | -
-| decision_issued_at | datetime | -
-| local_authority_id | bigint | local_authorities.id
-| view_documents | string | -
-| application_type | string | -
-| reviewer | string | -
-| validated_at | datetime | -
-| created_at | datetime | -
-| updated_at | datetime | -
-| view_documents | string | -
-| application_type_code | string | -
-
-#### `planning_applications_properties`
-
-| Name | Type | Relation |
-| ----- | ----- | ----- |
-| id | bigint | -
-| planning_application_id | bigint | planning_applications.id
-| property_id | bigint | properties.id
-| created_at | datetime | -
-| updated_at | datetime | -
-
-#### `properties`
-
-| Name | Type | Description |
-| ----- | ----- | ----- |
-| id | bigint | -
-| uprn | string | Universal property reference number [^4]
-| type | string | -
-| code | string | -
-| created_at | datetime | -
-| updated_at | datetime | -
-
-[^4]: [Identifying property and street information](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information)
-
-## API Docs
-
-We are building the API in this prototype. [View the API Docs / Swagger](api-docs). 
+<div class="app-width-container">
+  <div class="govuk-main-wrapper">
+    <h2>Join the conversation</h2>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half-from-desktop govuk-!-margin-bottom-8">
+        <img src="/assets/images/chat-with-us-on-slack.svg" width="90%" alt="Slack conversation illustration." loading="lazy">
+        <h3 class="govuk-heading-l">Chat with us</h3>
+        <p>If you work with Open Digital Planning, find us on the <a href="https://opendigitalplanning.slack.com/archives/C04MB9HA6N6">#group-planning-register-data Slack channel</a> to give us feedback or share your work with us. You can also <a href="mailto:bops.register.feedback@unboxed.co">email us with any questions</a>.</p>
+      </div>
+      <div class="govuk-grid-column-one-half-from-desktop govuk-!-margin-bottom-8">
+        <img src="/assets/images/propose-a-change-to-pages.svg" width="90%" alt="Github illustration" class="app-image--no-border" loading="lazy">
+        <h2 class="govuk-heading-l">Propose a change</h2>
+        <p class="govuk-body">Propose a change to this <a href="https://github.com/unboxed/paapi/tree/main/docs">documentation</a> or the Planning Application API using our <a href="https://github.com/unboxed/paapi">Git repository</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>

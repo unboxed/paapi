@@ -1,0 +1,22 @@
+<!-- modified from: https://www.seanh.cc/2020/01/01/jekyll-breadcrumbs/#file-breadcrumb_text-html -->
+
+
+{% assign breadcrumb_page = nil %}
+{% for page in site.pages %}
+  {% if page.url == include.url %}
+    {% assign breadcrumb_page = page %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% assign breadcrumb_text = breadcrumb_page.breadcrumb_text | default: breadcrumb_page.title | default: include.default %}
+
+{% unless breadcrumb_page == nil %}
+  <li class="govuk-breadcrumbs__list-item">
+    <a class="govuk-breadcrumbs__link" href="{{ breadcrumb_page.url | relative_url }}">{{ breadcrumb_text }}</a>
+  </li>
+{% else %}
+  <li class="govuk-breadcrumbs__list-item">
+    &gt; {{ breadcrumb_text }}
+  </li>
+{% endunless %}
