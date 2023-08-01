@@ -17,6 +17,18 @@ ENV LANG=en_US.UTF-8
 # Generates localisation files from templates
 RUN locale-gen
 
+# Install NODE_MAJOR
+ARG NODE_MAJOR=18
+RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
+    curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash - && \
+    apt-get update && apt-get install -y nodejs"
+
+# Install Yarn via Debian package repository
+RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update -qq && apt install yarn"
+
 # Install Bundler
 ARG BUNDLER_VERSION=2.4.17
 RUN bash -c "gem update --system && gem install bundler -v $BUNDLER_VERSION"
@@ -35,7 +47,7 @@ RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
 # Build image for ruby dependencies
 FROM build_image AS gems
 
-# Run security updates, install libpq-dev libproj-dev gdal-bin
+# Run security updates and install required system packages libpq-dev
 RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
     apt-get update -qq && \
     apt-get upgrade -y && \
@@ -56,8 +68,20 @@ RUN bash -c "bundle config set --local without 'development test' && \
   bundle install --no-cache && \
   bundle clean --force"
 
+# Build image for npm dependencies
+FROM gems AS packages
+
+# Create a directory for our application
+# and set it as the working directory
+WORKDIR /app
+
+# Add Javascript files
+COPY package.json yarn.lock /app/
+
+RUN bash -c "bundle exec yarn install"
+
 # Build image for application
-FROM gems AS application
+FROM packages AS application
 
 # Run security updates, install libpq5
 RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
@@ -95,6 +119,7 @@ USER app:app
 ARG RAILS_ENV=production
 ARG NODE_ENV=production
 ARG RACK_ENV=production
+ARG AWS_REGION=eu-west-2
 ARG AWS_ACCESS_KEY_ID=notanaccesskeyid
 ARG AWS_SECRET_ACCESS_KEY=notasecretaccesskey
 ARG DATABASE_URL=postgres://localhost:5432/paapi_web
@@ -102,3 +127,6 @@ ARG RAILS_LOG_TO_STDOUT=true
 ARG RAILS_SERVE_STATIC_FILES=true
 ARG PORT=80
 ARG SECRET_KEY_BASE=notasecret
+ARG RAILS_MASTER_KEY=notasecret
+
+RUN bash -c "bundle exec rake assets:precompile"
