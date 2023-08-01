@@ -1,11 +1,14 @@
 <head>
   <meta charset="utf-8"/>
-  <title>PAAPI</title>
+  <title><%= content_for?(:page_title) ? yield(:page_title) : t("page_title") %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="blue"/>
 
-  <%= stylesheet_link_tag "application" %>
-  <%= javascript_include_tag "application" %>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+  <%= stylesheet_link_tag "application", "data-turbolinks-track": "reload", media: "all" %>
+  <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
 </head>
