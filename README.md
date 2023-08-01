@@ -4,7 +4,7 @@ A Rails API which will store planning application data.
 
 | Dependency | Version |
 |:-----------|:--------|
-| Ruby       | 3.1.2   |
+| Ruby       | 3.2.2   |
 | Rails      | 7.0.3   |
 | Postgresql | 14.2    |
 
@@ -18,7 +18,7 @@ $ git@github.com:unboxed/planning-applications-api.git
 
 ### Using Docker
 
-We recommend using [Docker Desktop][1] to get setup quickly. If you'd prefer not to use Docker then you'll need to install Ruby (3.1+) and PostgreSQL (14+).
+We recommend using [Docker Desktop][1] to get setup quickly. If you'd prefer not to use Docker then you'll need to install Ruby (3.2+) and PostgreSQL (14+).
 
 ### First Time Setup using Docker
 
