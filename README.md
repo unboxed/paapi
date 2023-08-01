@@ -5,7 +5,7 @@ A Rails API which will store planning application data.
 | Dependency | Version |
 |:-----------|:--------|
 | Ruby       | 3.2.2   |
-| Rails      | 7.0.3   |
+| Rails      | 7.0.6   |
 | Postgresql | 14.2    |
 
 ## Getting started
