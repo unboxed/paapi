@@ -48,7 +48,7 @@ RUN bash -c "export DEBIAN_FRONTEND=noninteractive && \
 WORKDIR /app
 
 # Add our Gemfile
-COPY Gemfile Gemfile.lock /app/
+COPY Gemfile Gemfile.lock .ruby-version /app/
 
 # Install gems
 RUN bash -c "bundle config set --local without 'development test' && \
