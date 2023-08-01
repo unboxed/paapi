@@ -18,7 +18,7 @@ ENV LANG=en_US.UTF-8
 RUN locale-gen
 
 # Install Bundler
-ARG BUNDLER_VERSION=2.3.19
+ARG BUNDLER_VERSION=2.4.17
 RUN bash -c "gem update --system && gem install bundler -v $BUNDLER_VERSION"
 
 # Base image for building dependencies
