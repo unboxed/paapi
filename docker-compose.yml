@@ -13,7 +13,7 @@ services:
     build:
       context: .
       args:
-        RUBY_VERSION: '3.1.2'
+        RUBY_VERSION: '3.2.2'
         BUNDLER_VERSION: '2.3.19'
     entrypoint: ./docker-entrypoint.sh
     command: bash -c "bundle exec rails s -b 0.0.0.0 -p 3000"
