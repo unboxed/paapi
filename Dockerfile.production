@@ -126,7 +126,6 @@ ARG DATABASE_URL=postgres://localhost:5432/paapi_web
 ARG RAILS_LOG_TO_STDOUT=true
 ARG RAILS_SERVE_STATIC_FILES=true
 ARG PORT=80
-ARG SECRET_KEY_BASE=notasecret
-ARG RAILS_MASTER_KEY=notasecret
+ARG SECRET_KEY_BASE=notasecretreally
 
 RUN bash -c "bundle exec rake assets:precompile"
