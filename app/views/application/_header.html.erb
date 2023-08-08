@@ -36,6 +36,14 @@
           <li class="govuk-header__navigation-item">
             <a class="govuk-header__link" href="https://docs.paapi.services/about"> About </a>
           </li>
+
+          <li class="govuk-header__navigation-item">
+            <% if user_signed_in? %>
+              <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "govuk-header__link" %>
+            <% else %>
+              <%= link_to "Sign in", new_user_session_path, class: "govuk-header__link" %>
+            <% end %>
+          </li>
         </ul>
       </nav>
     </div>
