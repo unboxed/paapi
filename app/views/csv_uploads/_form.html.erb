@@ -1,0 +1,63 @@
+<%= form_with(model: csv_upload) do |form| %>
+  <% if csv_upload.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(csv_upload.errors.count, "error") %> prohibited this csv_upload from being saved:</h2>
+
+      <ul>
+        <% csv_upload.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class=govuk-form-group>
+    <%= form.label :title, class: 'govuk-label' %>
+    <%= form.text_field :title, class: 'govuk-file-upload' %>
+  </div>
+
+  <div class=govuk-form-group>
+    <%= form.label :csv_files, 'Upload CSV files', class: 'govuk-label' %>
+    <%= form.file_field :csv_files, multiple: true, accept: ".csv", direct_upload: true, class: 'govuk-file-upload' %>
+    <template class="directupload-progress">
+    <p class="govuk-body"><strong class="govuk-tag">
+      {{status}} <progress style="border: white 1px solid;" min="0" max="100" value="{{progress}}">{{progress}}%</progress>
+    </strong> <span class="directupload-progress-filename"></span></p>
+    </template>
+  </div>
+
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">
+        CSV formats
+      </span>
+    </summary>
+    <div class="govuk-details__text">
+      CSV files must be of the following format:
+
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">CSV formats</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+             <% ["reference","application_type_code","application_type","area","description","received_at","assessor","reviewer","decision","decision_issued_at","validated_at","uprn_","code","type","FULL","map_east","map_north","ward_code","ward_name","Neighbour_Consult_Expiry","Standard_Consult_Expiry","Overall_Expiry","Target_Determination_Date","Extension_of_Time_Date","PPA_DATE","Actual_Committee_Date","Permission_Expiry_Date","Appeal_Status","Date_Appeal_Lodged","Date_Appeal_Determined","DM_STATUS","DM_Deciesion","Development_Type","Application_Type","DM_Decision_Code"].each do |heading| %>
+              <th scope="col" class="govuk-table__header"><%= heading %></th>
+             <% end %> 
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+          <% ["reference","application_type_code","application_type","area","description","received_at","assessor","reviewer","decision","decision_issued_at","validated_at","uprn_","code","type","FULL","map_east","map_north","ward_code","ward_name","Neighbour_Consult_Expiry","Standard_Consult_Expiry","Overall_Expiry","Target_Determination_Date","Extension_of_Time_Date","PPA_DATE","Actual_Committee_Date","Permission_Expiry_Date","Appeal_Status","Date_Appeal_Lodged","Date_Appeal_Determined","DM_STATUS","DM_Deciesion","Development_Type","Application_Type","DM_Decision_Code"].each do |heading| %>
+              <th scope="" class="govuk-table__header"><%= heading %></th>
+          <% end %> 
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</details>
+
+  <div>
+    <%= form.submit 'Upload', {class: 'govuk-button'} %>
+  </div>
+
+  <%= javascript_include_tag "activestorage-directupload" %>
+<% end %>

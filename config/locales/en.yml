@@ -1,2 +1,5 @@
 en:
   page_title: PAAPI
+  upload_successfully_created_notice: "Upload was successfully created. You can now monitor it's import progress."
+  upload_successfully_destroyed_notice: "CSV Upload was successfully destroyed."
+  upload_successfully_updated_notice:  "CSV Upload was successfully updated."
