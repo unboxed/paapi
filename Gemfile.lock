@@ -104,8 +104,6 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.1.2)
       railties (>= 6.0.0)
-    dartsass-rails (0.4.1)
-      railties (>= 6.0.0)
     date (3.3.3)
     debug (1.7.1)
       irb (>= 1.5.0)
@@ -362,7 +360,6 @@ DEPENDENCIES
   brakeman
   bundler-audit
   cssbundling-rails
-  dartsass-rails
   debug
   dotenv-rails
   factory_bot_rails
