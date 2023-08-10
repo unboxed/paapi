@@ -11,6 +11,7 @@ gem "appsignal"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
+gem "devise"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "jwt"
@@ -37,8 +38,10 @@ group :development, :test do
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
+  gem "selenium-webdriver"
 end
 
 group :test do
+  gem "capybara"
   gem "webmock"
 end

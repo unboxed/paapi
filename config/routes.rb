@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   mount Rswag::Ui::Engine => "/api-docs"
 
+  devise_for :users
+
   get :healthcheck, to: proc { [200, {}, %w[OK]] }
 
   namespace :api do
