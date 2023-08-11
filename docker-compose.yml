@@ -3,32 +3,64 @@ services:
   db:
     image: postgres:latest
     volumes:
-     - db:/var/lib/postgresql/data
+      - type: volume
+        source: db
+        target: /var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
+
+  redis:
+    image: redis:7.0
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: redis
+        target: /var/lib/redis/data
+
+  sidekiq:
+    entrypoint: ./docker-entrypoint.sh
+    depends_on:
+      - redis
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    environment:
+      REDIS_URL: redis://redis:6379/1
+      DATABASE_URL: postgres://postgres:postgres@db:5432
+
   web:
     build:
       context: .
       args:
         RUBY_VERSION: '3.2.2'
         BUNDLER_VERSION: '2.4.17'
+        NODE_MAJOR: '18'
     entrypoint: ./docker-entrypoint.sh
     command: bash -c "bundle exec rails s -b 0.0.0.0 -p 3000"
     stdin_open: true
     tty: true
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432
+      REDIS_URL: redis://redis:6379/1
     ports:
       - "3000:3000"
     depends_on:
       - db
+      - sidekiq
+      - redis
     volumes:
       - .:/app
       - bundle:/bundle
 
 volumes:
   bundle:
+  redis:
   db:
