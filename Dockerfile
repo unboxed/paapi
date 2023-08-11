@@ -1,5 +1,5 @@
 # Base image
-ARG RUBY_VERSION
+ARG RUBY_VERSION=3.2.2
 FROM ruby:$RUBY_VERSION
 
 # Sets an environment variable with the bundle directory
@@ -27,7 +27,7 @@ RUN apt-get clean autoclean && \
     /var/lib/log
 
 # Install Bundler
-ARG BUNDLER_VERSION
+ARG BUNDLER_VERSION=2.4.17
 RUN gem install bundler -v $BUNDLER_VERSION --no-doc
 
 # Update the system
@@ -42,7 +42,7 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle
 
 ## Node
-ARG NODE_VERSION
+ARG NODE_VERSION=18
 RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 RUN apt-get install -y nodejs
 
