@@ -29,40 +29,17 @@ jobs:
     with:
       rubocop: true
 
-  spec:
-    runs-on: ubuntu-20.04
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Ruby 3.2.2
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Build assets
-        run: bundle exec rails assets:precompile
-
-      - name: Run specs
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
-          RAILS_ENV: test
-        run: |
-          bundle exec rake spec
+  specs:
+    uses: ./.github/workflows/testing.yml
+    strategy:
+      matrix:
+        specs:
+          - { group: "jobs", pattern: "*_spec.rb"}
+          - { group: "models", pattern: "*_spec.rb"}
+          - { group: "requests", pattern: "*_spec.rb"}
+          - { group: "services", pattern: "*_spec.rb"}
+          - { group: "system", pattern: "*_spec.rb"}
+      fail-fast: false
+    with:
+      name: "${{matrix.specs.group}}: ${{matrix.specs.pattern }}"
+      include: "spec/${{matrix.specs.group}}/**/${{matrix.specs.pattern}}"
