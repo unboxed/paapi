@@ -9,111 +9,25 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   bundle-audit:
-    runs-on: ubuntu-20.04
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Check bundle for known CVEs
-        run: |
-          bundle exec bundle-audit
+    uses: ./.github/workflows/linters.yml
+    with:
+      bundler-audit: true
 
   brakeman:
-    runs-on: ubuntu-20.04
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Ruby 3.2.2
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Analyse code for vulnerabilities
-        run: bundle exec brakeman
+    uses: ./.github/workflows/linters.yml
+    with:
+      brakeman: true
 
   rubocop:
-    runs-on: ubuntu-20.04
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Ruby 3.2.2
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        if: hashFiles('yarn.lock') != ''
-        with:
-          node-version-file: .node-version
-          cache: "yarn"
-
-      - name: Install packages
-        run: |
-          yarn install --frozen-lockfile
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Analyse code for formatting
-        run: bundle exec rubocop
+    uses: ./.github/workflows/linters.yml
+    with:
+      rubocop: true
 
   spec:
     runs-on: ubuntu-20.04
