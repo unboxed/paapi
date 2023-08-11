@@ -1,0 +1,81 @@
+---
+name: Testing
+
+on:
+  workflow_call:
+    inputs:
+      exclude:
+        type: string
+        required: false
+        default: ""
+      include:
+        type: string
+        required: false
+        default: "spec/**/*_spec.rb"
+      name:
+        type: string
+        required: true
+      ruby-version:
+        type: string
+        default: "3.2.2"
+
+jobs:
+  tests:
+    name: ${{ inputs.name }}
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby ${{ inputs.ruby-version }} and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ inputs.ruby-version }}
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        if: hashFiles('yarn.lock') != ''
+        with:
+          node-version-file: .node-version
+          cache: "yarn"
+
+      - name: Install packages
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Install postgres client
+        shell: bash
+        run: |
+          sudo apt-get -yqq install libpq-dev
+
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
+          RAILS_ENV: test
+        run: |
+          bundle exec rails db:create db:schema:load
+
+      - name: Assets precompile
+        run: bundle exec rake assets:precompile --trace
+
+      - name: Run specs
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
+          RAILS_ENV: test
+          SPEC_OPTS: '-f doc --exclude "${{ inputs.exclude }}" --pattern "${{ inputs.include }}"'
+        run: |
+          bundle exec rake spec

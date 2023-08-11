@@ -39,10 +39,6 @@ services:
   web:
     build:
       context: .
-      args:
-        RUBY_VERSION: '3.2.2'
-        BUNDLER_VERSION: '2.4.17'
-        NODE_MAJOR: '18'
     entrypoint: ./docker-entrypoint.sh
     command: bash -c "bundle exec rails s -b 0.0.0.0 -p 3000"
     stdin_open: true
