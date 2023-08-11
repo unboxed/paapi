@@ -7,13 +7,19 @@ on:
       environment-name:
         type: string
         required: true
+      db_subnets:
+        type: string
+        required: true
+      db_sg:
+        type: string
+        required: true
 
 concurrency:
   group: ${{ inputs.environment-name }}
 
 jobs:
-  deploy:
-    name: Deploy to ${{ inputs.environment-name }}
+  build-image:
+    name: Create and push docker image to ECR for ${{ inputs.environment-name }}
     runs-on: ubuntu-20.04
     environment: ${{ inputs.environment-name }}
 
@@ -21,10 +27,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Create an image tag based on the commit sha
-        id: image_tag
+      - name: Get github commit sha
+        id: github
         run: |
-          echo "sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >>$GITHUB_OUTPUT
+          echo "sha=$(echo ${GITHUB_SHA::7})" >>$GITHUB_OUTPUT
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -59,11 +65,41 @@ jobs:
             --load \
             -t paapi:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.production .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >>$GITHUB_OUTPUT
+
+  deploy-db-migrate-service:
+    name: Perform database migrations on ${{ inputs.environment-name }}
+    runs-on: ubuntu-20.04
+    needs: [build-image]
+
+    steps:
+      - name: Get github commit sha
+        id: github
+        run: |
+          echo "sha=$(echo ${GITHUB_SHA::7})" >>$GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get image URI
+        id: ecr-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: paapi/${{ inputs.environment-name }}
+          IMAGE_TAG: ${{ steps.github.outputs.sha }}
+        run: |
+          echo "uri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >>$GITHUB_OUTPUT
 
       - name: Download task definition for db_migrate and strip unused properties
         env:
-          IMAGE_ARN: ${{ steps.build-image.outputs.image }}
+          IMAGE_ARN: ${{ steps.ecr-image.outputs.image }}
         run: |
           aws ecs describe-task-definition --task-definition paapi-db-migrate-${{ inputs.environment-name }} --query taskDefinition | \
           jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' | \
@@ -79,8 +115,8 @@ jobs:
           CLUSTER: paapi-${{ inputs.environment-name }}
           TASK_DEFINITION: paapi-db-migrate-${{ inputs.environment-name }}
           LOG_GROUP: paapi-db-migrate-${{ inputs.environment-name }}
-          PAAPI_SUBNETS: subnet-${{ secrets.PAAPI_SUBNETS }}
-          PAAPI_SG: sg-${{ secrets.PAAPI_SG }}
+          PAAPI_SUBNETS: subnet-${{ secrets[format('{0}', inputs.db_subnets)] }}
+          PAAPI_SG: sg-${{ secrets[format('{0}', inputs.db_sg)] }}
         run: |
           start_time=$(date -Iseconds)
           task_arn=$(aws ecs run-task --cluster $CLUSTER \
@@ -94,70 +130,72 @@ jobs:
           if [ $exit_code -gt 0 ]; then echo "$result_json" | jq -r; fi
           exit $exit_code
 
-      - name: Download task definition for worker high-priority and strip unused properties
-        env:
-          IMAGE_ARN: ${{ steps.build-image.outputs.image }}
-        run: |
-          aws ecs describe-task-definition --task-definition paapi-worker-high-priority-${{ inputs.environment-name }} --query taskDefinition | \
-          jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > worker-high-priority.json
+  deploy-services:
+    name: Deploy services to ${{ inputs.environment-name }}
+    runs-on: ubuntu-20.04
+    needs: [build-image, deploy-db-migrate-service]
+    strategy:
+      matrix:
+        service_type: ['worker-high-priority', 'worker-low-priority', 'web']
 
-      - name: Generate task definition for worker high-priority
-        id: task-def-worker-high-priority
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        if: matrix.service_type == 'web'
+
+      - name: Get github commit sha
+        id: github
+        run: |
+          echo "sha=$(echo ${GITHUB_SHA::7})" >>$GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get image URI
+        id: ecr-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: paapi/${{ inputs.environment-name }}
+          IMAGE_TAG: ${{ steps.github.outputs.sha }}
+        run: |
+          echo "uri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >>$GITHUB_OUTPUT
+
+      - name: Download task definition for ${{ matrix.service_type }} and strip unused properties
+        run: |
+          aws ecs describe-task-definition --task-definition paapi-${{ matrix.service_type }}-${{ inputs.environment-name }} --query taskDefinition | \
+          jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > ${{ matrix.service_type }}.json
+
+      - name: Generate task definition for ${{ inputs.environment-name }}
+        id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: worker-high-priority.json
+          task-definition: ${{ matrix.service_type }}.json
           container-name: paapi
-          image: ${{ steps.build-image.outputs.image }}
+          image: ${{ steps.ecr-image.outputs.uri }}
 
-      - name: Deploy worker high-priority
+      - name: Deploy ${{ matrix.service_type }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        if: matrix.service_type != 'web'
         with:
-          task-definition: ${{ steps.task-def-worker-high-priority.outputs.task-definition }}
-          service: paapi-worker-high-priority-${{ inputs.environment-name }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: paapi-${{ matrix.service_type }}-${{ inputs.environment-name }}
           cluster: paapi-${{ inputs.environment-name }}
           wait-for-service-stability: true
-
-      - name: Download task definition for worker low-priority and strip unused properties
-        env:
-          IMAGE_ARN: ${{ steps.build-image.outputs.image }}
-        run: |
-          aws ecs describe-task-definition --task-definition paapi-worker-low-priority-${{ inputs.environment-name }} --query taskDefinition | \
-          jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > worker-low-priority.json
-
-      - name: Generate task definition for worker low-priority
-        id: task-def-worker-low-priority
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: worker-low-priority.json
-          container-name: paapi
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy worker low-priority
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def-worker-low-priority.outputs.task-definition }}
-          service: paapi-worker-low-priority-${{ inputs.environment-name }}
-          cluster: paapi-${{ inputs.environment-name }}
-          wait-for-service-stability: true
-
-      - name: Download task definition for web and strip unused properties
-        run: |
-          aws ecs describe-task-definition --task-definition paapi-web-${{ inputs.environment-name }} --query taskDefinition | \
-          jq -r 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' > web.json
-
-      - name: Generate task definition for web
-        id: task-def-web
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: web.json
-          container-name: paapi
-          image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy web
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        if: matrix.service_type == 'web'
         with:
-          task-definition: ${{ steps.task-def-web.outputs.task-definition }}
-          service: paapi-web-${{ inputs.environment-name }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: paapi-${{ matrix.service_type }}-${{ inputs.environment-name }}
           cluster: paapi-${{ inputs.environment-name }}
           wait-for-service-stability: true
           codedeploy-appspec: .aws/appspec.yml
