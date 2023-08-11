@@ -11,10 +11,14 @@ jobs:
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment-name: "staging"
+      db_subnets: "STAGING_PAAPI_SUBNETS"
+      db_sg: "STAGING_PAAPI_SG"
     secrets: inherit
 
   deploy-prod:
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment-name: "production"
+      db_subnets: "PRODUCTION_PAAPI_SUBNETS"
+      db_sg: "PRODUCTION_PAAPI_SG"
     secrets: inherit
