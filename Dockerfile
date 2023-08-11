@@ -42,8 +42,8 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle
 
 ## Node
-ARG NODE_MAJOR
-RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
+ARG NODE_VERSION
+RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 RUN apt-get install -y nodejs
 
 ## Yarn

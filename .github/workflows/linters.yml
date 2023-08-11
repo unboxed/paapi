@@ -53,12 +53,12 @@ jobs:
         if: ${{ inputs.language-versions == true }}
         run: |
           NODE_VERSION=$(cat .node-version)
-          if ! grep -q "^ARG NODE_MAJOR=$NODE_VERSION" Dockerfile; then
-            echo "Dockerfile has wrong node: $(grep '^ARG NODE_MAJOR' Dockerfile)" >&2
+          if ! grep -q "^ARG NODE_VERSION=$NODE_VERSION" Dockerfile; then
+            echo "Dockerfile has wrong node: $(grep '^ARG NODE_VERSION' Dockerfile)" >&2
             exit 1
           fi
-          if ! grep -q "^ARG NODE_MAJOR=$NODE_VERSION" Dockerfile.production; then
-            echo "Dockerfile.production has wrong node: $(grep '^ARG NODE_MAJOR' Dockerfile.production)" >&2
+          if ! grep -q "^ARG NODE_VERSION=$NODE_VERSION" Dockerfile.production; then
+            echo "Dockerfile.production has wrong node: $(grep '^ARG NODE_VERSION' Dockerfile.production)" >&2
             exit 1
           fi
 
