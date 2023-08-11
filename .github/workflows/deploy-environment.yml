@@ -78,12 +78,21 @@ jobs:
         env:
           CLUSTER: paapi-${{ inputs.environment-name }}
           TASK_DEFINITION: paapi-db-migrate-${{ inputs.environment-name }}
+          LOG_GROUP: paapi-db-migrate-${{ inputs.environment-name }}
           PAAPI_SUBNETS: subnet-${{ secrets.PAAPI_SUBNETS }}
           PAAPI_SG: sg-${{ secrets.PAAPI_SG }}
         run: |
-          aws ecs run-task --cluster $CLUSTER \
+          start_time=$(date -Iseconds)
+          task_arn=$(aws ecs run-task --cluster $CLUSTER \
             --task-definition $TASK_DEFINITION --launch-type FARGATE \
-            --network-configuration '{"awsvpcConfiguration": {"subnets": ["'$PAAPI_SUBNETS'"],"securityGroups": ["'$PAAPI_SG'"],"assignPublicIp": "ENABLED"}}'
+            --network-configuration '{"awsvpcConfiguration": {"subnets": ["'$PAAPI_SUBNETS'"],"securityGroups": ["'$PAAPI_SG'"],"assignPublicIp": "ENABLED"}}' | \
+             jq -r '.tasks[].taskArn')
+          aws ecs wait tasks-stopped --cluster $CLUSTER --tasks "$task_arn"
+          aws logs tail $LOG_GROUP --format short --since $start_time
+          result_json=$(aws ecs describe-tasks --cluster $CLUSTER --task $task_arn)
+          exit_code=$(echo "$result_json" | jq -r '.tasks[].containers[0].exitCode // 1')
+          if [ $exit_code -gt 0 ]; then echo "$result_json" | jq -r; fi
+          exit $exit_code
 
       - name: Download task definition for worker high-priority and strip unused properties
         env:
