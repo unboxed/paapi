@@ -62,9 +62,8 @@ jobs:
           DOCKER_BUILDKIT=1 docker buildx build \
             --cache-to type=gha,mode=max \
             --cache-from type=gha \
-            --load \
-            -t paapi:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.production .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            --push \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.production .
 
   deploy-db-migrate-service:
     name: Perform database migrations on ${{ inputs.environment-name }}
