@@ -29,6 +29,11 @@ jobs:
     with:
       rubocop: true
 
+  language-versions:
+    uses: ./.github/workflows/linters.yml
+    with:
+      language-versions: true
+
   specs:
     uses: ./.github/workflows/testing.yml
     strategy:
