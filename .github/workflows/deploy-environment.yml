@@ -135,7 +135,7 @@ jobs:
     needs: [build-image, deploy-db-migrate-service]
     strategy:
       matrix:
-        service_type: ['worker-high-priority', 'worker-low-priority', 'web']
+        service_type: ['console', 'worker-high-priority', 'worker-low-priority', 'web']
 
     steps:
       - name: Checkout code
