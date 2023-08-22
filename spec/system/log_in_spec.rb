@@ -32,7 +32,7 @@ RSpec.describe "Home page renders correctly" do
     end
 
     it "will redirect to homepage" do
-      expect(page).to have_text("This service allows ...")
+      expect(page).to have_text("Welcome #{user.email}")
     end
   end
 end
