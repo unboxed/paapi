@@ -1,0 +1,14 @@
+<h1 class=govuk-heading-l>CSV Uploads</h1>
+
+<div id="csv_uploads">
+  <% if @csv_uploads.empty? %>
+   <div class="govuk-inset-text">
+    No CSV files have been uploaded.
+   </div>
+  <% end %>
+  <% @csv_uploads.each do |csv_upload| %>
+    <%= render csv_upload, latest_progress_only: true %>
+  <% end %>
+</div>
+<hr>
+<%= link_to "New CSV Upload", new_csv_upload_path, {class: "govuk-button govuk-body"} %>

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :csv_uploads
   get :healthcheck, to: proc { [200, {}, %w[OK]] }
 
   namespace :api do
