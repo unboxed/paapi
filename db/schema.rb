@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_15_181318) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_28_100329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -138,7 +138,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_15_181318) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "local_authority_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["local_authority_id"], name: "index_users_on_local_authority_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -147,4 +149,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_15_181318) do
   add_foreign_key "addresses", "properties"
   add_foreign_key "planning_applications_properties", "planning_applications"
   add_foreign_key "planning_applications_properties", "properties"
+  add_foreign_key "users", "local_authorities"
 end
