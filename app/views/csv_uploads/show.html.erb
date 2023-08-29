@@ -1,0 +1,13 @@
+<%= render @csv_upload %>
+
+<div>
+
+
+
+  <div class="govuk-button-group">
+    <%= button_to "Destroy this csv upload", @csv_upload, { class: 'govuk-button govuk-button--warning', method: :delete } %>
+  </div>
+
+  <%= link_to "CSV Uploads", csv_uploads_path, { class: 'govuk-back-link' } %>
+
+</div>
