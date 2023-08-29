@@ -7,11 +7,13 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  get :healthcheck, to: proc { [200, {}, %w[OK]] }
+  resources :csv_uploads
 
   namespace :api do
     namespace :v1 do
       resources :planning_applications, only: %i[index create]
     end
   end
+
+  get :healthcheck, to: proc { [200, {}, %w[OK]] }
 end
